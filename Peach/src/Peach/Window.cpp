@@ -45,11 +45,6 @@ namespace Peach
 		return m_Title;
 	}
 
-	const sf::Vector2u Window::getSize() const
-	{
-		return m_Window->getSize();;
-	}
-
 	const sf::Vector2u Window::getOriginalSize() const
 	{
 		return m_OriginalSize;
@@ -60,14 +55,9 @@ namespace Peach
 		return m_Window->pollEvent(event);
 	}
 
-	void Window::clear(const sf::Color& color)
+	sf::RenderTarget* Window::getRenderer()
 	{
-		m_Window->clear(color);
-	}
-
-	void Window::draw(const sf::Drawable& drawable)
-	{
-		m_Window->draw(drawable);
+		return m_Window;
 	}
 
 	void Window::display()

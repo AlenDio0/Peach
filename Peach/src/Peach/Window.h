@@ -18,14 +18,12 @@ namespace Peach
 		const bool& isRunning() const;
 
 		const sf::String& getTitle() const;
-		const sf::Vector2u getSize() const;
 		const sf::Vector2u getOriginalSize() const;
 
-		const bool& pollEvent(sf::Event& event) const;
-
-		void clear(const sf::Color& color = {});
-		void draw(const sf::Drawable& drawable);
+		sf::RenderTarget* getRenderer();
 		void display();
+
+		const bool& pollEvent(sf::Event& event) const;
 	private:
 		sf::RenderWindow* m_Window;
 
