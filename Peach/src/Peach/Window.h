@@ -20,6 +20,8 @@ namespace Peach
 		const sf::String& getTitle() const;
 		const sf::Vector2u getOriginalSize() const;
 
+		void setMouseCursor(const sf::Cursor& cursor);
+
 		sf::RenderTarget* getRenderer();
 		void display();
 

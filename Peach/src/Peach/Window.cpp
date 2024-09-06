@@ -50,6 +50,11 @@ namespace Peach
 		return m_OriginalSize;
 	}
 
+	void Window::setMouseCursor(const sf::Cursor& cursor)
+	{
+		m_Window->setMouseCursor(cursor);
+	}
+
 	const bool& Window::pollEvent(sf::Event& event) const
 	{
 		return m_Window->pollEvent(event);
