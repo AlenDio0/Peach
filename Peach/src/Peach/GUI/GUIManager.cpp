@@ -13,17 +13,17 @@ namespace Peach
 		PEACH_CORE_TRACE("GUIManager distrutto");
 	}
 
-	std::shared_ptr<GUIObject> GUIManager::operator[](const uint32_t& key)
+	GUIObjectRef GUIManager::operator[](const uint32_t& key)
 	{
 		return m_Objects[key];
 	}
 
-	void GUIManager::add(const uint32_t& key, GUIObjectRef value)
+	void GUIManager::add(const uint32_t& key, GUIObject* value)
 	{
-		m_Objects[key] = value;
+		m_Objects[key] = GUIObjectRef(value);
 	}
 
-	const sf::Cursor::Type& GUIManager::getCursor() const
+	sf::Cursor::Type GUIManager::getCursor() const
 	{
 		for (const auto& [key, value] : m_CursorOn)
 		{
@@ -36,7 +36,7 @@ namespace Peach
 		return sf::Cursor::Arrow;
 	}
 
-	const uint32_t& GUIManager::getPressed()
+	uint32_t GUIManager::getPressed()
 	{
 		if (m_Pressed.empty())
 		{
@@ -48,7 +48,7 @@ namespace Peach
 		return pressed;
 	}
 
-	void GUIManager::handleEvent(sf::Event event)
+	void GUIManager::handleEvent(const sf::Event& event)
 	{
 		switch (event.type)
 		{
@@ -82,7 +82,7 @@ namespace Peach
 			{
 				if (value)
 				{
-					PEACH_CORE_INFO("Premuto l'oggetto \"{}\"", key);
+					PEACH_CORE_INFO("Premuto GUIObject \"{}\"", key);
 					m_Pressed.push(key);
 				}
 			}

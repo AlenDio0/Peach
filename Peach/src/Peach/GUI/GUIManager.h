@@ -16,13 +16,13 @@ namespace Peach
 
 		GUIObjectRef operator[](const uint32_t& key);
 
-		void add(const uint32_t& key, GUIObjectRef value);
+		void add(const uint32_t& key, GUIObject* value);
 
-		const sf::Cursor::Type& getCursor() const;
+		sf::Cursor::Type getCursor() const;
 
-		const uint32_t& getPressed();
+		uint32_t getPressed();
 
-		void handleEvent(sf::Event event);
+		void handleEvent(const sf::Event& event);
 		void render(sf::RenderTarget* target) const;
 	private:
 		std::unordered_map<uint32_t, GUIObjectRef> m_Objects;
