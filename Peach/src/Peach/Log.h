@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core.h"
+
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/ostr.h>
 
@@ -10,6 +11,7 @@ namespace Peach
 	{
 	public:
 		static void init();
+		static void initFile(spdlog::filename_t filename, const size_t& maxsizemb, const size_t& maxfiles);
 
 		inline static std::shared_ptr<spdlog::logger>& getCoreLogger() { return s_CoreLogger; }
 		inline static std::shared_ptr<spdlog::logger>& getClientLogger() { return s_ClientLogger; }
@@ -18,8 +20,6 @@ namespace Peach
 		static std::shared_ptr<spdlog::logger> s_ClientLogger;
 	};
 }
-
-#ifndef PEACH_DIST
 
 // Core log macros
 #define PEACH_CORE_TRACE(...)  ::Peach::Log::getCoreLogger()->trace(__VA_ARGS__)
@@ -34,18 +34,3 @@ namespace Peach
 #define PEACH_WARN(...)        ::Peach::Log::getClientLogger()->warn(__VA_ARGS__)
 #define PEACH_ERROR(...)       ::Peach::Log::getClientLogger()->error(__VA_ARGS__)
 #define PEACH_FATAL(...)       ::Peach::Log::getClientLogger()->critical(__VA_ARGS__)
-
-#else
-
-#define PEACH_CORE_TRACE(...)
-#define PEACH_CORE_INFO(...)
-#define PEACH_CORE_WARN(...)
-#define PEACH_CORE_ERROR(...)
-#define PEACH_CORE_FATAL(...)
-#define PEACH_TRACE(...)
-#define PEACH_INFO(...)
-#define PEACH_WARN(...)
-#define PEACH_ERROR(...)
-#define PEACH_FATAL(...)
-
-#endif

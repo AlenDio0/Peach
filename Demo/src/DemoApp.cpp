@@ -18,5 +18,7 @@ public:
 
 Peach::Application* Peach::CreateApplication()
 {
+	Peach::Log::initFile("logs/demoapp.log", 1, 2);
+
 	return new DemoApp();
 }

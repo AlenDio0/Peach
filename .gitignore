@@ -2,6 +2,7 @@
 bin/
 bin-int/
 .vs/
+logs/
 
 # Visual Studio
 *.sln
