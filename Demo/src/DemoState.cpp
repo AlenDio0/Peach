@@ -8,28 +8,32 @@ DemoState::DemoState(Peach::DataRef data)
 {
 	Peach::Button* button1 = new Peach::Button({ 225.f, 55.f }, "RIMPIAZZA", NULL);
 	Peach::Button* button2 = new Peach::Button({ 225.f, 55.f }, "IMPOSTAZIONI", NULL);
-	m_GUIManager.add(0, button1);
-	m_GUIManager.add(1, button2);
+	m_GUIManager.add(RIMPIAZZA, button1);
+	m_GUIManager.add(IMPOSTAZIONI, button2);
 
 	sf::Font* font = new sf::Font();
 	font->loadFromFile("C:/Windows/Fonts/consola.ttf");
-	button1->setFont(*font);
-	button2->setFont(*font);
+
+	std::vector<Peach::Button*> buttons;
+
+	for (auto& [key, value] : m_GUIManager.getGUIObjects({ Peach::GUIType::Button }))
+	{
+		buttons.push_back(static_cast<Peach::Button*>(value.get()));
+	}
+
+	for (auto& button : buttons)
+	{
+		button->setFont(*font);
+		button->setPrimaryColor(sf::Color(230, 230, 230));
+		button->setSecondaryColor(sf::Color::Black);
+		button->setOutlineThickness(2.f);
+	}
 
 	button1->setLabelStyle(sf::Text::Bold);
 	button2->setLabelStyle(sf::Text::Italic);
 
 	button1->setPosition({ m_Data->window.getRenderer()->getSize().x / 2.f - button1->getSize().x / 2.f, 100 });
-	button2->setPosition({ m_Data->window.getRenderer()->getSize().x / 2.f - button2->getSize().x / 2.f, 160 });
-
-	button1->setFillColor(sf::Color(230, 230, 230));
-	button2->setFillColor(sf::Color(230, 230, 230));
-
-	button1->setSecondaryColor(sf::Color::Black);
-	button2->setSecondaryColor(sf::Color::Black);
-
-	button1->setOutlineThickness(1.f);
-	button2->setOutlineThickness(1.f);
+	button2->setPosition({ m_Data->window.getRenderer()->getSize().x / 2.f - button2->getSize().x / 2.f, 165 });
 }
 
 DemoState::~DemoState()
@@ -72,13 +76,19 @@ void DemoState::onUpdate()
 	cursor.loadFromSystem(m_GUIManager.getCursor());
 	m_Data->window.setMouseCursor(cursor);
 
-	switch (m_GUIManager.getPressed())
+	m_GUIManager.update();
+
+	for (uint32_t pressed; m_GUIManager.pollPressed(pressed);)
 	{
-	case 0:
-		m_Data->machine.addState(Peach::IStateRef(new DemoState(m_Data)), true);
-		break;
-	case 1:
-		break;
+		switch (pressed)
+		{
+		case RIMPIAZZA:
+			m_Data->machine.addState(Peach::IStateRef(new DemoState(m_Data)), true);
+			break;
+		case IMPOSTAZIONI:
+			PEACH_INFO("CIAO SONO IMPOSTAZIONI");
+			break;
+		}
 	}
 }
 
@@ -88,7 +98,6 @@ void DemoState::onRender()
 
 	m_Data->window.getRenderer()->clear(sf::Color::White);
 
-	// m_Data->window.getRenderer()->draw(m_Circle);
 	m_GUIManager.render(m_Data->window.getRenderer());
 
 	m_Data->window.display();

@@ -14,21 +14,19 @@ namespace Peach
 		PEACH_CORE_TRACE("GUIObject distrutto");
 	}
 
-	void GUIObject::invertColor()
+	void GUIObject::setPosition(sf::Vector2f& position)
 	{
-		sf::Color color = getFillColor();
-		setFillColor(getSecondaryColor());
-		setSecondaryColor(color);
+		m_Shape->setPosition(position);
 	}
 
-	void GUIObject::setFillColor(const sf::Color& color)
+	void GUIObject::setPrimaryColor(const sf::Color& color)
 	{
-		m_Shape->setFillColor(color);
+		m_PrimaryColor = color;
 	}
 
 	void GUIObject::setSecondaryColor(const sf::Color& color)
 	{
-		m_Shape->setOutlineColor(color);
+		m_SecondaryColor = color;
 	}
 
 	void GUIObject::setOutlineThickness(const float& thickness)
@@ -41,19 +39,14 @@ namespace Peach
 		m_Shape->setTexture(texture);
 	}
 
-	void GUIObject::setPosition(sf::Vector2f& position)
+	const sf::Color& GUIObject::getPrimaryColor() const
 	{
-		m_Shape->setPosition(position);
-	}
-
-	const sf::Color& GUIObject::getFillColor() const
-	{
-		return m_Shape->getFillColor();
+		return m_PrimaryColor;
 	}
 
 	const sf::Color& GUIObject::getSecondaryColor() const
 	{
-		return m_Shape->getOutlineColor();
+		return m_SecondaryColor;
 	}
 
 	const sf::Vector2f& GUIObject::getPosition() const

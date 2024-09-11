@@ -3,7 +3,10 @@
 
 namespace Peach
 {
+	PEACH_API sf::Vector2i GUIManager::m_MousePosition;
+
 	GUIManager::GUIManager()
+		: m_Pressed(-1)
 	{
 		PEACH_CORE_TRACE("GUIManager creato");
 	}
@@ -25,27 +28,55 @@ namespace Peach
 
 	sf::Cursor::Type GUIManager::getCursor() const
 	{
-		for (const auto& [key, value] : m_CursorOn)
+		for (const auto& [key, value] : m_Objects)
 		{
-			if (value)
+			switch (value->getType())
 			{
-				return sf::Cursor::Hand;
+			case GUIType::Button:
+				if (static_cast<Button*>(value.get())->getState() == Button::State::HOVER)
+				{
+					return sf::Cursor::Hand;
+				}
+				break;
 			}
 		}
 
 		return sf::Cursor::Arrow;
 	}
 
-	uint32_t GUIManager::getPressed()
+	GUIObjectMap GUIManager::getGUIObjects(const std::vector<GUIType>& types)
 	{
-		if (m_Pressed.empty())
+		if (types.empty())
 		{
-			return -1;
+			return m_Objects;
 		}
 
-		uint32_t pressed = m_Pressed.top();
-		m_Pressed.pop();
-		return pressed;
+		GUIObjectMap objects;
+		for (const auto& type : types)
+		{
+			for (auto& [key, value] : m_Objects)
+			{
+				if (value->getType() == type)
+				{
+					objects[key] = value;
+				}
+			}
+		}
+
+		return objects;
+	}
+
+	bool GUIManager::pollPressed(uint32_t& pressed)
+	{
+		if (m_Pressed == -1)
+		{
+			return false;
+		}
+
+		pressed = m_Pressed;
+		m_Pressed = -1;
+
+		return true;
 	}
 
 	void GUIManager::handleEvent(const sf::Event& event)
@@ -53,48 +84,58 @@ namespace Peach
 		switch (event.type)
 		{
 		case sf::Event::MouseMoved:
+			m_MousePosition = { event.mouseMove.x, event.mouseMove.y };
 			for (auto& [key, value] : m_Objects)
 			{
-				if (value->isCursorOn({ event.mouseMove.x, event.mouseMove.y }))
+				switch (value->getType())
 				{
-					if (!m_CursorOn[key])
+				case GUIType::Button:
+				{
+					Button* button = static_cast<Button*>(value.get());
+					if (button->isCursorOn(m_MousePosition))
 					{
-						value->invertColor();
-
-						m_CursorOn[key] = true;
+						button->setState(Button::State::HOVER);
+					}
+					else
+					{
+						button->setState(Button::State::IDLE);
 					}
 				}
-				else if (m_CursorOn[key])
-				{
-					value->invertColor();
-
-					m_CursorOn[key] = false;
+				break;
 				}
 			}
 			break;
 		case sf::Event::MouseButtonPressed:
-			if (event.mouseButton.button != sf::Mouse::Button::Left)
+			if (event.mouseButton.button == sf::Mouse::Button::Left)
 			{
-				break;
-			}
-
-			for (const auto& [key, value] : m_CursorOn)
-			{
-				if (value)
+				auto buttons = getGUIObjects({ GUIType::Button });
+				for (const auto& [key, value] : buttons)
 				{
-					PEACH_CORE_INFO("Premuto GUIObject \"{}\"", key);
-					m_Pressed.push(key);
+					Button* button = static_cast<Button*>(value.get());
+					if (button->isCursorOn(m_MousePosition))
+					{
+						m_Pressed = key;
+						button->setState(Button::State::PRESSED);
+
+						PEACH_CORE_INFO("Premuto pulsante ({}, \"{}\")", key, button->getLabel().toAnsiString());
+					}
 				}
 			}
 			break;
-		default:
-			break;
+		}
+	}
+
+	void GUIManager::update()
+	{
+		for (auto& [key, value] : m_Objects)
+		{
+			value->update();
 		}
 	}
 
 	void GUIManager::render(sf::RenderTarget* target) const
 	{
-		for (auto& [key, value] : m_Objects)
+		for (const auto& [key, value] : m_Objects)
 		{
 			value->render(target);
 		}

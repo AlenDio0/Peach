@@ -9,23 +9,37 @@ namespace Peach
 	class PEACH_API Button : public GUIObject
 	{
 	public:
+		enum class State
+		{
+			IDLE = 0,
+			HOVER,
+			PRESSED
+		};
+	public:
 		Button(const sf::Vector2f& size, const sf::String& label, const sf::Font* font);
-		virtual ~Button() = default;
+		~Button() = default;
 
-		virtual void setSecondaryColor(const sf::Color& color) override;
-		virtual void setPosition(const sf::Vector2f& position);
-		virtual void setSize(const sf::Vector2f& size);
+		void setState(const Button::State& state);
+		void setPosition(const sf::Vector2f& position);
+		void setSize(const sf::Vector2f& size);
 		void setLabel(const sf::String& label);
 		void setCharSize(const sf::Uint32& size);
 		void setFont(const sf::Font& font);
 		void setLabelStyle(const sf::Text::Style& style);
 
+		const Button::State& getState() const;
 		const sf::Vector2f& getSize() const;
 		const sf::String& getLabel() const;
 
-		virtual void render(sf::RenderTarget* target) const;
+		static GUIType getStaticType();
+		GUIType getType() const;
+
+		void update();
+		void render(sf::RenderTarget* target) const;
 	protected:
 		sf::RectangleShape m_Container;
 		sf::Text m_TextLabel;
+
+		State m_State;
 	};
 }

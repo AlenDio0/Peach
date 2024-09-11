@@ -14,4 +14,9 @@ public:
 	void onRender() override;
 private:
 	Peach::GUIManager m_GUIManager;
+	enum
+	{
+		RIMPIAZZA = 0,
+		IMPOSTAZIONI
+	};
 };
