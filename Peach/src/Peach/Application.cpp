@@ -4,6 +4,7 @@
 namespace Peach
 {
 	Application::Application()
+		: m_Data(new Data())
 	{
 		PEACH_CORE_INFO("Applicazione inizializzata");
 	}
