@@ -3,7 +3,6 @@
 #include "Peach/Core.h"
 
 #include "GUIObject.h"
-#include "Button.h"
 
 namespace Peach
 {

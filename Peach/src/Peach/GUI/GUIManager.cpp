@@ -1,6 +1,8 @@
 #include "peachpch.h"
 #include "GUIManager.h"
 
+#include "Button.h"
+
 namespace Peach
 {
 	PEACH_API sf::Vector2i GUIManager::m_MousePosition;
@@ -30,14 +32,9 @@ namespace Peach
 	{
 		for (const auto& [key, value] : m_Objects)
 		{
-			switch (value->getType())
+			if (value->isCursorOn(m_MousePosition))
 			{
-			case GUIType::Button:
-				if (static_cast<Button*>(value.get())->getState() == Button::State::HOVER)
-				{
-					return sf::Cursor::Hand;
-				}
-				break;
+				return sf::Cursor::Hand;
 			}
 		}
 
@@ -108,16 +105,23 @@ namespace Peach
 		case sf::Event::MouseButtonPressed:
 			if (event.mouseButton.button == sf::Mouse::Button::Left)
 			{
-				auto buttons = getGUIObjects({ GUIType::Button });
-				for (const auto& [key, value] : buttons)
+				for (const auto& [key, value] : m_Objects)
 				{
-					Button* button = static_cast<Button*>(value.get());
-					if (button->isCursorOn(m_MousePosition))
+					if (value->isCursorOn(m_MousePosition))
 					{
-						m_Pressed = key;
-						button->setState(Button::State::PRESSED);
+						switch (value->getType())
+						{
+						case GUIType::Button:
+						{
+							Button* button = static_cast<Button*>(value.get());
 
-						PEACH_CORE_INFO("Premuto pulsante ({}, \"{}\")", key, button->getLabel().toAnsiString());
+							m_Pressed = key;
+							button->setState(Button::State::PRESSED);
+
+							PEACH_CORE_TRACE("Premuto pulsante ({}, \"{}\")", key, button->getLabel().toAnsiString());
+						}
+						break;
+						}
 					}
 				}
 			}

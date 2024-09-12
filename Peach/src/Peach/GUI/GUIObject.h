@@ -20,7 +20,7 @@ namespace Peach
 		virtual ~GUIObject();
 
 		virtual void setSize(const sf::Vector2f& size) = 0;
-		virtual void setPosition(sf::Vector2f& position);
+		virtual void setPosition(const sf::Vector2f& position);
 		void setPrimaryColor(const sf::Color& color);
 		void setSecondaryColor(const sf::Color& color);
 		void setOutlineThickness(const float& thickness);

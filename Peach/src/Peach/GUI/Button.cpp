@@ -90,11 +90,21 @@ namespace Peach
 		switch (m_State)
 		{
 		case State::IDLE:
+			if (m_Container.getOutlineColor() == m_SecondaryColor)
+			{
+				break;
+			}
+
 			m_Container.setFillColor(m_PrimaryColor);
 			m_Container.setOutlineColor(m_SecondaryColor);
 			m_TextLabel.setFillColor(m_SecondaryColor);
 			break;
 		case State::HOVER:
+			if (m_TextLabel.getFillColor() == m_PrimaryColor)
+			{
+				break;
+			}
+
 			m_Container.setFillColor(m_SecondaryColor);
 			m_Container.setOutlineColor(m_PrimaryColor);
 			m_TextLabel.setFillColor(m_PrimaryColor);

@@ -14,7 +14,7 @@ namespace Peach
 		PEACH_CORE_TRACE("GUIObject distrutto");
 	}
 
-	void GUIObject::setPosition(sf::Vector2f& position)
+	void GUIObject::setPosition(const sf::Vector2f& position)
 	{
 		m_Shape->setPosition(position);
 	}
