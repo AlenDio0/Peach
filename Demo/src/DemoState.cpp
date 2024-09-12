@@ -2,6 +2,7 @@
 
 #include <Peach/Log.h>
 #include <Peach/GUI/Button.h>
+#include <Peach/GUI/Checkbox.h>
 
 DemoState::DemoState(Peach::DataRef data)
 	: State(data, "Demo")
@@ -11,8 +12,7 @@ DemoState::DemoState(Peach::DataRef data)
 	m_GUIManager.add(RIMPIAZZA, button1);
 	m_GUIManager.add(IMPOSTAZIONI, button2);
 
-	sf::Font* font = new sf::Font();
-	font->loadFromFile("C:/Windows/Fonts/consola.ttf");
+	m_Font.loadFromFile("C:/Windows/Fonts/consola.ttf");
 
 	std::vector<Peach::Button*> buttons;
 
@@ -23,7 +23,7 @@ DemoState::DemoState(Peach::DataRef data)
 
 	for (auto& button : buttons)
 	{
-		button->setFont(*font);
+		button->setFont(m_Font);
 		button->setPrimaryColor(sf::Color(230, 230, 230));
 		button->setSecondaryColor(sf::Color::Black);
 		button->setOutlineThickness(2.f);
@@ -34,6 +34,17 @@ DemoState::DemoState(Peach::DataRef data)
 
 	button1->setPosition({ m_Data->window.getRenderer()->getSize().x / 2.f - button1->getSize().x / 2.f, 100 });
 	button2->setPosition({ m_Data->window.getRenderer()->getSize().x / 2.f - button2->getSize().x / 2.f, 165 });
+
+	Peach::Checkbox* box1 = new Peach::Checkbox({ 32.f, 32.f });
+	m_GUIManager.add(BOX, box1);
+
+	m_Texture.loadFromFile("check.png");
+	box1->setCheckTexture(m_Texture);
+
+	box1->setPrimaryColor(sf::Color(230, 230, 230));
+	box1->setSecondaryColor(sf::Color::Black);
+	box1->setOutlineThickness(3.f);
+	box1->setPosition({ 150.f, 40.f });
 }
 
 DemoState::~DemoState()
@@ -88,6 +99,12 @@ void DemoState::onUpdate()
 		case IMPOSTAZIONI:
 			PEACH_INFO("CIAO SONO IMPOSTAZIONI");
 			break;
+		case BOX:
+		{
+			Peach::Checkbox* box = static_cast<Peach::Checkbox*>(m_GUIManager[BOX].get());
+			PEACH_INFO("CIAO SONO BOX E MI HAI {}", box->getActive() ? "ATTIVATO" : "DISATTIVATO");
+		}
+		break;
 		}
 	}
 }

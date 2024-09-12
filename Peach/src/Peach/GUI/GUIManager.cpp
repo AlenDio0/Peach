@@ -2,6 +2,7 @@
 #include "GUIManager.h"
 
 #include "Button.h"
+#include "Checkbox.h"
 
 namespace Peach
 {
@@ -119,6 +120,16 @@ namespace Peach
 							button->setState(Button::State::PRESSED);
 
 							PEACH_CORE_TRACE("Premuto pulsante ({}, \"{}\")", key, button->getLabel().toAnsiString());
+						}
+						break;
+						case GUIType::Checkbox:
+						{
+							Checkbox* checkbox = static_cast<Checkbox*>(value.get());
+
+							m_Pressed = key;
+							checkbox->setActive(!checkbox->getActive());
+
+							PEACH_CORE_TRACE("Premuto checkbox ({}, \"{}\")", key, checkbox->getActive() ? "ATTIVATO" : "DISATTIVATO");
 						}
 						break;
 						}

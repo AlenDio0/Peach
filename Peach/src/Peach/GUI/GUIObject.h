@@ -10,7 +10,8 @@ namespace Peach
 	enum class GUIType
 	{
 		None = 0,
-		Button
+		Button,
+		Checkbox
 	};
 
 	class PEACH_API GUIObject

@@ -17,6 +17,10 @@ private:
 	enum
 	{
 		RIMPIAZZA = 0,
-		IMPOSTAZIONI
+		IMPOSTAZIONI,
+		BOX
 	};
+
+	sf::Font m_Font;
+	sf::Texture m_Texture;
 };
