@@ -2,6 +2,7 @@
 #include <Peach/Data.h>
 #include <Peach/State.h>
 #include <Peach/GUI/GUIManager.h>
+#include <Peach/Assets/AssetManager.h>
 
 class DemoState : public Peach::State
 {
@@ -21,6 +22,13 @@ private:
 		BOX
 	};
 
-	sf::Font m_Font;
-	sf::Texture m_Texture;
+	Peach::AssetManager m_Assets;
+	enum
+	{
+		CHECK = 0,
+		CONSOLA,
+		SUONO
+	};
+
+	sf::Sound m_Sound;
 };
