@@ -6,7 +6,7 @@
 
 namespace Peach
 {
-	typedef std::shared_ptr<GUIObject> GUIObjectRef;
+	using GUIObjectRef = std::shared_ptr<GUIObject>;
 	using GUIObjectMap = std::unordered_map<uint32_t, GUIObjectRef>;
 
 	class PEACH_API GUIManager

@@ -25,5 +25,5 @@ namespace Peach
 		StateMachine machine;
 	};
 
-	typedef Data* DataRef;
+	using DataRef = Data*;
 }

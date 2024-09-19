@@ -6,7 +6,7 @@
 
 namespace Peach
 {
-	typedef std::shared_ptr<Asset> AssetRef;
+	using AssetRef = std::shared_ptr<Asset>;
 	using AssetMap = std::unordered_map<uint32_t, AssetRef>;
 
 	class AssetManager

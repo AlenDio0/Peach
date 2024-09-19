@@ -9,7 +9,8 @@
 
 namespace Peach
 {
-	typedef std::shared_ptr<IState> IStateRef;
+	using IStateRef = std::shared_ptr<IState>;
+	using IStateStack = std::stack<IStateRef>;
 
 	class PEACH_API StateMachine
 	{
@@ -24,7 +25,7 @@ namespace Peach
 		void addState(IStateRef newState, bool isReplacing);
 		void removeState();
 	private:
-		std::stack<IStateRef> m_States;
+		IStateStack m_States;
 		IStateRef m_NewState;
 
 		bool m_IsAdding;
