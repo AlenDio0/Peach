@@ -25,7 +25,7 @@ namespace Peach
 			PEACH_CORE_FATAL("StateMachine::getCurrentState() [Stato attuale nullo]");
 		}
 
-		return IStateRef(m_States.top());
+		return static_cast<IStateRef>(m_States.top());
 	}
 
 	void StateMachine::update()
