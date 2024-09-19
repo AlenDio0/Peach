@@ -1,7 +1,5 @@
 #pragma once
 
-#if 1
-
 #ifdef PEACH_PLATFORM_WINDOWS
 #ifdef PEACH_BUILD_DLL
 #define PEACH_API __declspec(dllexport)
@@ -10,12 +8,6 @@
 #endif
 #else
 #error Peach only supports Windows
-#endif
-
-#else
-
-#define PEACH_API 
-
 #endif
 
 #define PEACH_ASSERT(x, ...) { if (!(x)) { PEACH_CORE_ERROR("Asserzione fallita: {}", __VA_ARGS__); } }
