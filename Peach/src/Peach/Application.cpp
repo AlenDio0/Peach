@@ -6,7 +6,7 @@ namespace Peach
 	Application::Application()
 		: m_Data(new Data())
 	{
-		PEACH_CORE_INFO("Applicazione inizializzata");
+		PEACH_CORE_INFO("Applicazione costruita");
 	}
 
 	Application::~Application()
@@ -41,7 +41,7 @@ namespace Peach
 			m_Data->machine.update();
 			if (!m_Data->machine.getCurrentState())
 			{
-				PEACH_CORE_FATAL("Non c'e' nessuno stato da far partire");
+				PEACH_CORE_FATAL("Application::run(), Impossibile continuare l'applicazione, State attuale nullo");
 				return;
 			}
 
@@ -60,6 +60,6 @@ namespace Peach
 			}
 		} while (m_Data->window.isRunning());
 
-		PEACH_CORE_INFO("Applicazione chiusa nello stato \"{}\"", m_Data->machine.getCurrentState()->getName());
+		PEACH_CORE_INFO("Application::run(), Applicazione chiusa nello State \"{}\"", m_Data->machine.getCurrentState()->getName());
 	}
 }

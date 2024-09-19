@@ -11,7 +11,7 @@ namespace Peach
 	GUIManager::GUIManager()
 		: m_Pressed(-1)
 	{
-		PEACH_CORE_TRACE("GUIManager creato");
+		PEACH_CORE_TRACE("GUIManager costruito");
 	}
 
 	GUIManager::~GUIManager()
@@ -26,6 +26,7 @@ namespace Peach
 
 	void GUIManager::add(const uint32_t& key, GUIObject* value)
 	{
+		PEACH_CORE_TRACE("GUIManager::add(key: {}, object: {})", key, value ? "EXISTS" : "NULL");
 		m_Objects[key] = GUIObjectRef(value);
 	}
 
@@ -119,7 +120,7 @@ namespace Peach
 							m_Pressed = key;
 							button->setState(Button::State::PRESSED);
 
-							PEACH_CORE_TRACE("Premuto pulsante ({}, \"{}\")", key, button->getLabel().toAnsiString());
+							PEACH_CORE_TRACE("GUIManager::handleEvent(...), Premuto pulsante ({}, \"{}\")", key, button->getLabel().toAnsiString());
 						}
 						break;
 						case GUIType::Checkbox:
@@ -129,7 +130,7 @@ namespace Peach
 							m_Pressed = key;
 							checkbox->setActive(!checkbox->getActive());
 
-							PEACH_CORE_TRACE("Premuto checkbox ({}, \"{}\")", key, checkbox->getActive() ? "ATTIVATO" : "DISATTIVATO");
+							PEACH_CORE_TRACE("GUIManager::handleEvent(...), Premuto checkbox ({}, \"{}\")", key, checkbox->getActive() ? "ATTIVATO" : "DISATTIVATO");
 						}
 						break;
 						}

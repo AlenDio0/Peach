@@ -6,7 +6,7 @@ namespace Peach
 	GUIObject::GUIObject(sf::Shape& container)
 		: m_Shape(&container)
 	{
-		PEACH_CORE_TRACE("GUIObject creato");
+		PEACH_CORE_TRACE("GUIObject costruito");
 	}
 
 	GUIObject::~GUIObject()

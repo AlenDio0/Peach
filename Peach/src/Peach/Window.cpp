@@ -6,7 +6,7 @@ namespace Peach
 	Window::Window()
 		: m_Window(new sf::RenderWindow())
 	{
-		PEACH_CORE_INFO("Window inizializzato");
+		PEACH_CORE_INFO("Window costruito");
 	}
 
 	Window::~Window()
@@ -20,17 +20,17 @@ namespace Peach
 	{
 		m_Window->create(sf::VideoMode(size.x, size.y), title);
 
-		PEACH_CORE_INFO("Window creata: {} ({}, {})", title.toAnsiString(), size.x, size.y);
+		PEACH_CORE_INFO("Window::create(title: {}, size: {} {})", title.toAnsiString(), size.x, size.y);
 
 		m_Title = title;
 		m_OriginalSize = size;
 
-		PEACH_RETURN_ASSERT(m_Window, "Window è nullo");
+		PEACH_RETURN_ASSERT(m_Window, "Window::create(...), Window e' nullo");
 	}
 
 	void Window::close()
 	{
-		PEACH_CORE_INFO("Window e' in fase di chiusura");
+		PEACH_CORE_INFO("Window::close(), Window e' in fase di chiusura");
 
 		m_Window->close();
 	}

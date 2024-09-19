@@ -25,15 +25,16 @@ namespace Peach
 		template<typename T>
 		void loadAsset(const uint32_t& key, const std::string& path, bool force = true)
 		{
+			PEACH_CORE_TRACE("AssetManager::loadAsset(key: {}, path: {}, force: {})", key, path, force);
 			if (m_Assets[key])
 			{
 				if (force)
 				{
-					PEACH_CORE_WARN("AssetManager::loadAsset(key: {}, path: {}) Verra' sostituito un Asset che si trova nella stessa posizione", key, path);
+					PEACH_CORE_WARN("AssetManager::loadAsset(key: {}, path: {}), Verra' rimpiazzato l'Asset precedente", key, path);
 				}
 				else
 				{
-					PEACH_CORE_WARN("AssetManager::loadAsset(key: {}, path: {}) Impossible caricare Asset (sostituzione non forzata)", key, path);
+					PEACH_CORE_WARN("AssetManager::loadAsset(key: {}, path: {}), Impossibile caricare Asset, rimpiazzo non forzato", key, path);
 					return;
 				}
 			}
@@ -56,11 +57,11 @@ namespace Peach
 
 			if (m_Assets[key]->load(path))
 			{
-				PEACH_CORE_TRACE("AssetManager::loadAsset(key: {}, path: {}) Caricamento riuscito", key, path);
+				PEACH_CORE_INFO("AssetManager::loadAsset(key: {}, path: {}), Caricato Asset con successo", key, path);
 			}
 			else
 			{
-				PEACH_CORE_ERROR("AssetManager::loadAsset(key: {}, path: {}) Caricamento non riuscito", key, path);
+				PEACH_CORE_ERROR("AssetManager::loadAsset(key: {}, path: {}), Caricamento Asset fallito", key, path);
 			}
 		}
 
