@@ -14,18 +14,20 @@ namespace Peach
 		PEACH_CORE_TRACE("StateMachine distrutto");
 	}
 
-	IStateRef& StateMachine::getCurrentState() const
+	IStateRef StateMachine::getCurrentState() const
 	{
 		if (m_States.empty())
 		{
-			PEACH_CORE_FATAL("StateMachine::getCurrentState(), StateStack e' vuoto");
+			PEACH_CORE_ERROR("StateMachine::getCurrentState(), StateStack e' vuoto");
+			return NULL;
 		}
 		else if (!m_States.top())
 		{
-			PEACH_CORE_FATAL("StateMachine::getCurrentState(), State attuale e' nullo");
+			PEACH_CORE_ERROR("StateMachine::getCurrentState(), State attuale e' nullo");
+			return NULL;
 		}
 
-		return static_cast<IStateRef>(m_States.top());
+		return m_States.top();
 	}
 
 	void StateMachine::update()

@@ -18,7 +18,7 @@ namespace Peach
 		StateMachine();
 		~StateMachine();
 
-		IStateRef& getCurrentState() const;
+		IStateRef getCurrentState() const;
 
 		void update();
 
