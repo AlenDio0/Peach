@@ -18,32 +18,20 @@ namespace Peach
 	class Asset
 	{
 	public:
-		Asset(const std::string& path)
-		{
-			m_Path = path;
-		}
+		virtual bool load(const std::string& path) = 0;
 
 		virtual AssetType getType() const
 		{
 			return AssetType::None;
 		}
-
-		const std::string& getPath() const
-		{
-			return m_Path;
-		}
-
-	private:
-		std::string m_Path;
 	};
 
 	class Texture : public sf::Texture, public Asset
 	{
 	public:
-		Texture(const std::string& path)
-			: Asset(path)
+		virtual bool load(const std::string& path)
 		{
-			loadFromFile(path);
+			return loadFromFile(path);
 		}
 
 		static AssetType getStaticType()
@@ -60,10 +48,9 @@ namespace Peach
 	class Font : public sf::Font, public Asset
 	{
 	public:
-		Font(const std::string& path)
-			: Asset(path)
+		virtual bool load(const std::string& path)
 		{
-			loadFromFile(path);
+			return loadFromFile(path);
 		}
 
 		static AssetType getStaticType()
@@ -80,10 +67,9 @@ namespace Peach
 	class Sound : public sf::SoundBuffer, public Asset
 	{
 	public:
-		Sound(const std::string& path)
-			: Asset(path)
+		virtual bool load(const std::string& path)
 		{
-			loadFromFile(path);
+			return loadFromFile(path);
 		}
 
 		static AssetType getStaticType()

@@ -7,9 +7,9 @@
 DemoState::DemoState(Peach::DataRef data)
 	: State(data, "Demo")
 {
-	m_Assets.loadAsset<Peach::Texture>(CHECK, "check.png");
-	m_Assets.loadAsset<Peach::Font>(CONSOLA, "C:/Windows/Fonts/consola.ttf");
-	m_Assets.loadAsset<Peach::Sound>(SUONO, "sound.mp3");
+	m_Assets.loadAsset<Peach::Texture>(CHECK, "assets/check.png");
+	m_Assets.loadAsset<Peach::Font>(CONSOLA, "assets/consola.ttf");
+	m_Assets.loadAsset<Peach::Sound>(SUONO, "assets/sound.mp3");
 
 	Peach::Button* button1 = new Peach::Button({ 225.f, 55.f }, "RIMPIAZZA", NULL);
 	Peach::Button* button2 = new Peach::Button({ 225.f, 55.f }, "IMPOSTAZIONI", NULL);

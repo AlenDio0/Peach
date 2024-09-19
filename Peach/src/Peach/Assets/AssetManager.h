@@ -23,38 +23,45 @@ namespace Peach
 		}
 
 		template<typename T>
-		void loadAsset(const uint32_t& key, const std::string& path)
+		void loadAsset(const uint32_t& key, const std::string& path, bool force = true)
 		{
 			if (m_Assets[key])
 			{
-				if (m_Assets[key]->getPath() == path)
+				if (force)
 				{
-					PEACH_CORE_INFO("AssetManager::loadAsset(key: {}, path: {}) non sostituira' l'Asset (path uguale)", key, path);
-					return;
+					PEACH_CORE_WARN("AssetManager::loadAsset(key: {}, path: {}) Verra' sostituito un Asset che si trova nella stessa posizione", key, path);
 				}
 				else
 				{
-					PEACH_CORE_WARN("AssetManager::loadAsset(key: {}, path: {}) sostituira' l'Asset \"{}\"", key, path, m_Assets[key]->getPath());
+					PEACH_CORE_WARN("AssetManager::loadAsset(key: {}, path: {}) Impossible caricare Asset (sostituzione non forzata)", key, path);
+					return;
 				}
 			}
 
 			switch (T::getStaticType())
 			{
 			case AssetType::Texture:
-				m_Assets[key] = AssetRef(new Texture(path));
+				m_Assets[key] = AssetRef(new Texture());
 				break;
 			case AssetType::Font:
-				m_Assets[key] = AssetRef(new Font(path));
+				m_Assets[key] = AssetRef(new Font());
 				break;
 			case AssetType::Sound:
-				m_Assets[key] = AssetRef(new Sound(path));
+				m_Assets[key] = AssetRef(new Sound());
 				break;
 			default:
-				PEACH_CORE_ERROR("AssetManager::loadAsset(key: {}, path: {}) c'e' stato un erorre nel caricamento", key, path);
+				throw "Inserita classe Asset non valida";
 				return;
 			}
 
-			PEACH_CORE_TRACE("AssetManager::loadAsset(key: {}, path: {}) caricato correttamente", key, path);
+			if (m_Assets[key]->load(path))
+			{
+				PEACH_CORE_TRACE("AssetManager::loadAsset(key: {}, path: {}) Caricamento riuscito", key, path);
+			}
+			else
+			{
+				PEACH_CORE_ERROR("AssetManager::loadAsset(key: {}, path: {}) Caricamento non riuscito", key, path);
+			}
 		}
 
 		template<typename T>
