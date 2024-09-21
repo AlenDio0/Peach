@@ -7,10 +7,6 @@
 DemoState::DemoState(Peach::DataRef data)
 	: State(data, "Demo")
 {
-	m_Assets.loadAsset<Peach::Texture>(CHECK, "assets/check.png");
-	m_Assets.loadAsset<Peach::Font>(CONSOLA, "assets/consola.ttf");
-	m_Assets.loadAsset<Peach::Sound>(SUONO, "assets/sound.mp3");
-
 	Peach::Button* button1 = new Peach::Button({ 225.f, 55.f }, "RIMPIAZZA", NULL);
 	Peach::Button* button2 = new Peach::Button({ 225.f, 55.f }, "IMPOSTAZIONI", NULL);
 	m_GUIManager.add(RIMPIAZZA, button1);
@@ -25,7 +21,7 @@ DemoState::DemoState(Peach::DataRef data)
 
 	for (auto& button : buttons)
 	{
-		button->setFont(*m_Assets.getAsset<Peach::Font>(CONSOLA));
+		button->setFont(m_Data->assets.getAsset<Peach::Font>("FONT_CONSOLA"));
 		button->setPrimaryColor(sf::Color(230, 230, 230));
 		button->setSecondaryColor(sf::Color::Black);
 		button->setOutlineThickness(2.f);
@@ -40,14 +36,14 @@ DemoState::DemoState(Peach::DataRef data)
 	Peach::Checkbox* box1 = new Peach::Checkbox({ 32.f, 32.f });
 	m_GUIManager.add(BOX, box1);
 
-	box1->setCheckTexture(*m_Assets.getAsset<Peach::Texture>(CHECK));
+	box1->setCheckTexture(m_Data->assets.getAsset<Peach::Texture>("TEXTURE_CHECK"));
 
 	box1->setPrimaryColor(sf::Color(230, 230, 230));
 	box1->setSecondaryColor(sf::Color::Black);
 	box1->setOutlineThickness(3.f);
 	box1->setPosition({ 150.f, 40.f });
 
-	m_Sound.setBuffer(*m_Assets.getAsset<Peach::Sound>(SUONO));
+	m_Sound.setBuffer(m_Data->assets.getAsset<Peach::Sound>("SOUND_GENERIC"));
 }
 
 DemoState::~DemoState()

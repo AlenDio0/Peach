@@ -7,7 +7,8 @@
 namespace Peach
 {
 	using AssetRef = std::shared_ptr<Asset>;
-	using AssetMap = std::unordered_map<uint32_t, AssetRef>;
+	using AssetKey = std::string;
+	using AssetMap = std::unordered_map<AssetKey, AssetRef>;
 
 	class AssetManager
 	{
@@ -23,7 +24,7 @@ namespace Peach
 		}
 
 		template<typename T>
-		void loadAsset(const uint32_t& key, const std::string& path, bool force = true)
+		void loadAsset(const AssetKey& key, const std::string& path, bool force = true)
 		{
 			PEACH_CORE_TRACE("AssetManager::loadAsset(key: {}, path: {}, force: {})", key, path, force);
 			if (m_Assets[key])
@@ -39,21 +40,12 @@ namespace Peach
 				}
 			}
 
-			switch (T::getStaticType())
+			if (T::getStaticType() == AssetType::None)
 			{
-			case AssetType::Texture:
-				m_Assets[key] = AssetRef(new Texture());
-				break;
-			case AssetType::Font:
-				m_Assets[key] = AssetRef(new Font());
-				break;
-			case AssetType::Sound:
-				m_Assets[key] = AssetRef(new Sound());
-				break;
-			default:
-				throw "Inserita classe Asset non valida";
-				return;
+				throw "AssetType non definito";
 			}
+
+			m_Assets[key] = static_cast<AssetRef>(new T());
 
 			if (m_Assets[key]->load(path))
 			{
@@ -66,9 +58,9 @@ namespace Peach
 		}
 
 		template<typename T>
-		T* getAsset(const uint32_t& key)
+		T& getAsset(const AssetKey& key)
 		{
-			return static_cast<T*>(m_Assets[key].get());
+			return *static_cast<T*>(m_Assets[key].get());
 		}
 	private:
 		AssetMap m_Assets;

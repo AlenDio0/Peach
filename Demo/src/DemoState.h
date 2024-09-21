@@ -22,13 +22,5 @@ private:
 		BOX
 	};
 
-	Peach::AssetManager m_Assets;
-	enum
-	{
-		CHECK = 0,
-		CONSOLA,
-		SUONO
-	};
-
 	sf::Sound m_Sound;
 };
