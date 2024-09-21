@@ -6,6 +6,7 @@
 
 #include "Window.h"
 #include "StateMachine.h"
+#include "Assets/AssetManager.h"
 
 namespace Peach
 {
@@ -23,6 +24,7 @@ namespace Peach
 
 		Window window;
 		StateMachine machine;
+		AssetManager assets;
 	};
 
 	using DataRef = Data*;
