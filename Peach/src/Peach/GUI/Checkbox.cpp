@@ -11,7 +11,7 @@ namespace Peach
 		setPosition({ 0, 0 });
 	}
 
-	void Checkbox::setActive(const bool& active)
+	void Checkbox::setActive(bool active)
 	{
 		m_Active = active;
 	}

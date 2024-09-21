@@ -16,7 +16,7 @@ namespace Peach
 		PEACH_CORE_INFO("Window distrutto");
 	}
 
-	const bool& Window::create(sf::String title, sf::Vector2u size)
+	bool Window::create(const sf::String& title, const sf::Vector2u& size)
 	{
 		m_Window->create(sf::VideoMode(size.x, size.y), title);
 
@@ -35,7 +35,7 @@ namespace Peach
 		m_Window->close();
 	}
 
-	const bool& Window::isRunning() const
+	bool Window::isRunning() const
 	{
 		return m_Window->isOpen() && m_Window;
 	}
@@ -55,7 +55,7 @@ namespace Peach
 		m_Window->setMouseCursor(cursor);
 	}
 
-	const bool& Window::pollEvent(sf::Event& event) const
+	bool Window::pollEvent(sf::Event& event) const
 	{
 		return m_Window->pollEvent(event);
 	}

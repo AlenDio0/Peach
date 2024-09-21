@@ -3,7 +3,7 @@
 
 namespace Peach
 {
-	State::State(DataRef state, std::string name)
+	State::State(DataRef state, const std::string& name)
 		: m_Data(state), m_DebugName(name)
 	{
 
@@ -25,7 +25,7 @@ namespace Peach
 		PEACH_CORE_TRACE("State \"{}\" in rimozione", m_DebugName);
 	}
 
-	std::string State::getName() const
+	const std::string& State::getName() const
 	{
 		return m_DebugName;
 	}

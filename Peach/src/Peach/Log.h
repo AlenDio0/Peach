@@ -11,7 +11,7 @@ namespace Peach
 	{
 	public:
 		static void init();
-		static void initFile(spdlog::filename_t filename, const size_t& maxsizemb, const size_t& maxfiles);
+		static void initFile(const spdlog::filename_t& filename, const size_t& maxsizemb, const size_t& maxfiles);
 
 		inline static std::shared_ptr<spdlog::logger>& getCoreLogger() { return s_CoreLogger; }
 		inline static std::shared_ptr<spdlog::logger>& getClientLogger() { return s_ClientLogger; }

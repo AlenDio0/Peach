@@ -12,7 +12,7 @@ namespace Peach
 		Checkbox(const sf::Vector2f& size);
 		~Checkbox() = default;
 
-		void setActive(const bool& active);
+		void setActive(bool active);
 		void setSize(const sf::Vector2f& size);
 		void setPosition(const sf::Vector2f& position);
 		void setCheckTexture(const sf::Texture& texture);

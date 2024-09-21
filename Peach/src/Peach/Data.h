@@ -9,7 +9,7 @@
 
 namespace Peach
 {
-	struct PEACH_API Data
+	struct Data
 	{
 		Data()
 		{

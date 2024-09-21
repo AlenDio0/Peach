@@ -22,7 +22,7 @@ namespace Peach
 		PEACH_CORE_INFO("Log inizializzati");
 	}
 
-	void Log::initFile(spdlog::filename_t filename, const size_t& maxsizemb, const size_t& maxfiles)
+	void Log::initFile(const spdlog::filename_t& filename, const size_t& maxsizemb, const size_t& maxfiles)
 	{
 		size_t maxsizebytes = maxsizemb * (1024 * 1024);
 

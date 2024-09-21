@@ -12,10 +12,10 @@ namespace Peach
 		Window();
 		~Window();
 
-		const bool& create(sf::String title, sf::Vector2u size);
+		bool create(const sf::String& title, const sf::Vector2u& size);
 		void close();
 
-		const bool& isRunning() const;
+		bool isRunning() const;
 
 		const sf::String& getTitle() const;
 		const sf::Vector2u getOriginalSize() const;
@@ -25,7 +25,7 @@ namespace Peach
 		sf::RenderTarget* getRenderer();
 		void display();
 
-		const bool& pollEvent(sf::Event& event) const;
+		bool pollEvent(sf::Event& event) const;
 	private:
 		sf::RenderWindow* m_Window;
 
