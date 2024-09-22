@@ -1,8 +1,8 @@
 # Directories
-bin/
-bin-int/
-.vs/
-logs/
+/bin/
+/bin-int/
+/.vs/
+/logs/
 
 # Visual Studio
 *.sln
