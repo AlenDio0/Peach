@@ -16,7 +16,7 @@ IncludeDirs =
 	"Peach/src",
 	"Peach/vendor/spdlog/include",
 	"Peach/vendor/SFML/include",
-	"Peach/vendor/mINI/include"
+	"Peach/vendor/mINI/src"
 }
 
 SFML_Links = {}

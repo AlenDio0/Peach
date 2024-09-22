@@ -1,0 +1,6 @@
+[submodule "Peach/vendor/spdlog"]
+	path = Peach/vendor/spdlog
+	url = https://github.com/gabime/spdlog
+[submodule "Peach/vendor/mINI"]
+	path = Peach/vendor/mINI
+	url = https://github.com/metayeti/mINI.git
