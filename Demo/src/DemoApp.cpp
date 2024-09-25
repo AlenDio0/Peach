@@ -7,7 +7,7 @@ public:
 public:
 	DemoApp()
 	{
-		m_Data->window.create("Titolo", { 500, 500 });
+		m_Data->window.create();
 
 		m_Data->assets.loadAsset<Peach::Texture>("TEXTURE_CHECK", "assets/check.png");
 		m_Data->assets.loadAsset<Peach::Font>("FONT_CONSOLA", "assets/consola.ttf");

@@ -16,17 +16,26 @@ namespace Peach
 		PEACH_CORE_INFO("Window distrutto");
 	}
 
-	bool Window::create(const sf::String& title, const sf::Vector2u& size)
+	bool Window::create()
 	{
-		m_Window->create(sf::VideoMode(size.x, size.y), title);
+		using WKey = WindowConfig::Key;
 
-		PEACH_CORE_INFO("Window::create(title: {}, size: {} {})", title.toAnsiString(), size.x, size.y);
+		std::string title = m_Config[WKey::TITLE];
+		uint32_t width = std::abs(stoi(m_Config[WKey::WIDTH]));
+		uint32_t height = std::abs(stoi(m_Config[WKey::HEIGHT]));
+		uint32_t style = stoi(m_Config[WKey::STYLE]);
+		bool vsync = stoi(m_Config[WKey::VSYNC]);
+		uint32_t fpslimit = std::abs(stoi(m_Config[WKey::FPSLIMIT]));
 
-		m_Title = title;
-		m_OriginalSize = size;
+		PEACH_CORE_INFO("Window::create(), [title: {}, size: {} {}, vsync: {}, fpslimit: {}]", title, width, height, vsync, fpslimit);
 
-		PEACH_RETURN_ASSERT(m_Window, "Window::create(...), Window e' nullo");
+		m_Window->create(sf::VideoMode(width, height), title, style);
+		m_Window->setVerticalSyncEnabled(vsync);
+		m_Window->setFramerateLimit(fpslimit);
+
+		PEACH_RETURN_ASSERT(m_Window, "Window::create(), Window e' nullo");
 	}
+
 
 	void Window::close()
 	{
@@ -40,14 +49,9 @@ namespace Peach
 		return m_Window->isOpen() && m_Window;
 	}
 
-	const sf::String& Window::getTitle() const
+	WindowConfig& Window::getConfig()
 	{
-		return m_Title;
-	}
-
-	const sf::Vector2u Window::getOriginalSize() const
-	{
-		return m_OriginalSize;
+		return m_Config;
 	}
 
 	void Window::setMouseCursor(const sf::Cursor& cursor)

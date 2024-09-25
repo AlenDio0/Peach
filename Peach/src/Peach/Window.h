@@ -2,6 +2,8 @@
 
 #include "Core.h"
 
+#include "Config/WindowConfig.h"
+
 #include <SFML/Graphics.hpp>
 
 namespace Peach
@@ -12,13 +14,12 @@ namespace Peach
 		Window();
 		~Window();
 
-		bool create(const sf::String& title, const sf::Vector2u& size);
+		bool create();
 		void close();
 
 		bool isRunning() const;
 
-		const sf::String& getTitle() const;
-		const sf::Vector2u getOriginalSize() const;
+		WindowConfig& getConfig();
 
 		void setMouseCursor(const sf::Cursor& cursor);
 
@@ -29,7 +30,6 @@ namespace Peach
 	private:
 		sf::RenderWindow* m_Window;
 
-		sf::String m_Title;
-		sf::Vector2u m_OriginalSize;
+		WindowConfig m_Config;
 	};
 }
