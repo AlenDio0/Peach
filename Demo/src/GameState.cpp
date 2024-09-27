@@ -1,8 +1,13 @@
 #include "GameState.h"
 
 GameState::GameState(Peach::DataRef data)
-	: Peach::State(data, "Game")
+	: Peach::State(data, "Game"), m_Map({ 100.f, 100.f })
 {
+	sf::Image image;
+	image.loadFromFile("assets/map.png");
+	m_Map.convertImageToMap(image);
+
+	m_Map.setTexture(&m_Data->assets.getAsset<Peach::Texture>("TEXTURE_TILES"));
 }
 
 GameState::~GameState()
@@ -39,6 +44,8 @@ void GameState::onRender()
 	m_Data->window.getRenderer()->setView(m_Data->window.getRenderer()->getView());
 
 	m_Data->window.getRenderer()->clear();
+
+	m_Map.render(m_Data->window.getRenderer());
 
 	m_Data->window.display();
 }
