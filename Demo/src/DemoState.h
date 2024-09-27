@@ -1,5 +1,4 @@
 #pragma once
-#include <Peach/Data.h>
 #include <Peach/State.h>
 #include <Peach/GUI/GUIManager.h>
 #include <Peach/Assets/AssetManager.h>
@@ -18,7 +17,7 @@ private:
 	enum
 	{
 		RIMPIAZZA = 0,
-		IMPOSTAZIONI,
+		GIOCA,
 		BOX
 	};
 

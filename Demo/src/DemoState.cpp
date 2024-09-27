@@ -4,13 +4,15 @@
 #include <Peach/GUI/Button.h>
 #include <Peach/GUI/Checkbox.h>
 
+#include "GameState.h"
+
 DemoState::DemoState(Peach::DataRef data)
 	: State(data, "Demo")
 {
 	Peach::Button* button1 = new Peach::Button({ 225.f, 55.f }, "RIMPIAZZA", NULL);
-	Peach::Button* button2 = new Peach::Button({ 225.f, 55.f }, "IMPOSTAZIONI", NULL);
+	Peach::Button* button2 = new Peach::Button({ 225.f, 55.f }, "GIOCA", NULL);
 	m_GUIManager.add(RIMPIAZZA, button1);
-	m_GUIManager.add(IMPOSTAZIONI, button2);
+	m_GUIManager.add(GIOCA, button2);
 
 	std::vector<Peach::Button*> buttons;
 
@@ -96,8 +98,8 @@ void DemoState::onUpdate()
 		case RIMPIAZZA:
 			m_Data->machine.addState(Peach::IStateRef(new DemoState(m_Data)), true);
 			break;
-		case IMPOSTAZIONI:
-			PEACH_INFO("CIAO SONO IMPOSTAZIONI");
+		case GIOCA:
+			m_Data->machine.addState(Peach::IStateRef(new GameState(m_Data)), false);
 			break;
 		case BOX:
 		{
