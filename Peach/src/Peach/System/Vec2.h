@@ -1,5 +1,8 @@
 #pragma once
 
+#include <SFML/System/Vector2.hpp>
+#include <spdlog/fmt/ostr.h>
+
 namespace Peach
 {
 	template<typename T>
@@ -66,7 +69,26 @@ namespace Peach
 		{
 			return x == r.x ? y < r.y : x < r.x;
 		}
+
+		void operator=(const sf::Vector2<T>& r)
+		{
+			x = r.x;
+			y = r.y;
+		}
+		operator sf::Vector2<T>() const
+		{
+			return sf::Vector2<T>(x, y);
+		}
 	};
+
+	template<typename T>
+	std::ostream& operator<<(std::ostream& os, const Vec2<T>& v)
+	{
+		return os << "[" << v.x << ", " << v.y << "]";
+	}
+
+	template<typename T>
+	struct fmt::formatter<Vec2<T>> : fmt::ostream_formatter {};
 
 	using Vec2i = Vec2<int>;
 	using Vec2u = Vec2<unsigned int>;
