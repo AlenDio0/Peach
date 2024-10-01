@@ -21,8 +21,8 @@ namespace Peach
 		}
 	}
 
-	void MapManager::render(sf::RenderTarget* target) const
+	void MapManager::render(sf::RenderTarget* target, const IntRect& view) const
 	{
-		m_TileMap.render(target);
+		m_TileMap.render(target, view);
 	}
 }

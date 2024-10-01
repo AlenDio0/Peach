@@ -70,6 +70,7 @@ public:
 private:
 	MapManager m_Map;
 
+	Peach::IntRect m_View;
 	// TODO: Add a player and boxes to collide
 };
 

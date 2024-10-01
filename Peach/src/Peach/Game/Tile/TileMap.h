@@ -2,27 +2,14 @@
 
 #include "Peach/Core.h"
 
+#include "Peach/System/Vec2.h"
+#include "Peach/System/Rect.h"
 #include "Tile.h"
 
 namespace Peach
 {
-	struct TilePos
-	{
-		TilePos(const uint32_t& x, const uint32_t& y)
-			: x(x), y(y)
-		{
-		}
-
-		uint32_t x, y;
-
-		bool operator<(const TilePos& right) const
-		{
-			return x == right.x ? y < right.y : x < right.x;
-		}
-	};
-
 	using TileRef = std::shared_ptr<Tile>;
-	using MapKey = TilePos;
+	using MapKey = Vec2u;
 	using Map = std::map<MapKey, TileRef>;
 
 	class PEACH_API TileMap
@@ -36,10 +23,10 @@ namespace Peach
 		const sf::Vector2f& getTileSize() const;
 		TileRef getTile(const MapKey& key);
 
-		void setSize(const sf::Vector2u& size);
-		void setTileSize(const sf::Vector2f& size);
+		void setSize(const sf::Vector2u& newsize);
+		void setTileSize(const sf::Vector2f& newsize);
 
-		void render(sf::RenderTarget* target) const;
+		void render(sf::RenderTarget* target, const IntRect& view = {}) const;
 	private:
 		Map m_TileMap;
 

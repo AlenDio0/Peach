@@ -21,7 +21,7 @@ namespace Peach
 
 		virtual void convertImageToMap(const sf::Image& image) = 0;
 
-		virtual void render(sf::RenderTarget* target) const;
+		virtual void render(sf::RenderTarget* target, const IntRect& view = {}) const;
 	protected:
 		TileMap m_TileMap;
 
