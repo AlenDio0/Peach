@@ -9,3 +9,6 @@ logs/
 *.vcxproj
 *.filters
 *.user
+
+# Visual Code
+.vscode/
