@@ -6,6 +6,8 @@
 #include "Peach/IState.h"
 #include "Peach/Log.h"
 
+#include "Peach/System.h"
+
 /* ---------- Entry Point ---------- */
 #include "Peach/EntryPoint.h"
 /* --------------------------------- */
