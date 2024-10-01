@@ -13,6 +13,8 @@ public:
 		m_Data->assets.loadAsset<Peach::Font>("FONT_CONSOLA", "assets/consola.ttf");
 		m_Data->assets.loadAsset<Peach::Sound>("SOUND_GENERIC", "assets/sound.mp3");
 
+		m_Data->assets.loadAsset<Peach::Texture>("TEXTURE_TILES", "assets/tiles.png");
+
 		addState(Peach::IStateRef(new DemoState(m_Data)), false);
 	}
 
