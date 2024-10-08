@@ -9,7 +9,6 @@ namespace Peach
 	PEACH_API sf::Vector2i GUIManager::m_MousePosition;
 
 	GUIManager::GUIManager()
-		: m_Pressed(-1)
 	{
 		PEACH_CORE_TRACE("GUIManager costruito");
 	}
@@ -65,19 +64,6 @@ namespace Peach
 		return objects;
 	}
 
-	bool GUIManager::pollPressed(uint32_t& pressed)
-	{
-		if (m_Pressed == -1)
-		{
-			return false;
-		}
-
-		pressed = m_Pressed;
-		m_Pressed = -1;
-
-		return true;
-	}
-
 	void GUIManager::handleEvent(const sf::Event& event)
 	{
 		switch (event.type)
@@ -111,13 +97,14 @@ namespace Peach
 				{
 					if (value->isCursorOn(m_MousePosition))
 					{
+						value->callback();
+
 						switch (value->getType())
 						{
 						case GUIType::Button:
 						{
 							Button* button = static_cast<Button*>(value.get());
 
-							m_Pressed = key;
 							button->setState(Button::State::PRESSED);
 
 							PEACH_CORE_TRACE("GUIManager::handleEvent(...), Premuto pulsante ({}, \"{}\")", key, button->getLabel().toAnsiString());
@@ -127,7 +114,6 @@ namespace Peach
 						{
 							Checkbox* checkbox = static_cast<Checkbox*>(value.get());
 
-							m_Pressed = key;
 							checkbox->setActive(!checkbox->getActive());
 
 							PEACH_CORE_TRACE("GUIManager::handleEvent(...), Premuto checkbox ({}, \"{}\")", key, checkbox->getActive() ? "ATTIVATO" : "DISATTIVATO");

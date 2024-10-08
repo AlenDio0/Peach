@@ -40,6 +40,8 @@ namespace Peach
 		sf::RectangleShape m_Container;
 		sf::Text m_TextLabel;
 
+		std::function<void()> m_Callback;
+
 		State m_State;
 	};
 }

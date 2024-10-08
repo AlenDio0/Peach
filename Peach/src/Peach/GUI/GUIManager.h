@@ -23,14 +23,11 @@ namespace Peach
 
 		GUIObjectMap getGUIObjects(const std::vector<GUIType>& types = {});
 
-		bool pollPressed(uint32_t& pressed);
-
 		void handleEvent(const sf::Event& event);
 		void update();
 		void render(sf::RenderTarget* target) const;
 	private:
 		GUIObjectMap m_Objects;
-		uint32_t m_Pressed;
 
 		static sf::Vector2i m_MousePosition;
 	};
