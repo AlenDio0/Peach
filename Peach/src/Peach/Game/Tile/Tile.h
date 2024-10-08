@@ -2,6 +2,7 @@
 
 #include "Peach/Core.h"
 
+#include "Peach/System.h"
 #include <SFML/Graphics.hpp>
 
 namespace Peach
@@ -11,21 +12,23 @@ namespace Peach
 	class PEACH_API Tile
 	{
 	public:
-		TileType type;
-	public:
-		Tile(const sf::Vector2f& size, const sf::Vector2f& position = {});
+		Tile(const Vec2f& size, const Vec2f& position = {});
 		~Tile() = default;
 
+		void setType(const TileType& type);
 		void setSize(const sf::Vector2f& size);
 		void setPosition(const sf::Vector2f& position);
-		void setTexture(sf::Texture* texture);
+		void setTexture(const sf::Texture& texture);
 		void setTextureRect(const sf::IntRect& rect);
 
+		const TileType& getType() const;
 		const sf::Vector2f& getSize() const;
 		const sf::Vector2f& getPosition() const;
 
 		void render(sf::RenderTarget* target) const;
 	private:
 		sf::RectangleShape m_Shape;
+
+		TileType m_Type;
 	};
 }

@@ -3,10 +3,14 @@
 
 namespace Peach
 {
-	Tile::Tile(const sf::Vector2f& size, const sf::Vector2f& position)
-		: type(0), m_Shape(size)
+	Tile::Tile(const Vec2f& size, const Vec2f& position)
+		: m_Shape(size), m_Type(0)
 	{
 		setPosition(position);
+	}
+
+	void Tile::setType(const TileType& type)
+	{
 	}
 
 	void Tile::setSize(const sf::Vector2f& size)
@@ -19,14 +23,19 @@ namespace Peach
 		m_Shape.setPosition(position);
 	}
 
-	void Tile::setTexture(sf::Texture* texture)
+	void Tile::setTexture(const sf::Texture& texture)
 	{
-		m_Shape.setTexture(texture);
+		m_Shape.setTexture(&texture);
 	}
 
 	void Tile::setTextureRect(const sf::IntRect& rect)
 	{
 		m_Shape.setTextureRect(rect);
+	}
+
+	const TileType& Tile::getType() const
+	{
+		return m_Type;
 	}
 
 	const sf::Vector2f& Tile::getSize() const

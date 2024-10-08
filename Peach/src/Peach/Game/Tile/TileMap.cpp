@@ -3,7 +3,7 @@
 
 namespace Peach
 {
-	TileMap::TileMap(const sf::Vector2u& mapsize, const sf::Vector2f& tilesize)
+	TileMap::TileMap(const Vec2u& mapsize, const Vec2f& tilesize)
 		: m_TileSize(tilesize), m_Size(0, 0)
 	{
 		setSize(mapsize);
@@ -14,12 +14,12 @@ namespace Peach
 		return m_TileMap;
 	}
 
-	const sf::Vector2u& TileMap::getSize() const
+	const Vec2u& TileMap::getSize() const
 	{
 		return m_Size;
 	}
 
-	const sf::Vector2f& TileMap::getTileSize() const
+	const Vec2f& TileMap::getTileSize() const
 	{
 		return m_TileSize;
 	}
@@ -29,7 +29,15 @@ namespace Peach
 		return m_TileMap[key];
 	}
 
-	void TileMap::setSize(const sf::Vector2u& newsize)
+	void TileMap::setTexture(const sf::Texture& texture)
+	{
+		for (auto& [position, tile] : m_TileMap)
+		{
+			tile->setTexture(texture);
+		}
+	}
+
+	void TileMap::setSize(const Vec2u& newsize)
 	{
 		if (m_Size == newsize)
 		{
@@ -96,9 +104,9 @@ namespace Peach
 		m_Size.y = newsize.y;
 	}
 
-	void TileMap::setTileSize(const sf::Vector2f& size)
+	void TileMap::setTileSize(const Vec2f& newsize)
 	{
-		m_TileSize = size;
+		m_TileSize = newsize;
 
 		for (auto& [position, tile] : m_TileMap)
 		{
@@ -107,21 +115,55 @@ namespace Peach
 		}
 	}
 
-	void TileMap::render(sf::RenderTarget* target, const IntRect& view) const
+	void TileMap::convertImage(const sf::Image& image, const ConvertMap& convertMap, bool forcesize)
 	{
-		const bool& ignoreview = view.width == 0 && view.height == 0;
+		if (image.getSize().x == 0 || image.getSize().y == 0)
+		{
+			PEACH_CORE_ERROR("TileMap::convertImage(...), Impossibile convertire (immagine non valida)");
 
-		const int& x = view.x - 1;
-		const int& y = view.y - 1;
-		const int& width = view.width + 1;
-		const int& height = view.height + 1;
+			return;
+		}
+
+		if (convertMap.empty())
+		{
+			PEACH_CORE_ERROR("TileMap::convertImage(...), Impossibile convertire (tavola di conversione non valida)");
+
+			return;
+		}
+
+		if (forcesize)
+		{
+			setSize({ image.getSize().x, image.getSize().y });
+		}
+
+		for (uint32_t x = 0; x < image.getSize().x; ++x)
+		{
+			for (uint32_t y = 0; y < image.getSize().y; ++y)
+			{
+				uint32_t pixel = image.getPixel(x, y).toInteger();
+				TileRef tile = getTile(MapKey(x, y));
+
+				tile->setType(convertMap.at(pixel).first);
+				tile->setTextureRect(convertMap.at(pixel).second);
+			}
+		}
+	}
+
+	void TileMap::render(sf::RenderTarget* target, const IntRect& view, bool forceview) const
+	{
+		const bool& useview = forceview || (view.width != 0 && view.height != 0);
+
+		const int& x = view.x;
+		const int& y = view.y;
+		const int& width = view.width;
+		const int& height = view.height;
 
 		for (const auto& [position, tile] : m_TileMap)
 		{
-			if (!ignoreview)
+			if (useview)
 			{
-				const bool& inboundX = (int)position.x >= x && (int)position.x <= width;
-				const bool& inboundY = (int)position.y >= y && (int)position.y <= height;
+				const bool& inboundX = (int)position.x >= x && (int)position.x < width;
+				const bool& inboundY = (int)position.y >= y && (int)position.y < height;
 
 				if (!(inboundX && inboundY))
 				{
