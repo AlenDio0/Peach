@@ -14,6 +14,11 @@ namespace Peach
 		PEACH_CORE_TRACE("GUIObject distrutto");
 	}
 
+	void GUIObject::setCallback(const std::function<void()>& callback)
+	{
+		m_Callback = callback;
+	}
+
 	void GUIObject::setPosition(const sf::Vector2f& position)
 	{
 		m_Shape->setPosition(position);
@@ -37,6 +42,17 @@ namespace Peach
 	void GUIObject::setTexture(const sf::Texture* texture)
 	{
 		m_Shape->setTexture(texture);
+	}
+
+	void GUIObject::callback() const
+	{
+		if (!m_Callback)
+		{
+			PEACH_CORE_WARN("Il callback non e' stato impostato per questo GUIObject");
+			return;
+		}
+
+		m_Callback();
 	}
 
 	const sf::Color& GUIObject::getPrimaryColor() const
