@@ -18,6 +18,15 @@ namespace Peach
 			: x(x), y(y), width(width), height(height)
 		{
 		}
+		Rect(const Vec2<T>& position, const Vec2<T> size)
+			: x(position.x), y(position.y), width(size.x), height(size.y)
+		{
+
+		}
+		Rect(const sf::Rect<T>& rect)
+			: x(rect.x), y(rect.y), width(rect.width), height(rect.width)
+		{
+		}
 
 		const Rect& operator+(const Rect& r) const
 		{
@@ -64,13 +73,16 @@ namespace Peach
 			return !(*this == r);
 		}
 
-		void operator=(const sf::Rect<T>& r)
+		Rect& operator=(const sf::Rect<T>& r)
 		{
 			x = r.x;
 			y = r.y;
 			width = r.width;
 			height = r.height;
+
+			return *this;
 		}
+
 		operator sf::Rect<T>() const
 		{
 			return sf::Rect<T>(x, y, width, height);
