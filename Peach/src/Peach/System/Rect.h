@@ -18,6 +18,11 @@ namespace Peach
 			: x(x), y(y), width(width), height(height)
 		{
 		}
+		Rect(const Vec2<T>& position, const Vec2<T> size)
+			: x(position.x), y(position.y), width(size.x), height(size.y)
+		{
+
+		}
 		Rect(const sf::Rect<T>& rect)
 			: x(rect.x), y(rect.y), width(rect.width), height(rect.width)
 		{
