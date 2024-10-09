@@ -28,7 +28,7 @@ namespace Peach
 
 		void convertImage(const sf::Image& image, const ConvertMap& convertMap, bool forcesize = true);
 
-		void render(sf::RenderTarget* target, const IntRect& view = {}, bool forceview = false) const;
+		void render(sf::RenderTarget* target, const IntRect& view = {}, bool forceview = false, bool convertrect = false) const;
 	private:
 		Map m_TileMap;
 

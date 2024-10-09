@@ -133,7 +133,7 @@ namespace Peach
 
 		if (forcesize)
 		{
-			setSize({ image.getSize().x, image.getSize().y });
+			setSize(image.getSize());
 		}
 
 		for (uint32_t x = 0; x < image.getSize().x; ++x)
@@ -149,14 +149,22 @@ namespace Peach
 		}
 	}
 
-	void TileMap::render(sf::RenderTarget* target, const IntRect& view, bool forceview) const
+	void TileMap::render(sf::RenderTarget* target, const IntRect& view, bool forceview, bool convertrect) const
 	{
-		const bool& useview = forceview || (view.width != 0 && view.height != 0);
+		int x = view.x;
+		int y = view.y;
+		int width = view.width;
+		int height = view.height;
 
-		const int& x = view.x;
-		const int& y = view.y;
-		const int& width = view.width;
-		const int& height = view.height;
+		if (convertrect)
+		{
+			x /= m_TileSize.x;
+			y /= m_TileSize.y;
+			width /= m_TileSize.x;
+			height /= m_TileSize.y;
+		}
+
+		const bool& useview = forceview || ((width != 0 && height != 0) && (view != IntRect(0, 0, m_Size.x, m_Size.y)));
 
 		for (const auto& [position, tile] : m_TileMap)
 		{

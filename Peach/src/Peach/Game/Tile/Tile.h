@@ -13,17 +13,18 @@ namespace Peach
 	{
 	public:
 		Tile(const Vec2f& size, const Vec2f& position = {});
+		Tile(const FloatRect& rect);
 		~Tile() = default;
 
 		void setType(const TileType& type);
-		void setSize(const sf::Vector2f& size);
-		void setPosition(const sf::Vector2f& position);
+		void setSize(const Vec2f& size);
+		void setPosition(const Vec2f& position);
 		void setTexture(const sf::Texture& texture);
-		void setTextureRect(const sf::IntRect& rect);
+		void setTextureRect(const IntRect& rect);
 
 		const TileType& getType() const;
-		const sf::Vector2f& getSize() const;
-		const sf::Vector2f& getPosition() const;
+		const Vec2f& getSize() const;
+		const Vec2f& getPosition() const;
 
 		void render(sf::RenderTarget* target) const;
 	private:
