@@ -11,14 +11,16 @@ namespace Peach
 	class PEACH_API GameObject
 	{
 	public:
-		GameObject(Vec2f position = {}, FloatRect hitbox = {});
+		GameObject(const Vec2f& size, const Vec2f& position = {}, const FloatRect& hitbox = {});
 		virtual ~GameObject();
 
+		void setSize(const Vec2f& size);
 		void setPosition(const Vec2f& position);
 		void setHitbox(const FloatRect& hitbox);
 		void setTexture(const sf::Texture& texture, bool resetrect = false);
 		void setTextureRect(const IntRect& rect);
 
+		const Vec2f& getSize() const;
 		const Vec2f& getPosition() const;
 		const FloatRect& getHitbox() const;
 
