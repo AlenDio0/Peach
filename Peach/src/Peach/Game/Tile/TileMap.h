@@ -22,7 +22,7 @@ namespace Peach
 		const Vec2f& getTileSize() const;
 		TileRef getTile(const MapKey& key);
 
-		void setTexture(const sf::Texture& texture);
+		void setTexture(const sf::Texture& texture, bool resetrect = false);
 		void setSize(const Vec2u& newsize);
 		void setTileSize(const Vec2f& newsize);
 

@@ -29,11 +29,11 @@ namespace Peach
 		return m_TileMap[key];
 	}
 
-	void TileMap::setTexture(const sf::Texture& texture)
+	void TileMap::setTexture(const sf::Texture& texture, bool resetrect)
 	{
 		for (auto& [position, tile] : m_TileMap)
 		{
-			tile->setTexture(texture);
+			tile->setTexture(texture, resetrect);
 		}
 	}
 
@@ -111,7 +111,9 @@ namespace Peach
 		for (auto& [position, tile] : m_TileMap)
 		{
 			tile->setSize(m_TileSize);
+			tile->setHitbox({ {}, m_TileSize });
 			tile->setPosition({ position.x * m_TileSize.x, position.y * m_TileSize.y });
+			tile->update();
 		}
 	}
 
