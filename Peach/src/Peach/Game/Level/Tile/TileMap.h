@@ -17,7 +17,6 @@ namespace Peach
 		TileMap(const Vec2u& mapsize, const Vec2f& tilesize);
 		~TileMap() = default;
 
-		Map& getRawMap();
 		const Vec2u& getSize() const;
 		const Vec2f& getTileSize() const;
 		TileRef getTile(const MapKey& key);

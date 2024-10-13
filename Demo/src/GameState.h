@@ -1,7 +1,7 @@
 #pragma once
 #include <Peach\State.h>
 
-#include <Peach\Game\Tile\TileMap.h>
+#include <Peach\Game\Level\Tile\TileMap.h>
 #include <Peach\Game\Player\PlayerController.h>
 
 class GameState : public Peach::State

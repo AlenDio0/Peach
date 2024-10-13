@@ -9,11 +9,6 @@ namespace Peach
 		setSize(mapsize);
 	}
 
-	Map& TileMap::getRawMap()
-	{
-		return m_TileMap;
-	}
-
 	const Vec2u& TileMap::getSize() const
 	{
 		return m_Size;
