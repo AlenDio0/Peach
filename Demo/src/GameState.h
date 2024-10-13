@@ -2,6 +2,7 @@
 #include <Peach\State.h>
 
 #include <Peach\Game\Tile\TileMap.h>
+#include <Peach\Game\Player\PlayerController.h>
 
 class GameState : public Peach::State
 {
@@ -14,8 +15,11 @@ public:
 	void onRender() override;
 private:
 	Peach::TileMap m_Map;
+	Peach::PlayerController m_Controller;
 
 	Peach::IntRect m_View;
 	// TODO: Add a player and boxes to collide
+private:
+	void initBinds();
 };
 
