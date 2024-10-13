@@ -14,6 +14,22 @@ DemoState::DemoState(Peach::DataRef data)
 	m_GUIManager.add(RIMPIAZZA, button1);
 	m_GUIManager.add(GIOCA, button2);
 
+	button1->setCallback
+	(
+		[&]() {
+			PEACH_INFO("RIMPIAZZA");
+			m_Data->machine.addState(Peach::IStateRef(new DemoState(m_Data)), true);
+		}
+	);
+
+	button2->setCallback
+	(
+		[&]() {
+			PEACH_INFO("GIOCA");
+			m_Data->machine.addState(Peach::IStateRef(new GameState(m_Data)), false);
+		}
+	);
+
 	std::vector<Peach::Button*> buttons;
 
 	for (auto& [key, value] : m_GUIManager.getGUIObjects({ Peach::GUIType::Button }))
@@ -90,25 +106,6 @@ void DemoState::onUpdate()
 	m_Data->window.setMouseCursor(cursor);
 
 	m_GUIManager.update();
-
-	for (uint32_t pressed; m_GUIManager.pollPressed(pressed);)
-	{
-		switch (pressed)
-		{
-		case RIMPIAZZA:
-			m_Data->machine.addState(Peach::IStateRef(new DemoState(m_Data)), true);
-			break;
-		case GIOCA:
-			m_Data->machine.addState(Peach::IStateRef(new GameState(m_Data)), false);
-			break;
-		case BOX:
-		{
-			Peach::Checkbox* box = static_cast<Peach::Checkbox*>(m_GUIManager[BOX].get());
-			PEACH_INFO("CIAO SONO BOX E MI HAI {}", box->getActive() ? "ATTIVATO" : "DISATTIVATO");
-		}
-		break;
-		}
-	}
 }
 
 void DemoState::onRender()
