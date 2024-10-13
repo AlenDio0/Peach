@@ -35,5 +35,8 @@ namespace Peach
 
 		Vec2u m_Size;
 		Vec2f m_TileSize;
+	private:
+		void resizeX(const uint32_t& sizex);
+		void resizeY(const uint32_t& sizey);
 	};
 }

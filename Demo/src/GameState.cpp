@@ -98,7 +98,7 @@ void GameState::onRender()
 
 	m_Data->window.getRenderer()->clear();
 
-	m_Map.render(m_Data->window.getRenderer(), m_View, true);
+	m_Map.render(m_Data->window.getRenderer(), m_View);
 
 	m_Data->window.display();
 }
