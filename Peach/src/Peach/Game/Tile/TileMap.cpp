@@ -151,7 +151,7 @@ namespace Peach
 		}
 	}
 
-	void TileMap::render(sf::RenderTarget* target, const IntRect& view, bool forceview, bool convertrect) const
+	void TileMap::render(sf::RenderTarget* target, const IntRect& view, bool convertrect) const
 	{
 		int x = view.x;
 		int y = view.y;
@@ -166,7 +166,7 @@ namespace Peach
 			height /= m_TileSize.y;
 		}
 
-		const bool& useview = forceview || ((width != 0 && height != 0) && (view != IntRect(0, 0, m_Size.x, m_Size.y)));
+		const bool& useview = view != IntRect(0, 0, m_Size.x, m_Size.y);
 
 		for (const auto& [position, tile] : m_TileMap)
 		{
@@ -181,6 +181,13 @@ namespace Peach
 				}
 			}
 
+			tile->render(target);
+		}
+	}
+	void TileMap::render(sf::RenderTarget* target) const
+	{
+		for (const auto& [position, tile] : m_TileMap)
+		{
 			tile->render(target);
 		}
 	}
