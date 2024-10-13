@@ -46,9 +46,9 @@ namespace Peach
 
 		if (m_Size.x == 0 && m_Size.y == 0)
 		{
-			for (uint32_t x = 0; x < newsize.x; x++)
+			for (uint32_t x = 0; x < newsize.x; ++x)
 			{
-				for (uint32_t y = 0; y < newsize.y; y++)
+				for (uint32_t y = 0; y < newsize.y; ++y)
 				{
 					m_TileMap[MapKey(x, y)] = TileRef(new Tile(m_TileSize, { x * m_TileSize.x, y * m_TileSize.y }));
 				}
@@ -60,9 +60,9 @@ namespace Peach
 
 		if (m_Size.x < newsize.x)
 		{
-			for (uint32_t x = m_Size.x; x < newsize.x; x++)
+			for (uint32_t x = m_Size.x; x < newsize.x; ++x)
 			{
-				for (uint32_t y = 0; y < m_Size.y; y++)
+				for (uint32_t y = 0; y < m_Size.y; ++y)
 				{
 					m_TileMap[MapKey(x, y)] = TileRef(new Tile(m_TileSize, { x * m_TileSize.x, y * m_TileSize.y }));
 				}
@@ -70,9 +70,9 @@ namespace Peach
 		}
 		else
 		{
-			for (uint32_t x = newsize.x; x < m_Size.x; x++)
+			for (uint32_t x = newsize.x; x < m_Size.x; ++x)
 			{
-				for (uint32_t y = 0; y < m_Size.y; y++)
+				for (uint32_t y = 0; y < m_Size.y; ++y)
 				{
 					m_TileMap.erase(MapKey(x, y));
 				}
@@ -82,9 +82,9 @@ namespace Peach
 
 		if (m_Size.y < newsize.y)
 		{
-			for (uint32_t x = 0; x < m_Size.x; x++)
+			for (uint32_t x = 0; x < m_Size.x; ++x)
 			{
-				for (uint32_t y = m_Size.y; y < newsize.y; y++)
+				for (uint32_t y = m_Size.y; y < newsize.y; ++y)
 				{
 					m_TileMap[MapKey(x, y)] = TileRef(new Tile(m_TileSize, { x * m_TileSize.x, y * m_TileSize.y }));
 				}
@@ -92,9 +92,9 @@ namespace Peach
 		}
 		else
 		{
-			for (uint32_t x = 0; x < m_Size.x; x++)
+			for (uint32_t x = 0; x < m_Size.x; ++x)
 			{
-				for (uint32_t y = newsize.y; y < m_Size.y; y++)
+				for (uint32_t y = newsize.y; y < m_Size.y; ++y)
 				{
 					m_TileMap.erase(MapKey(x, y));
 				}
