@@ -10,9 +10,16 @@ namespace Peach
 	{
 		T x, y;
 
-		Vec2() = default;
+		Vec2()
+			: Vec2(0, 0)
+		{
+		}
 		Vec2(const T& x, const T& y)
 			: x(x), y(y)
+		{
+		}
+		Vec2(const sf::Vector2<T>& vec)
+			: x(vec.x), y(vec.y)
 		{
 		}
 
@@ -70,11 +77,14 @@ namespace Peach
 			return x == r.x ? y < r.y : x < r.x;
 		}
 
-		void operator=(const sf::Vector2<T>& r)
+		Vec2<T>& operator=(const sf::Vector2<T>& r)
 		{
 			x = r.x;
 			y = r.y;
+
+			return *this;
 		}
+
 		operator sf::Vector2<T>() const
 		{
 			return sf::Vector2<T>(x, y);

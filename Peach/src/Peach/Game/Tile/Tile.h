@@ -2,30 +2,24 @@
 
 #include "Peach/Core.h"
 
-#include <SFML/Graphics.hpp>
+#include "Peach/Game/GameObject.h"
 
 namespace Peach
 {
 	using TileType = uint16_t;
 
-	class PEACH_API Tile
+	class PEACH_API Tile : public GameObject
 	{
 	public:
-		TileType type;
-	public:
-		Tile(const sf::Vector2f& size, const sf::Vector2f& position = {});
-		~Tile() = default;
+		Tile(const Vec2f& size, const Vec2f& position = {});
+		Tile(const FloatRect& rect);
 
-		void setSize(const sf::Vector2f& size);
-		void setPosition(const sf::Vector2f& position);
-		void setTexture(sf::Texture* texture);
-		void setTextureRect(const sf::IntRect& rect);
+		void setType(const TileType& type);
 
-		const sf::Vector2f& getSize() const;
-		const sf::Vector2f& getPosition() const;
+		const TileType& getType() const;
 
-		void render(sf::RenderTarget* target) const;
+		virtual void render(sf::RenderTarget* target);
 	private:
-		sf::RectangleShape m_Shape;
+		TileType m_Type;
 	};
 }

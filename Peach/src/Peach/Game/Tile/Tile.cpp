@@ -3,43 +3,28 @@
 
 namespace Peach
 {
-	Tile::Tile(const sf::Vector2f& size, const sf::Vector2f& position)
-		: type(0), m_Shape(size)
+	Tile::Tile(const Vec2f& size, const Vec2f& position)
+		: GameObject(size, position, { {}, size }), m_Type(0)
 	{
-		setPosition(position);
+		update();
 	}
 
-	void Tile::setSize(const sf::Vector2f& size)
+	Tile::Tile(const FloatRect& rect)
+		: Tile({ rect.width, rect.height }, { rect.x, rect.y })
 	{
-		m_Shape.setSize(size);
 	}
 
-	void Tile::setPosition(const sf::Vector2f& position)
+	void Tile::setType(const TileType& type)
 	{
-		m_Shape.setPosition(position);
+		m_Type = type;
 	}
 
-	void Tile::setTexture(sf::Texture* texture)
+	const TileType& Tile::getType() const
 	{
-		m_Shape.setTexture(texture);
+		return m_Type;
 	}
 
-	void Tile::setTextureRect(const sf::IntRect& rect)
-	{
-		m_Shape.setTextureRect(rect);
-	}
-
-	const sf::Vector2f& Tile::getSize() const
-	{
-		return m_Shape.getSize();
-	}
-
-	const sf::Vector2f& Tile::getPosition() const
-	{
-		return m_Shape.getPosition();
-	}
-
-	void Tile::render(sf::RenderTarget* target) const
+	void Tile::render(sf::RenderTarget* target)
 	{
 		target->draw(m_Shape);
 	}
