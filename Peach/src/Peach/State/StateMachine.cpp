@@ -14,7 +14,7 @@ namespace Peach
 		PEACH_CORE_TRACE("StateMachine distrutto");
 	}
 
-	IStateRef StateMachine::getCurrentState() const
+	Ref<IState> StateMachine::getCurrentState() const
 	{
 		if (m_States.empty())
 		{
@@ -48,7 +48,7 @@ namespace Peach
 		}
 	}
 
-	void StateMachine::addState(IStateRef newState, bool isReplacing)
+	void StateMachine::addState(Ref<IState> newState, bool isReplacing)
 	{
 		PEACH_CORE_INFO("StateMachine::addState(newState: {}, isReplacing: {})", newState ? "EXISTS" : "NULL", isReplacing);
 

@@ -2,35 +2,36 @@
 
 #include "Peach/Core.h"
 
-#include "Peach/System/Vec2.h"
-#include "Peach/System/Rect.h"
 #include "Tile.h"
 
 namespace Peach
 {
-	using TileRef = std::shared_ptr<Tile>;
 	using MapKey = Vec2u;
-	using Map = std::map<MapKey, TileRef>;
+	using Map = std::map<MapKey, Ref<Tile>>;
+	using ConvertMap = std::map<uint32_t, std::pair<TileType, IntRect>>;
 
 	class PEACH_API TileMap
 	{
 	public:
-		TileMap(const sf::Vector2u& mapsize, const sf::Vector2f& tilesize);
+		TileMap(const Vec2u& mapsize, const Vec2f& tilesize);
 		~TileMap() = default;
 
 		Map& getRawMap();
-		const sf::Vector2u& getSize() const;
-		const sf::Vector2f& getTileSize() const;
-		TileRef getTile(const MapKey& key);
+		const Vec2u& getSize() const;
+		const Vec2f& getTileSize() const;
+		Ref<Tile> getTile(const MapKey& key);
 
-		void setSize(const sf::Vector2u& newsize);
-		void setTileSize(const sf::Vector2f& newsize);
+		void setTexture(const sf::Texture& texture, bool resetrect = false);
+		void setSize(const Vec2u& newsize);
+		void setTileSize(const Vec2f& newsize);
 
-		void render(sf::RenderTarget* target, const IntRect& view = {}) const;
+		void convertImage(const sf::Image& image, const ConvertMap& convertMap, bool forcesize = true);
+
+		void render(sf::RenderTarget* target, const IntRect& view = {}, bool forceview = false, bool convertrect = false) const;
 	private:
 		Map m_TileMap;
 
-		sf::Vector2u m_Size;
-		sf::Vector2f m_TileSize;
+		Vec2u m_Size;
+		Vec2f m_TileSize;
 	};
 }

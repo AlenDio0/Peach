@@ -13,7 +13,7 @@ namespace Peach
 		Application();
 		virtual ~Application();
 
-		void addState(IStateRef newState, bool isReplacing);
+		void addState(Ref<IState> newState, bool isReplacing);
 		void removeState();
 
 		void run();
