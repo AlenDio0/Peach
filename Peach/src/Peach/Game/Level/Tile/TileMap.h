@@ -8,7 +8,7 @@ namespace Peach
 {
 	using MapKey = Vec2u;
 	using Map = std::map<MapKey, Ref<Tile>>;
-	using ConvertMap = std::map<uint32_t, std::pair<TileType, IntRect>>;
+	using ConvertMap = std::map<uint32_t, std::pair<TileID, IntRect>>;
 
 	class PEACH_API TileMap
 	{

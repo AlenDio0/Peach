@@ -1,26 +1,11 @@
 #include "GameState.h"
 
 GameState::GameState(Peach::DataRef data)
-	: Peach::State(data, "Game"), m_Map({ 0, 0 }, { 50, 50.f })
+	: Peach::State(data, "Game"), m_Level("level.txt")
 {
-	sf::Image image;
-	image.loadFromFile("assets/map.png");
-	m_Map.convertImage
-	(
-		image,
-		{
-			{sf::Color::Black.toInteger(), {1, {0, 0, 16, 16}}},
-			{sf::Color::White.toInteger(), {2, {16, 0, 16, 16}}}
-		},
-		true
-	);
-
 	initBinds();
 
-	m_Map.setTexture(m_Data->assets.getAsset<Peach::Texture>("TEXTURE_TILES"));
-
-	m_View.width = m_Map.getSize().x;
-	m_View.height = m_Map.getSize().y;
+	m_Level.setTileTexture(m_Data->assets.getAsset<Peach::Texture>("TEXTURE_TILES"));
 }
 
 GameState::~GameState()
@@ -52,13 +37,13 @@ void GameState::onRender()
 
 	m_Data->window.getRenderer()->clear();
 
-	m_Map.render(m_Data->window.getRenderer(), m_View);
+	m_Level.render(m_Data->window.getRenderer());
 
 	m_Data->window.display();
 }
 
 void GameState::initBinds()
-{
+{/*
 	const auto& tilesize = m_Map.getTileSize();
 	const auto& mapsize = m_Map.getSize();
 
@@ -122,5 +107,5 @@ void GameState::initBinds()
 	m_Controller.bind(sf::Mouse::Right,
 		[&]() {
 			m_Map.setTexture(m_Data->assets.getAsset<Peach::Texture>("TEXTURE_TILES"));
-		}, "Imposta la texture dei tile", true);
+		}, "Imposta la texture dei tile", true);*/
 }

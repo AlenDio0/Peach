@@ -95,11 +95,12 @@ namespace Peach
 		{
 			for (uint32_t y = 0; y < image.getSize().y; ++y)
 			{
-				uint32_t pixel = image.getPixel(x, y).toInteger();
 				Ref<Tile> tile = getTile(MapKey(x, y));
+				uint32_t pixel = image.getPixel(x, y).toInteger();
+				auto& [id, rect] = convertMap.at(pixel);
 
-				tile->setType(convertMap.at(pixel).first);
-				tile->setTextureRect(convertMap.at(pixel).second);
+				tile->setID(id);
+				tile->setTextureRect(rect);
 			}
 		}
 	}
