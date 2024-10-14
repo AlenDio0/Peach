@@ -2,9 +2,8 @@
 
 #include "Peach/Core.h"
 
-#include <SFML/Graphics/Texture.hpp>
-#include <SFML/Graphics/Font.hpp>
-#include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 namespace Peach
 {
