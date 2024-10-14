@@ -45,7 +45,7 @@ namespace Peach
 			{
 				for (uint32_t y = 0; y < newsize.y; ++y)
 				{
-					m_TileMap[MapKey(x, y)] = MakeRef<Tile>(m_TileSize, { x * m_TileSize.x, y * m_TileSize.y });
+					m_TileMap[MapKey(x, y)] = MakeRef<Tile>(m_TileSize, Vec2f(x * m_TileSize.x, y * m_TileSize.y));
 				}
 			}
 
@@ -153,7 +153,7 @@ namespace Peach
 			{
 				for (uint32_t y = 0; y < m_Size.y; ++y)
 				{
-					m_TileMap[MapKey(x, y)] = TileRef(new Tile(m_TileSize, { x * m_TileSize.x, y * m_TileSize.y }));
+					m_TileMap[MapKey(x, y)] = MakeRef<Tile>(m_TileSize, Vec2f(x * m_TileSize.x, y * m_TileSize.y));
 				}
 			}
 		}
@@ -178,7 +178,7 @@ namespace Peach
 			{
 				for (uint32_t y = m_Size.y; y < sizey; ++y)
 				{
-					m_TileMap[MapKey(x, y)] = TileRef(new Tile(m_TileSize, { x * m_TileSize.x, y * m_TileSize.y }));
+					m_TileMap[MapKey(x, y)] = MakeRef<Tile>(m_TileSize, Vec2f(x * m_TileSize.x, y * m_TileSize.y));
 				}
 			}
 		}
