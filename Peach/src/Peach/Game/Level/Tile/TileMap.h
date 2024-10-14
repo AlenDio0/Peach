@@ -6,9 +6,8 @@
 
 namespace Peach
 {
-	using TileRef = std::shared_ptr<Tile>;
 	using MapKey = Vec2u;
-	using Map = std::map<MapKey, TileRef>;
+	using Map = std::map<MapKey, Ref<Tile>>;
 	using ConvertMap = std::map<uint32_t, std::pair<TileType, IntRect>>;
 
 	class PEACH_API TileMap
@@ -19,7 +18,7 @@ namespace Peach
 
 		const Vec2u& getSize() const;
 		const Vec2f& getTileSize() const;
-		TileRef getTile(const MapKey& key);
+		Ref<Tile> getTile(const MapKey& key);
 
 		void setTexture(const sf::Texture& texture, bool resetrect = false);
 		void setSize(const Vec2u& newsize);
