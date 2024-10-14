@@ -15,7 +15,7 @@ public:
 
 		m_Data->assets.loadAsset<Peach::Texture>("TEXTURE_TILES", "assets/tiles.png");
 
-		addState(Peach::IStateRef(new DemoState(m_Data)), false);
+		addState(Peach::Ref<Peach::IState>(new DemoState(m_Data)), false);
 	}
 
 	~DemoApp()

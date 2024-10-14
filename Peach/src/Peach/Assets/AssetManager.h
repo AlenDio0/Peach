@@ -6,9 +6,8 @@
 
 namespace Peach
 {
-	using AssetRef = std::shared_ptr<Asset>;
 	using AssetKey = std::string;
-	using AssetMap = std::unordered_map<AssetKey, AssetRef>;
+	using AssetMap = std::unordered_map<AssetKey, Ref<Asset>>;
 
 	class AssetManager
 	{
@@ -45,7 +44,7 @@ namespace Peach
 				throw "AssetType non definito";
 			}
 
-			m_Assets[key] = static_cast<AssetRef>(new T());
+			m_Assets[key] = static_cast<Ref<Asset>>(new T());
 
 			if (m_Assets[key]->load(path))
 			{
