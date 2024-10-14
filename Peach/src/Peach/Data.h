@@ -5,7 +5,7 @@
 #include "Peach/Log.h"
 
 #include "Window.h"
-#include "StateMachine.h"
+#include "State/StateMachine.h"
 #include "Assets/AssetManager.h"
 
 namespace Peach

@@ -16,7 +16,7 @@ namespace Peach
 		PEACH_CORE_INFO("Applicazione distrutta");
 	}
 
-	void Application::addState(IStateRef newState, bool isReplacing)
+	void Application::addState(Ref<IState> newState, bool isReplacing)
 	{
 		m_Data->machine.addState(newState, isReplacing);
 	}
