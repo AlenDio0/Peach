@@ -24,7 +24,7 @@ namespace Peach
 		return m_TileSize;
 	}
 
-	TileRef TileMap::getTile(const MapKey& key)
+	Ref<Tile> TileMap::getTile(const MapKey& key)
 	{
 		return m_TileMap[key];
 	}
@@ -50,7 +50,7 @@ namespace Peach
 			{
 				for (uint32_t y = 0; y < newsize.y; y++)
 				{
-					m_TileMap[MapKey(x, y)] = TileRef(new Tile(m_TileSize, { x * m_TileSize.x, y * m_TileSize.y }));
+					m_TileMap[MapKey(x, y)] = MakeRef<Tile>(m_TileSize, { x * m_TileSize.x, y * m_TileSize.y });
 				}
 			}
 
@@ -64,7 +64,7 @@ namespace Peach
 			{
 				for (uint32_t y = 0; y < m_Size.y; y++)
 				{
-					m_TileMap[MapKey(x, y)] = TileRef(new Tile(m_TileSize, { x * m_TileSize.x, y * m_TileSize.y }));
+					m_TileMap[MapKey(x, y)] = MakeRef<Tile>(m_TileSize, { x * m_TileSize.x, y * m_TileSize.y });
 				}
 			}
 		}
@@ -86,7 +86,7 @@ namespace Peach
 			{
 				for (uint32_t y = m_Size.y; y < newsize.y; y++)
 				{
-					m_TileMap[MapKey(x, y)] = TileRef(new Tile(m_TileSize, { x * m_TileSize.x, y * m_TileSize.y }));
+					m_TileMap[MapKey(x, y)] = MakeRef<Tile>(m_TileSize, { x * m_TileSize.x, y * m_TileSize.y });
 				}
 			}
 		}
@@ -143,7 +143,7 @@ namespace Peach
 			for (uint32_t y = 0; y < image.getSize().y; ++y)
 			{
 				uint32_t pixel = image.getPixel(x, y).toInteger();
-				TileRef tile = getTile(MapKey(x, y));
+				Ref<Tile> tile = getTile(MapKey(x, y));
 
 				tile->setType(convertMap.at(pixel).first);
 				tile->setTextureRect(convertMap.at(pixel).second);
