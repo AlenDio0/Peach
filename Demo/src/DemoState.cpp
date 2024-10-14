@@ -18,7 +18,7 @@ DemoState::DemoState(Peach::DataRef data)
 	(
 		[&]() {
 			PEACH_INFO("RIMPIAZZA");
-			m_Data->machine.addState(Peach::IStateRef(new DemoState(m_Data)), true);
+			m_Data->machine.addState(Peach::Ref<Peach::IState>(new DemoState(m_Data)), true);
 		}
 	);
 
@@ -26,7 +26,7 @@ DemoState::DemoState(Peach::DataRef data)
 	(
 		[&]() {
 			PEACH_INFO("GIOCA");
-			m_Data->machine.addState(Peach::IStateRef(new GameState(m_Data)), false);
+			m_Data->machine.addState(Peach::Ref<Peach::IState>(new GameState(m_Data)), false);
 		}
 	);
 
@@ -85,9 +85,6 @@ void DemoState::onEvent()
 
 			switch (event.key.code)
 			{
-			case sf::Keyboard::A:
-				m_Data->machine.addState(Peach::IStateRef(new DemoState(m_Data)), true);
-				break;
 			case sf::Keyboard::B:
 				int x = m_Data->window.getRenderer()->getSize().x;
 				int y = m_Data->window.getRenderer()->getSize().y;
