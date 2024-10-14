@@ -6,8 +6,7 @@
 
 namespace Peach
 {
-	using GUIObjectRef = std::shared_ptr<GUIObject>;
-	using GUIObjectMap = std::unordered_map<uint32_t, GUIObjectRef>;
+	using GUIObjectMap = std::unordered_map<uint32_t, Ref<GUIObject>>;
 
 	class PEACH_API GUIManager
 	{
@@ -15,7 +14,7 @@ namespace Peach
 		GUIManager();
 		~GUIManager();
 
-		GUIObjectRef operator[](const uint32_t& key);
+		Ref<GUIObject> operator[](const uint32_t& key);
 
 		void add(const uint32_t& key, GUIObject* value);
 
