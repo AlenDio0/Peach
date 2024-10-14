@@ -4,6 +4,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <memory>
+#include <functional>
 
 namespace Peach
 {
@@ -20,6 +21,7 @@ namespace Peach
 		GUIObject(sf::Shape& container);
 		virtual ~GUIObject();
 
+		void setCallback(const std::function<void()>& callback);
 		virtual void setSize(const sf::Vector2f& size) = 0;
 		virtual void setPosition(const sf::Vector2f& position);
 		void setPrimaryColor(const sf::Color& color);
@@ -27,6 +29,7 @@ namespace Peach
 		void setOutlineThickness(const float& thickness);
 		void setTexture(const sf::Texture* texture);
 
+		void callback() const;
 		const sf::Color& getPrimaryColor() const;
 		const sf::Color& getSecondaryColor() const;
 		const sf::Vector2f& getPosition() const;
@@ -42,5 +45,7 @@ namespace Peach
 		sf::Color m_SecondaryColor;
 	private:
 		sf::Shape* m_Shape;
+
+		std::function<void()> m_Callback;
 	};
 }
