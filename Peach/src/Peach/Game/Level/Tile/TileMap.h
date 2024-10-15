@@ -13,18 +13,22 @@ namespace Peach
 	class PEACH_API TileMap
 	{
 	public:
-		TileMap(const Vec2u& mapsize, const Vec2f& tilesize);
+		TileMap(const Vec2u& mapsize, const Vec2f& tilesize, const Vec2u& spritesize);
 		~TileMap() = default;
 
 		const Vec2u& getSize() const;
 		const Vec2f& getTileSize() const;
+		const Vec2u& getSpriteSize() const;
 		Ref<Tile> getTile(const MapKey& key);
 
 		void setTexture(const sf::Texture& texture, bool resetrect = false);
 		void setSize(const Vec2u& newsize);
 		void setTileSize(const Vec2f& newsize);
+		void setSpriteSize(const Vec2u& newsize);
 
 		void convertImage(const sf::Image& image, const ConvertMap& convertMap, bool forcesize = true);
+
+		void update();
 
 		void render(sf::RenderTarget* target, const IntRect& view, bool convertrect = false) const;
 		void render(sf::RenderTarget* target) const;
@@ -33,6 +37,7 @@ namespace Peach
 
 		Vec2u m_Size;
 		Vec2f m_TileSize;
+		Vec2u m_SpriteSize;
 	private:
 		void resizeX(const uint32_t& sizex);
 		void resizeY(const uint32_t& sizey);

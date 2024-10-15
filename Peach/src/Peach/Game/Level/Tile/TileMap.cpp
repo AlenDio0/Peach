@@ -3,8 +3,8 @@
 
 namespace Peach
 {
-	TileMap::TileMap(const Vec2u& mapsize, const Vec2f& tilesize)
-		: m_TileSize(tilesize), m_Size(0, 0)
+	TileMap::TileMap(const Vec2u& mapsize, const Vec2f& tilesize, const Vec2u& spritesize)
+		: m_TileSize(tilesize), m_SpriteSize(spritesize)
 	{
 		setSize(mapsize);
 	}
@@ -17,6 +17,11 @@ namespace Peach
 	const Vec2f& TileMap::getTileSize() const
 	{
 		return m_TileSize;
+	}
+
+	const Vec2u& TileMap::getSpriteSize() const
+	{
+		return m_SpriteSize;
 	}
 
 	Ref<Tile> TileMap::getTile(const MapKey& key)
@@ -70,6 +75,11 @@ namespace Peach
 		}
 	}
 
+	void TileMap::setSpriteSize(const Vec2u& newsize)
+	{
+		m_SpriteSize = newsize;
+	}
+
 	void TileMap::convertImage(const sf::Image& image, const ConvertMap& convertMap, bool forcesize)
 	{
 		if (image.getSize().x == 0 || image.getSize().y == 0)
@@ -102,6 +112,14 @@ namespace Peach
 				tile->setID(id);
 				tile->setTextureRect(rect);
 			}
+		}
+	}
+
+	void TileMap::update()
+	{
+		for (auto& [position, tile] : m_TileMap)
+		{
+			tile->setTextureRect(IntRect({ tile->getID() * m_SpriteSize.x, 0 }, { m_SpriteSize.x, m_SpriteSize.y }));
 		}
 	}
 
