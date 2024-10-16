@@ -23,6 +23,11 @@ namespace Peach
 		{
 
 		}
+		template<typename U>
+		Rect(const Rect<U>& rect)
+			: x(rect.x), y(rect.y), width(rect.width), height(rect.height)
+		{	
+		}
 		Rect(const sf::Rect<T>& rect)
 			: x(rect.x), y(rect.y), width(rect.width), height(rect.width)
 		{
