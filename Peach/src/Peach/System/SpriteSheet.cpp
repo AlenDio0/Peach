@@ -21,6 +21,11 @@ namespace Peach
 		adjustSize();
 	}
 
+	const sf::Texture& SpriteSheet::getTexture() const
+	{
+		return *m_Texture;
+	}
+
 	const SpriteID& SpriteSheet::getMaxID() const
 	{
 		return m_Size.x * m_Size.y;
