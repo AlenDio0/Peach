@@ -1,11 +1,9 @@
 #include "GameState.h"
 
 GameState::GameState(Peach::DataRef data)
-	: Peach::State(data, "Game"), m_Level("level.txt")
+	: Peach::State(data, "Game"), m_Level("level.txt", m_Data->assets.getAsset<Peach::Texture>("TEXTURE_TILES"))
 {
 	initBinds();
-
-	m_Level.setTileTexture(m_Data->assets.getAsset<Peach::Texture>("TEXTURE_TILES"));
 }
 
 GameState::~GameState()
@@ -43,14 +41,16 @@ void GameState::onRender()
 }
 
 void GameState::initBinds()
-{/*
+{
+	/*
 	const auto& tilesize = m_Map.getTileSize();
 	const auto& mapsize = m_Map.getSize();
-
+	*/
 	m_Controller.bind(sf::Keyboard::Escape,
 		[&]() {
 			m_Data->machine.removeState();
 		}, "Rimuove lo Stato attuale", true);
+	/*
 	m_Controller.bind(sf::Keyboard::Num1,
 		[&]() {
 			m_Map.setTileSize({ tilesize.x + 1.f, tilesize.y + 1.f });

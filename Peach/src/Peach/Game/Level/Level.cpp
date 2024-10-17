@@ -3,8 +3,8 @@
 
 namespace Peach
 {
-	Level::Level(const std::filesystem::path& filepath)
-		: m_TileMap({}, {}, { 16, 16 })
+	Level::Level(const std::filesystem::path& filepath, const sf::Texture& texture)
+		: m_TileMap(texture)
 	{
 		convertFile(filepath);
 	}
@@ -155,35 +155,58 @@ namespace Peach
 
 				while (!file.eof())
 				{
-					file >> buff;
 					if (buff == "END")
 					{
 						break;
 					}
 
-					if (size_t found = buff.find("Pos") != npos)
+					size_t found;
+					if (found = buff.find("Pos") != npos)
 					{
-						std::string pos;
-						std::getline(file, pos);
-
-						pos = pos.substr(found);
+						std::string pos = buff;
 						for (size_t i = 0; i < pos.size(); ++i)
 						{
 							if (pos[i] == ']')
 							{
-								pos = pos.substr(0, i + 1);
+								buff = pos.substr(i + 1);
 								break;
 							}
 						}
 
 						tile_pos = getVec2u(pos);
 					}
-					else if (buff.find("ID") != npos)
+					if (found = buff.find("ID") != npos)
 					{
-						TileID id;
-						file >> id;
+						buff = buff.substr(found + 2);
 
-						m_TileMap.getTile(tile_pos)->setID(id);
+						bool in = false;
+						std::string id;
+						for (const auto& c : buff)
+						{
+							if (isdigit(c))
+							{
+								in = true;
+								id += c;
+							}
+							else if (in)
+							{
+								break;
+							}
+						}
+
+						auto& tile = m_TileMap.getTile(tile_pos);
+						if (!tile)
+						{
+							PEACH_CORE_WARN("Level::convertFile(...), La posizione del Tile {} va oltre la grandezza di TileMap {}", tile_pos, m_TileMap.getSize());
+							continue;
+						}
+
+						tile->setID(stoi(id));
+					}
+
+					if (found == npos || found == 0)
+					{
+						std::getline(file, buff);
 					}
 				}
 			}

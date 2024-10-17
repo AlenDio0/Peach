@@ -3,8 +3,19 @@
 
 namespace Peach
 {
-	TileMap::TileMap(const Vec2u& mapsize, const Vec2f& tilesize, const Vec2u& spritesize)
-		: m_TileSize(tilesize), m_SpriteSize(spritesize)
+	TileMap::TileMap()
+		: m_SpriteSheet({}, { 1, 1 })
+	{
+	}
+
+	TileMap::TileMap(const sf::Texture& texture)
+		: TileMap()
+	{
+		setTexture(texture);
+	}
+
+	TileMap::TileMap(const Vec2u& mapsize, const Vec2f& tilesize, const sf::Texture& texture, const Vec2u& spritesize)
+		: m_TileSize(tilesize), m_SpriteSheet(texture, spritesize)
 	{
 		setSize(mapsize);
 	}
@@ -19,18 +30,22 @@ namespace Peach
 		return m_TileSize;
 	}
 
-	const Vec2u& TileMap::getSpriteSize() const
-	{
-		return m_SpriteSize;
-	}
-
 	Ref<Tile> TileMap::getTile(const MapKey& key)
 	{
-		return m_TileMap[key];
+		try
+		{
+			return m_TileMap.at(key);
+		}
+		catch (const std::exception& e)
+		{
+			PEACH_CORE_ERROR("TileMap::getTile(key: {}), Catturata eccezione: {}", key, e.what());
+			return NULL;
+		}
 	}
 
 	void TileMap::setTexture(const sf::Texture& texture, bool resetrect)
 	{
+		m_SpriteSheet.setTexture(texture);
 		for (auto& [position, tile] : m_TileMap)
 		{
 			tile->setTexture(texture, resetrect);
@@ -77,49 +92,15 @@ namespace Peach
 
 	void TileMap::setSpriteSize(const Vec2u& newsize)
 	{
-		m_SpriteSize = newsize;
-	}
-
-	void TileMap::convertImage(const sf::Image& image, const ConvertMap& convertMap, bool forcesize)
-	{
-		if (image.getSize().x == 0 || image.getSize().y == 0)
-		{
-			PEACH_CORE_ERROR("TileMap::convertImage(...), Impossibile convertire (immagine non valida)");
-
-			return;
-		}
-
-		if (convertMap.empty())
-		{
-			PEACH_CORE_ERROR("TileMap::convertImage(...), Impossibile convertire (tavola di conversione non valida)");
-
-			return;
-		}
-
-		if (forcesize)
-		{
-			setSize(image.getSize());
-		}
-
-		for (uint32_t x = 0; x < image.getSize().x; ++x)
-		{
-			for (uint32_t y = 0; y < image.getSize().y; ++y)
-			{
-				Ref<Tile> tile = getTile(MapKey(x, y));
-				uint32_t pixel = image.getPixel(x, y).toInteger();
-				auto& [id, rect] = convertMap.at(pixel);
-
-				tile->setID(id);
-				tile->setTextureRect(rect);
-			}
-		}
+		m_SpriteSheet.setSpriteSize(newsize);
 	}
 
 	void TileMap::update()
 	{
 		for (auto& [position, tile] : m_TileMap)
 		{
-			tile->setTextureRect(IntRect({ tile->getID() * m_SpriteSize.x, 0 }, { m_SpriteSize.x, m_SpriteSize.y }));
+			tile->setTexture(m_SpriteSheet.getTexture());
+			tile->setTextureRect(m_SpriteSheet.getRect(tile->getID()));
 		}
 	}
 

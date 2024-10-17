@@ -12,7 +12,8 @@ namespace Peach
 	class PEACH_API Level
 	{
 	public:
-		Level(const std::filesystem::path& filepath);
+		Level() = default;
+		Level(const std::filesystem::path& filepath, const sf::Texture& texture);
 
 		void convertFile(const std::filesystem::path& filepath);
 

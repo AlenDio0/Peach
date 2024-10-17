@@ -8,25 +8,23 @@ namespace Peach
 {
 	using MapKey = Vec2u;
 	using Map = std::map<MapKey, Ref<Tile>>;
-	using ConvertMap = std::map<uint32_t, std::pair<TileID, IntRect>>;
 
 	class PEACH_API TileMap
 	{
 	public:
-		TileMap(const Vec2u& mapsize, const Vec2f& tilesize, const Vec2u& spritesize);
+		TileMap();
+		TileMap(const sf::Texture& texture);
+		TileMap(const Vec2u& mapsize, const Vec2f& tilesize, const sf::Texture& texture, const Vec2u& spritesize);
 		~TileMap() = default;
 
 		const Vec2u& getSize() const;
 		const Vec2f& getTileSize() const;
-		const Vec2u& getSpriteSize() const;
 		Ref<Tile> getTile(const MapKey& key);
 
 		void setTexture(const sf::Texture& texture, bool resetrect = false);
 		void setSize(const Vec2u& newsize);
 		void setTileSize(const Vec2f& newsize);
 		void setSpriteSize(const Vec2u& newsize);
-
-		void convertImage(const sf::Image& image, const ConvertMap& convertMap, bool forcesize = true);
 
 		void update();
 
@@ -37,7 +35,7 @@ namespace Peach
 
 		Vec2u m_Size;
 		Vec2f m_TileSize;
-		Vec2u m_SpriteSize;
+		SpriteSheet m_SpriteSheet;
 	private:
 		void resizeX(const uint32_t& sizex);
 		void resizeY(const uint32_t& sizey);
