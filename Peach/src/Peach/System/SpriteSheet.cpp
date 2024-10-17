@@ -43,7 +43,7 @@ namespace Peach
 
 		const Vec2u& position = { id % m_Size.x, id / m_Size.x };
 
-		return IntRect(position, m_SpriteSize);
+		return IntRect(position * m_SpriteSize, m_SpriteSize);
 	}
 
 	void SpriteSheet::adjustSize()
