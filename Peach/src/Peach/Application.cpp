@@ -4,15 +4,13 @@
 namespace Peach
 {
 	Application::Application()
-		: m_Data(new Data())
+		: m_Data(MakeRef<Data>())
 	{
 		PEACH_CORE_INFO("Applicazione costruita");
 	}
 
 	Application::~Application()
 	{
-		delete m_Data;
-
 		PEACH_CORE_INFO("Applicazione distrutta");
 	}
 

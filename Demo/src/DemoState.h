@@ -6,7 +6,7 @@
 class DemoState : public Peach::State
 {
 public:
-	DemoState(Peach::DataRef data);
+	DemoState(Peach::Ref<Peach::Data> data);
 	~DemoState();
 
 	void onEvent() override;

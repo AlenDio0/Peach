@@ -13,7 +13,7 @@ namespace Peach
 	class PEACH_API State : public IState
 	{
 	public:
-		State(DataRef data, const std::string& name = "State");
+		State(Ref<Data> data, const std::string& name = "State");
 		virtual ~State();
 
 		virtual void onAdd();
@@ -24,7 +24,7 @@ namespace Peach
 
 		const std::string& getName() const;
 	protected:
-		DataRef m_Data;
+		Ref<Data> m_Data;
 	private:
 		std::string m_DebugName;
 	};

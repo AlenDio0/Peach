@@ -3,7 +3,7 @@
 
 namespace Peach
 {
-	State::State(DataRef state, const std::string& name)
+	State::State(Ref<Data> state, const std::string& name)
 		: m_Data(state), m_DebugName(name)
 	{
 

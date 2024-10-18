@@ -18,7 +18,7 @@ namespace Peach
 
 		void run();
 	protected:
-		DataRef m_Data;
+		Ref<Data> m_Data;
 	};
 
 	//To be defined in CLIENT

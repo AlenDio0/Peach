@@ -1,6 +1,6 @@
 #include "GameState.h"
 
-GameState::GameState(Peach::DataRef data)
+GameState::GameState(Peach::Ref<Peach::Data> data)
 	: Peach::State(data, "Game"), m_Level("level.txt", m_Data->assets.getAsset<Peach::Texture>("TEXTURE_TILES"))
 {
 	initBinds();

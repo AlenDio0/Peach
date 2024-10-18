@@ -26,6 +26,4 @@ namespace Peach
 		StateMachine machine;
 		AssetManager assets;
 	};
-
-	using DataRef = Data*;
 }
