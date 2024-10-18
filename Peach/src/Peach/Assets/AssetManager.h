@@ -23,36 +23,36 @@ namespace Peach
 		}
 
 		template<typename T>
-		void loadAsset(const AssetKey& key, const std::string& path, bool force = true)
+		void loadAsset(const AssetKey& key, const std::filesystem::path& path, bool force = true)
 		{
-			PEACH_CORE_TRACE("AssetManager::loadAsset(key: {}, path: {}, force: {})", key, path, force);
+			PEACH_CORE_TRACE("AssetManager::loadAsset(key: {}, path: {}, force: {})", key, path.string(), force);
 			if (m_Assets[key])
 			{
 				if (force)
 				{
-					PEACH_CORE_WARN("AssetManager::loadAsset(key: {}, path: {}), Verra' rimpiazzato l'Asset precedente", key, path);
+					PEACH_CORE_WARN("AssetManager::loadAsset(key: {}, path: {}), Verra' rimpiazzato l'Asset precedente", key, path.string());
 				}
 				else
 				{
-					PEACH_CORE_WARN("AssetManager::loadAsset(key: {}, path: {}), Impossibile caricare Asset, rimpiazzo non forzato", key, path);
+					PEACH_CORE_WARN("AssetManager::loadAsset(key: {}, path: {}), Impossibile caricare Asset, rimpiazzo non forzato", key, path.string());
 					return;
 				}
 			}
 
-			if (T::getStaticType() == AssetType::None)
+			if (T::getType() == Asset::Type::None)
 			{
 				throw "AssetType non definito";
 			}
 
-			m_Assets[key] = static_cast<Ref<Asset>>(new T());
+			m_Assets[key] = Ref<Asset>(new T());
 
 			if (m_Assets[key]->load(path))
 			{
-				PEACH_CORE_INFO("AssetManager::loadAsset(key: {}, path: {}), Caricato Asset con successo", key, path);
+				PEACH_CORE_INFO("AssetManager::loadAsset(key: {}, path: {}), Caricato Asset con successo", key, path.string());
 			}
 			else
 			{
-				PEACH_CORE_ERROR("AssetManager::loadAsset(key: {}, path: {}), Caricamento Asset fallito", key, path);
+				PEACH_CORE_ERROR("AssetManager::loadAsset(key: {}, path: {}), Caricamento Asset fallito", key, path.string());
 			}
 		}
 

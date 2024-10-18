@@ -5,81 +5,68 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
+#include <filesystem>
+
 namespace Peach
 {
-	enum class AssetType
-	{
-		None = -1,
-		Texture,
-		Font,
-		Sound
-	};
-
 	class Asset
 	{
 	public:
-		virtual bool load(const std::string& path) = 0;
-
-		virtual AssetType getType() const
+		enum class Type
 		{
-			return AssetType::None;
+			None = 0,
+			Texture,
+			Font,
+			Sound
+		};
+	public:
+		virtual bool load(const std::filesystem::path& path) = 0;
+
+		static Type getType()
+		{
+			return Type::None;
 		}
 	};
 
 	class Texture : public sf::Texture, public Asset
 	{
 	public:
-		virtual bool load(const std::string& path)
+		virtual bool load(const std::filesystem::path& path)
 		{
-			return loadFromFile(path);
+			return loadFromFile(path.string());
 		}
 
-		static AssetType getStaticType()
+		static Type getType()
 		{
-			return AssetType::Texture;
-		}
-
-		AssetType getType() const
-		{
-			return getStaticType();
+			return Type::Texture;
 		}
 	};
 
 	class Font : public sf::Font, public Asset
 	{
 	public:
-		virtual bool load(const std::string& path)
+		virtual bool load(const std::filesystem::path& path)
 		{
-			return loadFromFile(path);
+			return loadFromFile(path.string());
 		}
 
-		static AssetType getStaticType()
+		static Type getType()
 		{
-			return AssetType::Font;
-		}
-
-		AssetType getType() const
-		{
-			return getStaticType();
+			return Type::Font;
 		}
 	};
 
 	class Sound : public sf::SoundBuffer, public Asset
 	{
 	public:
-		virtual bool load(const std::string& path)
+		virtual bool load(const std::filesystem::path& path)
 		{
-			return loadFromFile(path);
+			return loadFromFile(path.string());
 		}
 
-		static AssetType getStaticType()
+		static Type getType()
 		{
-			return AssetType::Sound;
-		}
-
-		AssetType getType() const
-		{
-			return getStaticType();
+			return Type::Sound;
 		}
 	};
 }
