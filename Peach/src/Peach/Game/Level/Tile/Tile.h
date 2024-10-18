@@ -6,7 +6,7 @@
 
 namespace Peach
 {
-	using TileType = uint16_t;
+	using TileID = uint32_t;
 
 	class PEACH_API Tile : public GameObject
 	{
@@ -14,12 +14,12 @@ namespace Peach
 		Tile(const Vec2f& size, const Vec2f& position = {});
 		Tile(const FloatRect& rect);
 
-		void setType(const TileType& type);
+		void setID(const TileID& id);
 
-		const TileType& getType() const;
+		const TileID& getID() const;
 
 		virtual void render(sf::RenderTarget* target);
 	private:
-		TileType m_Type;
+		TileID m_ID;
 	};
 }

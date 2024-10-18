@@ -1,7 +1,8 @@
 #pragma once
 #include <Peach/State/State.h>
 
-#include <Peach\Game\Tile\TileMap.h>
+#include <Peach\Game\Level\Level.h>
+#include <Peach\Game\Player\PlayerController.h>
 
 class GameState : public Peach::State
 {
@@ -13,9 +14,10 @@ public:
 	void onUpdate() override;
 	void onRender() override;
 private:
-	Peach::TileMap m_Map;
-
-	Peach::IntRect m_View;
+	Peach::Level m_Level;
+	Peach::PlayerController m_Controller;
 	// TODO: Add a player and boxes to collide
+private:
+	void initBinds();
 };
 

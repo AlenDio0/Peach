@@ -18,7 +18,13 @@ namespace Peach
 			: x(x), y(y)
 		{
 		}
-		Vec2(const sf::Vector2<T>& vec)
+		template<typename U>
+		Vec2(const Vec2<U>& vec)
+			: x(vec.x), y(vec.y)
+		{
+		}
+		template<typename U>
+		Vec2(const sf::Vector2<U>& vec)
 			: x(vec.x), y(vec.y)
 		{
 		}

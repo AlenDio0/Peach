@@ -4,7 +4,7 @@
 namespace Peach
 {
 	Tile::Tile(const Vec2f& size, const Vec2f& position)
-		: GameObject(size, position, { {}, size }), m_Type(0)
+		: GameObject(size, position, { {}, size }), m_ID(0)
 	{
 		update();
 	}
@@ -14,14 +14,14 @@ namespace Peach
 	{
 	}
 
-	void Tile::setType(const TileType& type)
+	void Tile::setID(const TileID& type)
 	{
-		m_Type = type;
+		m_ID = type;
 	}
 
-	const TileType& Tile::getType() const
+	const TileID& Tile::getID() const
 	{
-		return m_Type;
+		return m_ID;
 	}
 
 	void Tile::render(sf::RenderTarget* target)
