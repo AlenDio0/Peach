@@ -30,9 +30,9 @@ namespace Peach
 		return m_DebugName;
 	}
 
-	void State::addState(IState* newstate, bool replacing);
+	void State::addState(IState* newstate, bool replacing)
 	{
-		m_Data->machine.addState(MakeRef<IState>(newstate), replacing);
+		m_Data->machine.addState(Ref<IState>(newstate), replacing);
 	}
 
 	void State::removeState()
