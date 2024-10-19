@@ -20,16 +20,15 @@ namespace Peach
 	{
 		using WKey = WindowConfig::Key;
 
-		std::string title = m_Config[WKey::TITLE];
-		uint32_t width = std::abs(stoi(m_Config[WKey::WIDTH]));
-		uint32_t height = std::abs(stoi(m_Config[WKey::HEIGHT]));
-		uint32_t style = stoi(m_Config[WKey::STYLE]);
-		bool vsync = stoi(m_Config[WKey::VSYNC]);
-		uint32_t fpslimit = std::abs(stoi(m_Config[WKey::FPSLIMIT]));
+		std::string title = m_Config.getValue<std::string>(WKey::TITLE);
+		Vec2u size = { m_Config.getValue<uint32_t>(WKey::WIDTH), m_Config.getValue<uint32_t>(WKey::HEIGHT) };
+		uint32_t style = m_Config.getValue<uint32_t>(WKey::STYLE);
+		bool vsync = m_Config.getValue<bool>(WKey::VSYNC);
+		uint32_t fpslimit = m_Config.getValue<uint32_t>(WKey::FPSLIMIT);
 
-		PEACH_CORE_INFO("Window::create(), [title: {}, size: {} {}, vsync: {}, fpslimit: {}]", title, width, height, vsync, fpslimit);
+		PEACH_CORE_INFO("Window::create(), [title: {}, size: {}, vsync: {}, fpslimit: {}]", title, size, vsync, fpslimit);
 
-		m_Window->create(sf::VideoMode(width, height), title, style);
+		m_Window->create(sf::VideoMode(size.x, size.y), title, style);
 		m_Window->setVerticalSyncEnabled(vsync);
 		m_Window->setFramerateLimit(fpslimit);
 

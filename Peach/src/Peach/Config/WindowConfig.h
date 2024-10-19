@@ -25,11 +25,11 @@ namespace Peach
 		virtual void generate()
 		{
 			setValue(TITLE, "PeachApp");
-			setValue(WIDTH, "500");
-			setValue(HEIGHT, "500");
-			setValue(STYLE, "7");
-			setValue(VSYNC, "1");
-			setValue(FPSLIMIT, "120");
+			setValue(WIDTH, 500);
+			setValue(HEIGHT, 500);
+			setValue(STYLE, 7);
+			setValue(VSYNC, true);
+			setValue(FPSLIMIT, 120);
 		}
 
 		virtual std::string getKeyToString(const INIKey& key) const

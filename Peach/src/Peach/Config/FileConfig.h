@@ -3,6 +3,7 @@
 #include "Peach/Core.h"
 
 #include <mini/ini.h>
+#include <sstream>
 
 namespace Peach
 {
@@ -18,10 +19,31 @@ namespace Peach
 		void validateFile();
 		virtual void generate() = 0;
 
-		INIType operator[](const INIKey& key) const;
-		INIType getValue(const INIKey& key) const;
+		template<typename T>
+		T getValue(const INIKey& key) const
+		{
+			const auto& keystr = getKeyToString(key);
+
+			m_File.read(m_Structure);
+			INIType strvalue = m_Structure[m_Name][keystr];
+			std::stringstream ss(strvalue);
+			T value;
+			if (!(ss >> value))
+			{
+				throw "Impossibile convertire stringa a T";
+			}
+
+			return value;
+		}
 
 		void setValue(const INIKey& key, const INIType& value);
+		template<typename T>
+		void setValue(const INIKey& key, const T& value)
+		{
+			std::stringstream ss;
+			ss << value;
+			setValue(key, ss.str());
+		}
 
 		virtual std::string getKeyToString(const INIKey& key) const = 0;
 	protected:

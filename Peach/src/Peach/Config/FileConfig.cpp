@@ -19,19 +19,6 @@ namespace Peach
 		}
 	}
 
-	INIType FileConfig::operator[](const INIKey& key) const
-	{
-		return getValue(key);
-	}
-
-	INIType FileConfig::getValue(const INIKey& key) const
-	{
-		const auto& keystr = getKeyToString(key);
-
-		m_File.read(m_Structure);
-		return m_Structure[m_Name][keystr];
-	}
-
 	void FileConfig::setValue(const INIKey& key, const INIType& value)
 	{
 		const auto& keystr = getKeyToString(key);
