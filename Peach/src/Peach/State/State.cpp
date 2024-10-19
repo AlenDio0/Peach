@@ -29,4 +29,14 @@ namespace Peach
 	{
 		return m_DebugName;
 	}
+
+	void State::addState(IState* newstate, bool replacing);
+	{
+		m_Data->machine.addState(MakeRef<IState>(newstate), replacing);
+	}
+
+	void State::removeState()
+	{
+		m_Data->machine.removeState();
+	}
 }

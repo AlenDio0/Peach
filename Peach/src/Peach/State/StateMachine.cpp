@@ -48,21 +48,21 @@ namespace Peach
 		}
 	}
 
-	void StateMachine::addState(Ref<IState> newState, bool isReplacing)
+	void StateMachine::addState(Ref<IState> newstate, bool replacing)
 	{
-		PEACH_CORE_INFO("StateMachine::addState(newState: {}, isReplacing: {})", newState ? "EXISTS" : "NULL", isReplacing);
+		PEACH_CORE_INFO("StateMachine::addState(newState: {}, isReplacing: {})", newstate ? "EXISTS" : "NULL", replacing);
 
-		if (!newState)
+		if (!newstate)
 		{
 			PEACH_CORE_ERROR("StateMachine::addState(...), Impossibile aggiungere uno State nullo");
 
 			return;
 		}
 
-		m_NewState = std::move(newState);
+		m_NewState = std::move(newstate);
 
 		m_IsAdding = true;
-		m_IsReplacing = isReplacing;
+		m_IsReplacing = replacing;
 	}
 
 	void StateMachine::removeState()
