@@ -23,10 +23,16 @@ namespace Peach
 		return m_Objects[key];
 	}
 
-	void GUIManager::add(const uint32_t& key, GUIObject* value)
+	void GUIManager::add(const uint32_t& key, GUIObject* object)
 	{
-		PEACH_CORE_TRACE("GUIManager::add(key: {}, object: {})", key, value ? "EXISTS" : "NULL");
-		m_Objects[key] = Ref<GUIObject>(value);
+		PEACH_CORE_TRACE("GUIManager::add(key: {}, object: {})", key, object ? "EXISTS" : "NULL");
+		if (!object)
+		{
+			PEACH_CORE_ERROR("GUIManager::add(...), Impossibile aggiungere un GUIObject nullo");
+			return;
+		}
+
+		m_Objects[key] = Ref<GUIObject>(object);
 	}
 
 	sf::Cursor::Type GUIManager::getCursor() const
