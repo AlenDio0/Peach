@@ -26,7 +26,7 @@ namespace Peach
 		return *m_Texture;
 	}
 
-	const SpriteID& SpriteSheet::getMaxID() const
+	SpriteID SpriteSheet::getMaxID() const
 	{
 		return m_Size.x * m_Size.y;
 	}
@@ -35,7 +35,7 @@ namespace Peach
 	{
 		const int& max = getMaxID();
 
-		if (id >= max)
+		if ((int)id >= max)
 		{
 			PEACH_CORE_WARN("SpriteSheet::getRect(id: {}), ID fuori dal range [maxid: {}], ritornato l'ultimo ID", id, max);
 			return getRect(max - 1);
