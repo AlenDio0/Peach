@@ -12,15 +12,11 @@ namespace Peach
 
 	void FileConfig::validateFile()
 	{
-		if (!isGood())
+		bool exists = std::filesystem::exists(m_Name + ".ini");
+		if (!exists)
 		{
 			generate();
 		}
-	}
-
-	const bool& FileConfig::isGood() const
-	{
-		return std::filesystem::exists(m_Name + ".ini");
 	}
 
 	INIType FileConfig::operator[](const INIKey& key) const
@@ -30,14 +26,18 @@ namespace Peach
 
 	INIType FileConfig::getValue(const INIKey& key) const
 	{
+		const auto& keystr = getKeyToString(key);
+
 		m_File.read(m_Structure);
-		return m_Structure[m_Name][getKeyToString(key)];
+		return m_Structure[m_Name][keystr];
 	}
 
 	void FileConfig::setValue(const INIKey& key, const INIType& value)
 	{
+		const auto& keystr = getKeyToString(key);
+
 		m_File.read(m_Structure);
-		m_Structure[m_Name][getKeyToString(key)] = value;
+		m_Structure[m_Name][keystr] = value;
 		m_File.write(m_Structure);
 	}
 }

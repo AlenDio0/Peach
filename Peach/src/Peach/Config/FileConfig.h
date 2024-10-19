@@ -15,7 +15,6 @@ namespace Peach
 		FileConfig(const std::string& name);
 		virtual ~FileConfig() = default;
 
-		const bool& isGood() const;
 		void validateFile();
 		virtual void generate() = 0;
 
