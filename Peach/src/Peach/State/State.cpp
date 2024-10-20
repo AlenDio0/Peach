@@ -6,7 +6,6 @@ namespace Peach
 	State::State(Ref<Data> state, const std::string& name)
 		: m_Data(state), m_DebugName(name)
 	{
-
 		PEACH_CORE_TRACE("State \"{}\" costruito", m_DebugName);
 	}
 
@@ -28,11 +27,6 @@ namespace Peach
 	const std::string& State::getName() const
 	{
 		return m_DebugName;
-	}
-
-	void State::addState(IState* newstate, bool replacing)
-	{
-		m_Data->machine.addState(Ref<IState>(newstate), replacing);
 	}
 
 	void State::removeState()

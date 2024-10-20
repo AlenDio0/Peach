@@ -4,15 +4,13 @@
 namespace Peach
 {
 	Window::Window()
-		: m_Window(new sf::RenderWindow())
+		: m_Window(MakeScope<sf::RenderWindow>())
 	{
 		PEACH_CORE_INFO("Window costruito");
 	}
 
 	Window::~Window()
 	{
-		delete m_Window;
-
 		PEACH_CORE_INFO("Window distrutto");
 	}
 
@@ -66,7 +64,7 @@ namespace Peach
 
 	sf::RenderTarget* Window::getRenderer()
 	{
-		return m_Window;
+		return m_Window.get();
 	}
 
 	void Window::display()

@@ -1,7 +1,7 @@
 #include "GameState.h"
 
 GameState::GameState(Peach::Ref<Peach::Data> data)
-	: Peach::State(data, "Game"), m_Level("level.txt", m_Data->assets.getAsset<Peach::Texture>("TEXTURE_TILES"))
+	: Peach::State(data, "Game"), m_Level("level.txt", getAsset<Peach::Texture>("TEXTURE_TILES"))
 {
 	initBinds();
 }
@@ -48,7 +48,7 @@ void GameState::initBinds()
 	*/
 	m_Controller.bind(sf::Keyboard::Escape,
 		[&]() {
-			m_Data->machine.removeState();
+			removeState();
 		}, "Rimuove lo Stato attuale", true);
 	/*
 	m_Controller.bind(sf::Keyboard::Num1,

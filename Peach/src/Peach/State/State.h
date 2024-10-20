@@ -26,7 +26,11 @@ namespace Peach
 	protected:
 		Ref<Data> m_Data;
 	protected:
-		void addState(IState* newstate, bool replacing);
+		template<typename T>
+		void addState(bool replacing = false)
+		{
+			m_Data->machine.addState(MakeRef<T>(m_Data), replacing);
+		}
 		void removeState();
 
 		template<typename T>
