@@ -5,10 +5,18 @@
 #define PEACH_API __declspec(dllexport)
 #else
 #define PEACH_API __declspec(dllimport)
-#endif
+#endif // PEACH_BUILD_DLL
 #else
-#error Peach only supports Windows
-#endif
+#ifdef PEACH_PLATFORM_LINUX || PEACH_PLATFORM_MACOS
+#ifdef PEACH_BUILD_DLL
+#define PEACH_API __attribute__((visibility("default")))
+#else
+#define PEACH_API
+#endif // PEACH_BUILD_DLL
+#else
+#error Peach only supports Windows, Linux and macOS
+#endif // PEACH_PLATFORM_WINDOWS
+#endif // PEACH_PLATFORM_LINUX || PEACH_PLATFORM_MACOS
 
 #define PEACH_ASSERT(x, ...) { if (!(x)) { PEACH_CORE_ERROR("Asserzione fallita: {}", __VA_ARGS__); } }
 #define PEACH_RETURN_ASSERT(x, ...) { if (!(x)) { PEACH_CORE_ERROR("Asserzione fallita: {}", __VA_ARGS__); return false; } return true; }
