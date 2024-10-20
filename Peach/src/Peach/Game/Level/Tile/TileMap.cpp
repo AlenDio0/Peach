@@ -113,10 +113,10 @@ namespace Peach
 
 		if (convertrect)
 		{
-			x /= m_TileSize.x;
-			y /= m_TileSize.y;
-			width /= m_TileSize.x;
-			height /= m_TileSize.y;
+			x /= (int)m_TileSize.x;
+			y /= (int)m_TileSize.y;
+			width /= (int)m_TileSize.x;
+			height /= (int)m_TileSize.y;
 		}
 
 		const bool& useview = view != IntRect(0, 0, m_Size.x, m_Size.y);

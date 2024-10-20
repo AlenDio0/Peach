@@ -20,7 +20,7 @@ namespace Peach
 		void setTexture(const sf::Texture& texture, bool resetrect = false);
 		void setTextureRect(const IntRect& rect);
 
-		const Vec2f& getSize() const;
+		Vec2f getSize() const;
 		const Vec2f& getPosition() const;
 		const FloatRect& getHitbox() const;
 
