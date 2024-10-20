@@ -16,7 +16,7 @@ namespace Peach
 
 		Ref<GUIObject> operator[](const uint32_t& key);
 
-		void add(const uint32_t& key, GUIObject* value);
+		void add(const uint32_t& key, GUIObject* object);
 
 		sf::Cursor::Type getCursor() const;
 
