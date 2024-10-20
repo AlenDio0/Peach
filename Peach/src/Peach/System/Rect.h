@@ -18,14 +18,14 @@ namespace Peach
 			: x(x), y(y), width(width), height(height)
 		{
 		}
-		Rect(const Vec2<T>& position, const Vec2<T> size)
-			: x(position.x), y(position.y), width(size.x), height(size.y)
-		{
-
-		}
 		template<typename U>
 		Rect(const Rect<U>& rect)
 			: x(rect.x), y(rect.y), width(rect.width), height(rect.height)
+		{
+		}
+		template<typename U>
+		Rect(const Vec2<U>& position, const Vec2<U>& size)
+			: x(position.x), y(position.y), width(size.x), height(size.y)
 		{
 		}
 		template<typename U>
@@ -34,49 +34,9 @@ namespace Peach
 		{
 		}
 
-		const Rect& operator+(const Rect& r) const
+		operator sf::Rect<T>() const
 		{
-			return Rect(x + r.x, y + r.y, width + r.width, height + r.height);
-		}
-		const Rect& operator+(const T& r) const
-		{
-			return Rect(x + r, y + r, width + r, height + r);
-		}
-
-		const Rect& operator-(const Rect& r) const
-		{
-			return Rect(x - r.x, y - r.y, width - r.width, height - r.height);
-		}
-		const Rect& operator-(const T& r) const
-		{
-			return Rect(x - r, y - r, width - r, height - r);
-		}
-
-		const Rect& operator*(const Rect& r) const
-		{
-			return Rect(x * r.x, y * r.y, width * r.width, height * r.height);
-		}
-		const Rect& operator*(const T& r) const
-		{
-			return Rect(x * r, y * r, width * r, height * r);
-		}
-
-		const Rect& operator/(const Rect& r) const
-		{
-			return Rect(x / r.x, y / r.y, width / r.width, height / r.height);
-		}
-		const Rect& operator/(const T& r) const
-		{
-			return Rect(x / r, y / r, width / r, height / r);
-		}
-
-		bool operator==(const Rect& r) const
-		{
-			return x == r.x && y == r.y && width == r.width && height == r.height;
-		}
-		bool operator!=(const Rect& r) const
-		{
-			return !(*this == r);
+			return sf::Rect<T>(x, y, width, height);
 		}
 
 		Rect& operator=(const sf::Rect<T>& r)
@@ -89,9 +49,49 @@ namespace Peach
 			return *this;
 		}
 
-		operator sf::Rect<T>() const
+		Rect operator+(const Rect& r) const
 		{
-			return sf::Rect<T>(x, y, width, height);
+			return Rect(x + r.x, y + r.y, width + r.width, height + r.height);
+		}
+		Rect operator+(const T& r) const
+		{
+			return Rect(x + r, y + r, width + r, height + r);
+		}
+
+		Rect operator-(const Rect& r) const
+		{
+			return Rect(x - r.x, y - r.y, width - r.width, height - r.height);
+		}
+		Rect operator-(const T& r) const
+		{
+			return Rect(x - r, y - r, width - r, height - r);
+		}
+
+		Rect operator*(const Rect& r) const
+		{
+			return Rect(x * r.x, y * r.y, width * r.width, height * r.height);
+		}
+		Rect operator*(const T& r) const
+		{
+			return Rect(x * r, y * r, width * r, height * r);
+		}
+
+		Rect operator/(const Rect& r) const
+		{
+			return Rect(x / r.x, y / r.y, width / r.width, height / r.height);
+		}
+		Rect operator/(const T& r) const
+		{
+			return Rect(x / r, y / r, width / r, height / r);
+		}
+
+		bool operator==(const Rect& r) const
+		{
+			return x == r.x && y == r.y && width == r.width && height == r.height;
+		}
+		bool operator!=(const Rect& r) const
+		{
+			return !(*this == r);
 		}
 	};
 
@@ -105,5 +105,6 @@ namespace Peach
 	struct fmt::formatter<Rect<T>> : fmt::ostream_formatter {};
 
 	using IntRect = Rect<int>;
+	using UIntRect = Rect<unsigned int>;
 	using FloatRect = Rect<float>;
 }

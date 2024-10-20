@@ -29,38 +29,51 @@ namespace Peach
 		{
 		}
 
-		const Vec2& operator+(const Vec2& r) const
+		operator sf::Vector2<T>() const
+		{
+			return sf::Vector2<T>(x, y);
+		}
+
+		Vec2<T>& operator=(const sf::Vector2<T>& r)
+		{
+			x = r.x;
+			y = r.y;
+
+			return *this;
+		}
+
+		Vec2 operator+(const Vec2& r) const
 		{
 			return Vec2(x + r.x, y + r.y);
 		}
-		const Vec2& operator+(const T& r) const
+		Vec2 operator+(const T& r) const
 		{
 			return Vec2(x + r, y + r);
 		}
 
-		const Vec2& operator-(const Vec2& r) const
+		Vec2 operator-(const Vec2& r) const
 		{
 			return Vec2(x - r.x, y - r.y);
 		}
-		const Vec2& operator-(const T& r) const
+		Vec2 operator-(const T& r) const
 		{
 			return Vec2(x - r, y - r);
 		}
 
-		const Vec2& operator*(const Vec2& r) const
+		Vec2 operator*(const Vec2& r) const
 		{
 			return Vec2(x * r.x, y * r.y);
 		}
-		const Vec2& operator*(const T& r) const
+		Vec2 operator*(const T& r) const
 		{
 			return Vec2(x * r, y * r);
 		}
 
-		const Vec2& operator/(const Vec2& r) const
+		Vec2 operator/(const Vec2& r) const
 		{
 			return Vec2(x / r.x, y / r.y);
 		}
-		const Vec2& operator/(const T& r) const
+		Vec2 operator/(const T& r) const
 		{
 			return Vec2(x / r, y / r);
 		}
@@ -81,19 +94,6 @@ namespace Peach
 		bool operator<(const Vec2& r) const
 		{
 			return x == r.x ? y < r.y : x < r.x;
-		}
-
-		Vec2<T>& operator=(const sf::Vector2<T>& r)
-		{
-			x = r.x;
-			y = r.y;
-
-			return *this;
-		}
-
-		operator sf::Vector2<T>() const
-		{
-			return sf::Vector2<T>(x, y);
 		}
 	};
 
