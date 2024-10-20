@@ -25,6 +25,15 @@ namespace Peach
 		const std::string& getName() const;
 	protected:
 		Ref<Data> m_Data;
+	protected:
+		void addState(IState* newstate, bool replacing);
+		void removeState();
+
+		template<typename T>
+		T& getAsset(const AssetKey& key)
+		{
+			return m_Data->assets.getAsset<T>(key);
+		}
 	private:
 		std::string m_DebugName;
 	};

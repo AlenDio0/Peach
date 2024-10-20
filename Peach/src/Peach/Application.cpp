@@ -14,16 +14,6 @@ namespace Peach
 		PEACH_CORE_INFO("Applicazione distrutta");
 	}
 
-	void Application::addState(Ref<IState> newState, bool isReplacing)
-	{
-		m_Data->machine.addState(newState, isReplacing);
-	}
-
-	void Application::removeState()
-	{
-		m_Data->machine.removeState();
-	}
-
 	void Application::run()
 	{
 		const std::chrono::microseconds FRAME_DURATION(16667);
@@ -59,5 +49,15 @@ namespace Peach
 		} while (m_Data->window.isRunning());
 
 		PEACH_CORE_INFO("Application::run(), Applicazione chiusa nello State \"{}\"", m_Data->machine.getCurrentState()->getName());
+	}
+
+	void Application::addState(Ref<IState> newstate, bool replacing)
+	{
+		m_Data->machine.addState(newstate, replacing);
+	}
+
+	void Application::removeState()
+	{
+		m_Data->machine.removeState();
 	}
 }
