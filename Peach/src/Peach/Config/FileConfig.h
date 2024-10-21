@@ -61,7 +61,7 @@ namespace Peach
 			const auto& keystr = getKeyToString(key);
 
 			m_File.read(m_Structure);
-			m_Structure[m_Name][keystr] = value;
+			m_Structure[section][keystr] = value;
 			m_File.write(m_Structure);
 		}
 		template<typename T>
