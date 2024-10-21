@@ -43,6 +43,36 @@ namespace Peach
 		}
 	}
 
+	std::vector<Ref<Tile>> TileMap::getTiles(const UIntRect& rect)
+	{
+		const size_t& map_area = (size_t)(m_Size.x * m_Size.y);
+		const size_t& rect_areapos = (size_t)((rect.x + rect.width) * (rect.y + rect.height));
+
+		if (rect_areapos == 0)
+		{
+			return getTiles({ {}, m_Size });
+		}
+		else if (map_area < rect_areapos)
+		{
+			PEACH_CORE_ERROR("TileMap::getTiles(rect: {}), Il Rect supera la grandezza del TileMap [size: {}]", rect, m_Size);
+			return {};
+		}
+
+		const size_t& rect_area = (size_t)(rect.width * rect.height);
+		std::vector<Ref<Tile>> tiles;
+		tiles.reserve(rect_area);
+
+		for (uint32_t x = rect.x; x < rect.width + rect.x; ++x)
+		{
+			for (uint32_t y = rect.y; y < rect.height + rect.y; ++y)
+			{
+				tiles.push_back(m_TileMap[MapKey(x, y)]);
+			}
+		}
+
+		return tiles;
+	}
+
 	void TileMap::setTexture(const sf::Texture& texture, bool resetrect)
 	{
 		m_SpriteSheet.setTexture(texture);

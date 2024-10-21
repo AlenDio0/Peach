@@ -20,6 +20,7 @@ namespace Peach
 		const Vec2u& getSize() const;
 		const Vec2f& getTileSize() const;
 		Ref<Tile> getTile(const MapKey& key);
+		std::vector<Ref<Tile>> getTiles(const UIntRect& rect = {});
 
 		void setTexture(const sf::Texture& texture, bool resetrect = false);
 		void setSize(const Vec2u& newsize);
