@@ -5,6 +5,8 @@
 #include "Asset.h"
 #include "Peach/Config/AssetConfig.h"
 
+#include <optional>
+
 namespace Peach
 {
 	using AssetKey = std::string;
@@ -48,8 +50,16 @@ namespace Peach
 		}
 
 		template<typename T>
-		void loadAsset(const AssetKey& key, const std::filesystem::path& path, bool force = true)
+		void loadAsset(AssetKey key, const std::filesystem::path& path, bool force = true)
 		{
+			for (auto& c : key)
+			{
+				if (c >= 'A' && c <= 'Z')
+				{
+					c += 32;
+				}
+			}
+
 			PEACH_CORE_TRACE("AssetManager::loadAsset(key: {}, path: {}, force: {})", key, path.string(), force);
 			if (m_Assets[key])
 			{
@@ -82,8 +92,16 @@ namespace Peach
 		}
 
 		template<typename T>
-		T& getAsset(const AssetKey& key)
+		T& getAsset(AssetKey key)
 		{
+			for (auto& c : key)
+			{
+				if (c >= 'A' && c <= 'Z')
+				{
+					c += 32;
+				}
+			}
+
 			try
 			{
 				return *static_cast<T*>(m_Assets.at(key).get());
