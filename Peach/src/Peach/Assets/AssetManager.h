@@ -3,6 +3,7 @@
 #include "Peach/Core.h"
 
 #include "Asset.h"
+#include "Peach/Config/AssetConfig.h"
 
 namespace Peach
 {
@@ -15,6 +16,30 @@ namespace Peach
 		AssetManager()
 		{
 			PEACH_CORE_TRACE("AssetManager costruito");
+
+			for (const auto& [section, map] : m_Config.getStructure())
+			{
+				for (const auto& [key, path] : map)
+				{
+					if (path.empty())
+					{
+						continue;
+					}
+
+					if (section == "texture")
+					{
+						loadAsset<Texture>(key, path, true);
+					}
+					else if (section == "font")
+					{
+						loadAsset<Font>(key, path, true);
+					}
+					else if (section == "sound")
+					{
+						loadAsset<Sound>(key, path, true);
+					}
+				}
+			}
 		}
 
 		~AssetManager()
@@ -63,5 +88,6 @@ namespace Peach
 		}
 	private:
 		AssetMap m_Assets;
+		AssetConfig m_Config;
 	};
 }
