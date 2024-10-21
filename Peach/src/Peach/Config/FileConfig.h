@@ -20,12 +20,12 @@ namespace Peach
 		virtual void generate() = 0;
 
 		template<typename T>
-		T getValue(const INIKey& key) const
+		T getValue(const INIType& section, const INIKey& key) const
 		{
 			const auto& keystr = getKeyToString(key);
 
 			m_File.read(m_Structure);
-			INIType strvalue = m_Structure[m_Name][keystr];
+			INIType strvalue = m_Structure[section][keystr];
 			std::stringstream ss(strvalue);
 			T value;
 			if (!(ss >> value))
@@ -35,14 +35,24 @@ namespace Peach
 
 			return value;
 		}
-
-		void setValue(const INIKey& key, const INIType& value);
 		template<typename T>
-		void setValue(const INIKey& key, const T& value)
+		T getValue(const INIKey& key) const
+		{
+			return getValue<T>(m_Name, key)
+		}
+
+		void setValue(const INIType& section, const INIKey& key, const INIType& value);
+		template<typename T>
+		void setValue(const INIType& section, const INIKey& key, const T& value)
 		{
 			std::stringstream ss;
 			ss << value;
-			setValue(key, ss.str());
+			setValue(section, key, ss.str());
+		}
+		template<typename T>
+		void setValue(const INIKey& key, const T& value)
+		{
+			setValue<T>(m_Name, key, ss.str());
 		}
 
 		virtual std::string getKeyToString(const INIKey& key) const = 0;

@@ -19,7 +19,7 @@ namespace Peach
 		}
 	}
 
-	void FileConfig::setValue(const INIKey& key, const INIType& value)
+	void FileConfig::setValue(const INIType& section, const INIKey& key, const INIType& value)
 	{
 		const auto& keystr = getKeyToString(key);
 
