@@ -14,15 +14,15 @@ namespace Peach
 			validateFile();
 		}
 
-		const std::string& getTexture(const Key& key)
+		std::string getTexture(const Key& key)
 		{
 			return getValue<std::string>("texture", key);
 		}
-		const std::string& getFont(const Key& key)
+		std::string getFont(const Key& key)
 		{
 			return getValue<std::string>("font", key);
 		}
-		const std::string& getSound(const Key& key)
+		std::string getSound(const Key& key)
 		{
 			return getValue<std::string>("sound", key);
 		}
