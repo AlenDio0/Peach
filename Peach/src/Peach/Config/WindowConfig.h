@@ -3,10 +3,12 @@
 
 namespace Peach
 {
-	class PEACH_API WindowConfig : public FileConfig
+	using WKey = uint8_t;
+
+	class PEACH_API WindowConfig : public FileConfig<WKey>
 	{
 	public:
-		enum Key : INIKey
+		enum Key : WKey
 		{
 			TITLE,
 			WIDTH,
@@ -32,7 +34,7 @@ namespace Peach
 			setValue(FPSLIMIT, 120);
 		}
 
-		virtual std::string getKeyToString(const INIKey& key) const
+		virtual std::string getKeyToString(const WKey& key) const
 		{
 			switch (key)
 			{
