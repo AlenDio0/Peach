@@ -31,6 +31,7 @@ namespace Peach
 
 		const mINI::INIStructure& getStructure()
 		{
+			m_File.read(m_Structure);
 			return m_Structure;
 		}
 
