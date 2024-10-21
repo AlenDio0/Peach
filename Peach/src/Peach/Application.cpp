@@ -7,11 +7,18 @@ namespace Peach
 		: m_Data(MakeRef<Data>())
 	{
 		PEACH_CORE_INFO("Applicazione costruita");
+
+		m_Data->window.create();
 	}
 
 	Application::~Application()
 	{
 		PEACH_CORE_INFO("Applicazione distrutta");
+	}
+
+	void Application::removeState()
+	{
+		m_Data->machine.removeState();
 	}
 
 	void Application::run()
@@ -49,15 +56,5 @@ namespace Peach
 		} while (m_Data->window.isRunning());
 
 		PEACH_CORE_INFO("Application::run(), Applicazione chiusa nello State \"{}\"", m_Data->machine.getCurrentState()->getName());
-	}
-
-	void Application::addState(Ref<IState> newstate, bool replacing)
-	{
-		m_Data->machine.addState(newstate, replacing);
-	}
-
-	void Application::removeState()
-	{
-		m_Data->machine.removeState();
 	}
 }

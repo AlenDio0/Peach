@@ -13,18 +13,22 @@ namespace Peach
 		Application();
 		virtual ~Application();
 
-		void run();
-	protected:
-		Ref<Data> m_Data;
-	protected:
-		void addState(Ref<IState> newstate, bool replacing);
+		template<typename T>
+		void addState(bool replacing = false)
+		{
+			m_Data->machine.addState(MakeRef<T>(m_Data), replacing);
+		}
 		void removeState();
 
 		template<typename T>
 		void loadAsset(const AssetKey& key, const std::string& path, bool force = true)
 		{
-			m_Data->assets.loadAsset(key, path, force);
+			m_Data->assets.loadAsset<T>(key, path, force);
 		}
+
+		void run();
+	protected:
+		Ref<Data> m_Data;
 	};
 
 	//To be defined in CLIENT

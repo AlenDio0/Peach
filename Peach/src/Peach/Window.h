@@ -28,7 +28,7 @@ namespace Peach
 
 		bool pollEvent(sf::Event& event) const;
 	private:
-		sf::RenderWindow* m_Window;
+		Scope<sf::RenderWindow> m_Window;
 
 		WindowConfig m_Config;
 	};
