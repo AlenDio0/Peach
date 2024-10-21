@@ -84,7 +84,15 @@ namespace Peach
 		template<typename T>
 		T& getAsset(const AssetKey& key)
 		{
-			return *static_cast<T*>(m_Assets[key].get());
+			try
+			{
+				return *static_cast<T*>(m_Assets.at(key).get());
+			}
+			catch (const std::exception& e)
+			{
+				PEACH_CORE_ERROR("AssetManager::(key: {}), Catturata eccezione: {}", key, e.what());
+				return T();
+			}
 		}
 	private:
 		AssetMap m_Assets;
