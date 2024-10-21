@@ -29,6 +29,11 @@ namespace Peach
 		}
 		virtual void generate() = 0;
 
+		const mINI::INIStructure& getStructure()
+		{
+			return m_Structure;
+		}
+
 		template<typename T>
 		T getValue(const INIType& section, const TKey& key) const
 		{
