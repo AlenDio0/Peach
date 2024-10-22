@@ -48,7 +48,6 @@ namespace Peach
 	{
 		if (!m_Callback)
 		{
-			PEACH_CORE_WARN("Il callback non e' stato impostato per questo GUIObject");
 			return;
 		}
 

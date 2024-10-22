@@ -29,7 +29,7 @@ namespace Peach
 	void Button::setSize(const sf::Vector2f& size)
 	{
 		m_Container.setSize(size);
-		setCharSize((sf::Uint32)((size.x * size.y) / (size.x * 1.75f)));
+		setCharSize((sf::Uint32)(size.y / 1.75f));
 
 		setPosition(getPosition());
 	}

@@ -3,6 +3,7 @@
 
 #include "Button.h"
 #include "Checkbox.h"
+#include "TextBox.h"
 
 namespace Peach
 {
@@ -97,37 +98,59 @@ namespace Peach
 			}
 			break;
 		case sf::Event::MouseButtonPressed:
-			if (event.mouseButton.button == sf::Mouse::Button::Left)
+			if (event.mouseButton.button != sf::Mouse::Button::Left)
 			{
-				for (const auto& [key, value] : m_Objects)
+				break;
+			}
+
+			for (const auto& [key, value] : m_Objects)
+			{
+				const bool& is_cursor_on = value->isCursorOn(m_MousePosition);
+
+				if (value->getType() == GUIType::TextBox)
 				{
-					if (value->isCursorOn(m_MousePosition))
-					{
-						value->callback();
+					TextBox* textbox = static_cast<TextBox*>(value.get());
 
-						switch (value->getType())
-						{
-						case GUIType::Button:
-						{
-							Button* button = static_cast<Button*>(value.get());
-
-							button->setState(Button::State::PRESSED);
-
-							PEACH_CORE_TRACE("GUIManager::handleEvent(...), Premuto pulsante ({}, \"{}\")", key, button->getLabel().toAnsiString());
-						}
-						break;
-						case GUIType::Checkbox:
-						{
-							Checkbox* checkbox = static_cast<Checkbox*>(value.get());
-
-							checkbox->setActive(!checkbox->getActive());
-
-							PEACH_CORE_TRACE("GUIManager::handleEvent(...), Premuto checkbox ({}, \"{}\")", key, checkbox->getActive() ? "ATTIVATO" : "DISATTIVATO");
-						}
-						break;
-						}
-					}
+					textbox->setSelected(is_cursor_on);
 				}
+
+				if (!is_cursor_on)
+				{
+					continue;
+				}
+
+				value->callback();
+
+				switch (value->getType())
+				{
+				case GUIType::Button:
+				{
+					Button* button = static_cast<Button*>(value.get());
+
+					button->setState(Button::State::PRESSED);
+
+					PEACH_CORE_TRACE("GUIManager::handleEvent(...), Premuto pulsante ({}, \"{}\")", key, button->getLabel().toAnsiString());
+				}
+				break;
+				case GUIType::Checkbox:
+				{
+					Checkbox* checkbox = static_cast<Checkbox*>(value.get());
+
+					checkbox->setActive(!checkbox->getActive());
+
+					PEACH_CORE_TRACE("GUIManager::handleEvent(...), Premuto checkbox ({}, \"{}\")", key, checkbox->getActive() ? "ATTIVATO" : "DISATTIVATO");
+				}
+				break;
+				}
+			}
+			break;
+		case sf::Event::TextEntered:
+			auto& textboxes = getGUIObjects({ GUIType::TextBox });
+			for (auto& [key, value] : textboxes)
+			{
+				TextBox* textbox = static_cast<TextBox*>(value.get());
+
+				textbox->onTextEntered(event.text.unicode);
 			}
 			break;
 		}

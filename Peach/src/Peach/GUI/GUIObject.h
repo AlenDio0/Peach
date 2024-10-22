@@ -12,7 +12,8 @@ namespace Peach
 	{
 		None = 0,
 		Button,
-		Checkbox
+		Checkbox,
+		TextBox
 	};
 
 	class PEACH_API GUIObject
