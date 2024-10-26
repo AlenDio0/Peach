@@ -20,7 +20,7 @@ namespace Peach
 
 		sf::Cursor::Type getCursor() const;
 
-		std::vector<Ref<GUIObject>> getGUIObjects(const std::vector<GUIType>& types = {});
+		GUIObjectMap getGUIObjects(const std::vector<GUIType>& types = {});
 
 		void handleEvent(const sf::Event& event);
 		void update();
