@@ -49,21 +49,21 @@ namespace Peach
 		return sf::Cursor::Arrow;
 	}
 
-	GUIObjectMap GUIManager::getGUIObjects(const std::vector<GUIType>& types)
+	std::vector<Ref<GUIObject>> GUIManager::getGUIObjects(const std::vector<GUIType>& types)
 	{
 		if (types.empty())
 		{
 			return m_Objects;
 		}
 
-		GUIObjectMap objects;
+		std::vector<Ref<GUIObject>> objects;
 		for (const auto& type : types)
 		{
-			for (auto& [key, value] : m_Objects)
+			for (auto& [key, object] : m_Objects)
 			{
-				if (value->getType() == type)
+				if (object->getType() == type)
 				{
-					objects[key] = value;
+					objects.push_back(object);
 				}
 			}
 		}
@@ -146,9 +146,9 @@ namespace Peach
 			break;
 		case sf::Event::TextEntered:
 			auto& textboxes = getGUIObjects({ GUIType::TextBox });
-			for (auto& [key, value] : textboxes)
+			for (auto& object : textboxes)
 			{
-				TextBox* textbox = static_cast<TextBox*>(value.get());
+				TextBox* textbox = static_cast<TextBox*>(object.get());
 
 				textbox->onTextEntered(event.text.unicode);
 			}
