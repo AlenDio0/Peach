@@ -32,10 +32,9 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	);
 
 	std::vector<Peach::Button*> buttons;
-
-	for (auto& [key, value] : m_GUIManager.getGUIObjects({ Peach::GUIType::Button }))
+	for (auto& [key, button] : m_GUIManager.getGUIObjects<Peach::Button>(Peach::GUIType::Button))
 	{
-		buttons.push_back(static_cast<Peach::Button*>(value.get()));
+		buttons.push_back(button);
 	}
 
 	for (auto& button : buttons)
