@@ -20,10 +20,12 @@ namespace Peach
 		Ref<GUIObject> operator[](const uint32_t& key);
 
 		void add(const uint32_t& key, GUIObject* object);
+		void remove(const uint32_t& key);
+		void remove(GUIObject* object);
 
 		const sf::Cursor& getCursor() const;
 
-		template<typename T>
+		template<typename T = GUIObject>
 		RawMap<T> getGUIObjects(const GUIType& type)
 		{
 			RawMap<T> objects;

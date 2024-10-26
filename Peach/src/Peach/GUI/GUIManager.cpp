@@ -36,6 +36,23 @@ namespace Peach
 		m_Objects[key] = Ref<GUIObject>(object);
 	}
 
+	void GUIManager::remove(const uint32_t& key)
+	{
+		m_Objects.erase(key);
+	}
+
+	void GUIManager::remove(GUIObject* object)
+	{
+		for (auto& [key, value] : m_Objects)
+		{
+			if (value.get() == object)
+			{
+				remove(key);
+				break;
+			}
+		}
+	}
+
 	const sf::Cursor& GUIManager::getCursor() const
 	{
 		static sf::Cursor cursor;
