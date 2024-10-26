@@ -160,9 +160,9 @@ namespace Peach
 
 	void TextBox::update()
 	{
-		m_Container.setOutlineColor(m_SecondaryColor);
-		m_Container.setOutlineColor(m_PrimaryColor);
-		m_TextLabel.setFillColor(m_SecondaryColor);
+		m_Container.setOutlineColor(getSecondaryColor());
+		m_Container.setOutlineColor(getPrimaryColor());
+		m_TextLabel.setFillColor(getPrimaryColor());
 
 		if (!m_Selected)
 		{
@@ -176,7 +176,7 @@ namespace Peach
 			else
 			{
 				m_TextLabel.setStyle(sf::Text::Style::Regular);
-				m_TextLabel.setFillColor(m_PrimaryColor);
+				m_TextLabel.setFillColor(getPrimaryColor());
 			}
 
 			return;

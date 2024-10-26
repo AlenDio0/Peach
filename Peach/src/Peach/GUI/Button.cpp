@@ -90,29 +90,29 @@ namespace Peach
 		switch (m_State)
 		{
 		case State::IDLE:
-			if (m_Container.getOutlineColor() == m_SecondaryColor)
+			if (m_Container.getOutlineColor() == getSecondaryColor())
 			{
 				break;
 			}
 
-			m_Container.setFillColor(m_PrimaryColor);
-			m_Container.setOutlineColor(m_SecondaryColor);
-			m_TextLabel.setFillColor(m_SecondaryColor);
+			m_Container.setFillColor(getPrimaryColor());
+			m_Container.setOutlineColor(getSecondaryColor());
+			m_TextLabel.setFillColor(getSecondaryColor());
 			break;
 		case State::HOVER:
-			if (m_TextLabel.getFillColor() == m_PrimaryColor)
+			if (m_TextLabel.getFillColor() == getPrimaryColor())
 			{
 				break;
 			}
 
-			m_Container.setFillColor(m_SecondaryColor);
-			m_Container.setOutlineColor(m_PrimaryColor);
-			m_TextLabel.setFillColor(m_PrimaryColor);
+			m_Container.setFillColor(getSecondaryColor());
+			m_Container.setOutlineColor(getPrimaryColor());
+			m_TextLabel.setFillColor(getPrimaryColor());
 			break;
 		case State::PRESSED:
-			m_Container.setFillColor(m_SecondaryColor);
-			m_Container.setOutlineColor(m_PrimaryColor);
-			m_TextLabel.setFillColor(m_SecondaryColor);
+			m_Container.setFillColor(getSecondaryColor());
+			m_Container.setOutlineColor(getPrimaryColor());
+			m_TextLabel.setFillColor(getPrimaryColor());
 
 			m_State = State::HOVER;
 			break;

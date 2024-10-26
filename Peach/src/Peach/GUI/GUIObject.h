@@ -41,11 +41,11 @@ namespace Peach
 
 		virtual void update() = 0;
 		virtual void render(sf::RenderTarget* target) const = 0;
-	protected:
-		sf::Color m_PrimaryColor;
-		sf::Color m_SecondaryColor;
 	private:
 		sf::Shape* m_Shape;
+
+		sf::Color m_PrimaryColor;
+		sf::Color m_SecondaryColor;
 
 		std::function<void()> m_Callback;
 	};

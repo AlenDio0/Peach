@@ -36,11 +36,9 @@ namespace Peach
 
 		void update();
 		void render(sf::RenderTarget* target) const;
-	protected:
+	private:
 		sf::RectangleShape m_Container;
 		sf::Text m_TextLabel;
-
-		std::function<void()> m_Callback;
 
 		State m_State;
 	};

@@ -56,14 +56,14 @@ namespace Peach
 
 	void Checkbox::update()
 	{
-		if (m_Container.getFillColor() != m_PrimaryColor)
+		if (m_Container.getFillColor() != getPrimaryColor())
 		{
-			m_Container.setFillColor(m_PrimaryColor);
+			m_Container.setFillColor(getPrimaryColor());
 		}
 
-		if (m_Container.getOutlineColor() != m_SecondaryColor)
+		if (m_Container.getOutlineColor() != getSecondaryColor())
 		{
-			m_Container.setOutlineColor(m_SecondaryColor);
+			m_Container.setOutlineColor(getSecondaryColor());
 		}
 	}
 
