@@ -36,17 +36,20 @@ namespace Peach
 		m_Objects[key] = Ref<GUIObject>(object);
 	}
 
-	sf::Cursor::Type GUIManager::getCursor() const
+	const sf::Cursor& GUIManager::getCursor() const
 	{
+		static sf::Cursor cursor;
+		cursor.loadFromSystem(sf::Cursor::Arrow);
+
 		for (const auto& [key, value] : m_Objects)
 		{
 			if (value->isCursorOn(m_MousePosition))
 			{
-				return sf::Cursor::Hand;
+				cursor.loadFromSystem(sf::Cursor::Hand);
 			}
 		}
 
-		return sf::Cursor::Arrow;
+		return cursor;
 	}
 
 	RawMap<GUIObject> GUIManager::getGUIObjects(const std::vector<GUIType>& types)

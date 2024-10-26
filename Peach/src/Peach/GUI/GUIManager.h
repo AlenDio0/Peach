@@ -21,7 +21,7 @@ namespace Peach
 
 		void add(const uint32_t& key, GUIObject* object);
 
-		sf::Cursor::Type getCursor() const;
+		const sf::Cursor& getCursor() const;
 
 		template<typename T>
 		RawMap<T> getGUIObjects(const GUIType& type)

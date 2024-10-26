@@ -116,15 +116,13 @@ void DemoState::onEvent()
 
 void DemoState::onUpdate()
 {
-	sf::Cursor cursor;
-	cursor.loadFromSystem(m_GUIManager.getCursor());
-	m_Data->window.setMouseCursor(cursor);
-
 	m_GUIManager.update();
 }
 
 void DemoState::onRender()
 {
+	m_Data->window.setMouseCursor(m_GUIManager.getCursor());
+
 	m_Data->window.getRenderer()->setView(m_Data->window.getRenderer()->getView());
 
 	m_Data->window.getRenderer()->clear(sf::Color::White);
