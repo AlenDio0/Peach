@@ -19,13 +19,13 @@ namespace Peach
 		Button(const sf::Vector2f& size, const sf::String& label, const sf::Font& font);
 		~Button() = default;
 
-		void setState(const State& state);
+		void setState(State state);
 		void setPosition(const sf::Vector2f& position);
 		void setSize(const sf::Vector2f& size);
 		void setLabel(const sf::String& label);
-		void setCharSize(const sf::Uint32& size);
+		void setCharSize(uint32_t size);
 		void setFont(const sf::Font& font);
-		void setLabelStyle(const sf::Text::Style& style);
+		void setLabelStyle(sf::Text::Style style);
 
 		virtual void onHover();
 		virtual void onPressed();

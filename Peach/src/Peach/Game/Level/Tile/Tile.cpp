@@ -14,12 +14,12 @@ namespace Peach
 	{
 	}
 
-	void Tile::setID(const TileID& type)
+	void Tile::setID(TileID type)
 	{
 		m_ID = type;
 	}
 
-	const TileID& Tile::getID() const
+	TileID Tile::getID() const
 	{
 		return m_ID;
 	}

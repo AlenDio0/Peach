@@ -37,7 +37,7 @@ namespace Peach
 		Vec2f m_TileSize;
 		SpriteSheet m_SpriteSheet;
 	private:
-		void resizeX(const uint32_t& sizex);
-		void resizeY(const uint32_t& sizey);
+		void resizeX(uint32_t sizex);
+		void resizeY(uint32_t sizey);
 	};
 }

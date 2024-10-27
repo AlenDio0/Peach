@@ -3,7 +3,7 @@
 
 namespace Peach
 {
-	Checkbox::Checkbox(const sf::Vector2f& size, const bool& active)
+	Checkbox::Checkbox(const sf::Vector2f& size, bool active)
 		: GUIObject(m_Container), m_Active(active)
 	{
 		setSize(size);
@@ -29,7 +29,7 @@ namespace Peach
 		setSize(getSize());
 	}
 
-	void Checkbox::setActive(const bool& active)
+	void Checkbox::setActive(bool active)
 	{
 		m_Active = active;
 	}
@@ -39,7 +39,7 @@ namespace Peach
 		return m_Container.getSize();
 	}
 
-	const bool& Checkbox::isActive() const
+	bool Checkbox::isActive() const
 	{
 		return m_Active;
 	}

@@ -3,17 +3,17 @@
 
 namespace Peach
 {
-	TextBox::TextBox(const sf::Vector2f& size, const sf::Font& font, const bool& selected)
+	TextBox::TextBox(const sf::Vector2f& size, const sf::Font& font, bool selected)
 		: TextBox(size, font, 16, selected)
 	{
 	}
 
-	TextBox::TextBox(const sf::Vector2f& size, const sf::Font& font, const size_t& length, const bool& selected)
+	TextBox::TextBox(const sf::Vector2f& size, const sf::Font& font, size_t length, bool selected)
 		: TextBox(size, "", font, length, selected)
 	{
 	}
 
-	TextBox::TextBox(const sf::Vector2f& size, const std::string& placeholder, const sf::Font& font, const size_t& length, const bool& selected)
+	TextBox::TextBox(const sf::Vector2f& size, const std::string& placeholder, const sf::Font& font, size_t length, bool selected)
 		: GUIObject(m_Container), m_Placeholder(placeholder), m_TextLabel("", font), m_Length(length), m_Selected(selected)
 	{
 		setSize(size);
@@ -21,7 +21,7 @@ namespace Peach
 		setPosition({ 0, 0 });
 	}
 
-	void TextBox::setSelected(const bool& selected)
+	void TextBox::setSelected(bool selected)
 	{
 		m_Selected = selected;
 
@@ -57,7 +57,7 @@ namespace Peach
 		m_Placeholder = placeholder;
 	}
 
-	void TextBox::setCharSize(const sf::Uint32& size)
+	void TextBox::setCharSize(uint32_t size)
 	{
 		m_TextLabel.setCharacterSize(size);
 	}
@@ -94,7 +94,7 @@ namespace Peach
 		return getStaticType();
 	}
 
-	void TextBox::onTextEntered(const uint32_t& input)
+	void TextBox::onTextEntered(uint32_t input)
 	{
 		const bool& is_char = input < 128;
 		const bool& over_limit = m_Buff.str().size() >= m_Length;

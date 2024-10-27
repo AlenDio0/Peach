@@ -145,7 +145,7 @@ namespace Peach
 		}
 	}
 
-	void TileMap::resizeX(const uint32_t& sizex)
+	void TileMap::resizeX(uint32_t sizex)
 	{
 		if (m_Size.x < sizex)
 		{
@@ -170,7 +170,7 @@ namespace Peach
 		m_Size.x = sizex;
 	}
 
-	void TileMap::resizeY(const uint32_t& sizey)
+	void TileMap::resizeY(uint32_t sizey)
 	{
 		if (m_Size.y < sizey)
 		{

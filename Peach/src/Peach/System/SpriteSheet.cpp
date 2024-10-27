@@ -3,7 +3,7 @@
 
 namespace Peach
 {
-	SpriteSheet::SpriteSheet(const sf::Texture& texture, const Vec2u spritesize)
+	SpriteSheet::SpriteSheet(const sf::Texture& texture, const Vec2u& spritesize)
 		: m_SpriteSize(spritesize)
 	{
 		setTexture(texture);
@@ -31,7 +31,7 @@ namespace Peach
 		return m_Size.x * m_Size.y;
 	}
 
-	IntRect SpriteSheet::getRect(const SpriteID& id) const
+	IntRect SpriteSheet::getRect(SpriteID id) const
 	{
 		const int& max = getMaxID();
 

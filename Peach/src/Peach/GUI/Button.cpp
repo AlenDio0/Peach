@@ -11,7 +11,7 @@ namespace Peach
 		setPosition({ 0, 0 });
 	}
 
-	void Button::setState(const State& state)
+	void Button::setState(State state)
 	{
 		m_State = state;
 	}
@@ -39,7 +39,7 @@ namespace Peach
 		m_TextLabel.setString(label);
 	}
 
-	void Button::setCharSize(const sf::Uint32& size)
+	void Button::setCharSize(uint32_t size)
 	{
 		m_TextLabel.setCharacterSize(size);
 
@@ -53,7 +53,7 @@ namespace Peach
 		setPosition(getPosition());
 	}
 
-	void Button::setLabelStyle(const sf::Text::Style& style)
+	void Button::setLabelStyle(sf::Text::Style style)
 	{
 		m_TextLabel.setStyle(style);
 

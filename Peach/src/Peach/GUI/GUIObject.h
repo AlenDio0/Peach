@@ -25,17 +25,17 @@ namespace Peach
 		void setCallback(const std::function<void()>& callback);
 		virtual void setSize(const sf::Vector2f& size) = 0;
 		virtual void setPosition(const sf::Vector2f& position);
-		void setPrimaryColor(const sf::Color& color);
-		void setSecondaryColor(const sf::Color& color);
-		void setOutlineThickness(const float& thickness);
+		void setPrimaryColor(sf::Color color);
+		void setSecondaryColor(sf::Color color);
+		void setOutlineThickness(float thickness);
 		void setTexture(const sf::Texture* texture);
 
 		virtual void onHover();
 		virtual void onPressed();
 
 		void callback() const;
-		const sf::Color& getPrimaryColor() const;
-		const sf::Color& getSecondaryColor() const;
+		sf::Color getPrimaryColor() const;
+		sf::Color getSecondaryColor() const;
 		const sf::Vector2f& getPosition() const;
 
 		bool isCursorOn(const sf::Vector2i& mouseposition) const;

@@ -13,8 +13,8 @@ namespace Peach
 	class PEACH_API PlayerController
 	{
 	public:
-		void bind(const sf::Keyboard::Key& key, const std::function<void()>& callbackback, const std::string& description = "", bool logcall = false);
-		void bind(const sf::Mouse::Button& button, const std::function<void()>& callback, const std::string& description = "", bool logcall = false);
+		void bind(sf::Keyboard::Key key, const std::function<void()>& callbackback, const std::string& description = "", bool logcall = false);
+		void bind(sf::Mouse::Button button, const std::function<void()>& callback, const std::string& description = "", bool logcall = false);
 
 		void handleEvent(sf::Event& event);
 		void update();
@@ -22,7 +22,7 @@ namespace Peach
 		struct Bind
 		{
 			std::function<void()> callback;
-			std::string description = "";
+			std::string description;
 		};
 	private:
 		std::unordered_map<sf::Keyboard::Key, Bind> m_KeyBinds;
@@ -30,7 +30,7 @@ namespace Peach
 		std::stack<sf::Keyboard::Key> m_Keys;
 		std::stack<sf::Mouse::Button> m_Buttons;
 	private:
-		std::string keyToString(const sf::Keyboard::Key& key) const;
-		std::string buttonToString(const sf::Mouse::Button& button) const;
+		std::string keyToString(sf::Keyboard::Key key) const;
+		std::string buttonToString(sf::Mouse::Button button) const;
 	};
 }

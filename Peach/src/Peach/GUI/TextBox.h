@@ -18,17 +18,17 @@ namespace Peach
 			Digit
 		};
 	public:
-		TextBox(const sf::Vector2f& size, const sf::Font& font, const bool& selected = false);
-		TextBox(const sf::Vector2f& size, const sf::Font& font, const size_t& length, const bool& selected = false);
-		TextBox(const sf::Vector2f& size, const std::string& placeholder, const sf::Font& font, const size_t& length, const bool& selected = false);
+		TextBox(const sf::Vector2f& size, const sf::Font& font, bool selected = false);
+		TextBox(const sf::Vector2f& size, const sf::Font& font, size_t length, bool selected = false);
+		TextBox(const sf::Vector2f& size, const std::string& placeholder, const sf::Font& font, size_t length, bool selected = false);
 		~TextBox() = default;
 
-		void setSelected(const bool& selected);
+		void setSelected(bool selected);
 		void setRestriction(Restriction restriction);
 		void setSize(const sf::Vector2f& size);
 		void setPosition(const sf::Vector2f& position);
 		void setPlaceholder(const std::string& placeholder);
-		void setCharSize(const sf::Uint32& size);
+		void setCharSize(uint32_t size);
 		void setFont(const sf::Font& font);
 
 		virtual void onPressed();
@@ -39,7 +39,7 @@ namespace Peach
 		static GUIType getStaticType();
 		GUIType getType() const;
 
-		void onTextEntered(const uint32_t& input);
+		void onTextEntered(uint32_t input);
 
 		void update();
 		void render(sf::RenderTarget* target) const;

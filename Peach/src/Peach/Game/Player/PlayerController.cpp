@@ -3,14 +3,14 @@
 
 namespace Peach
 {
-	void PlayerController::bind(const sf::Keyboard::Key& key, const std::function<void()>& callback, const std::string& description, bool logcall)
+	void PlayerController::bind(sf::Keyboard::Key key, const std::function<void()>& callback, const std::string& description, bool logcall)
 	{
 		PEACH_CORE_TRACE("PlayerController::bind(key: {}, description: {})", keyToString(key), description);
 
 		m_KeyBinds[key] = { callback, (logcall ? description : "") };
 	}
 
-	void PlayerController::bind(const sf::Mouse::Button& button, const std::function<void()>& callback, const std::string& description, bool logcall)
+	void PlayerController::bind(sf::Mouse::Button button, const std::function<void()>& callback, const std::string& description, bool logcall)
 	{
 		PEACH_CORE_TRACE("PlayerController::bind(button: {}, description: {})", buttonToString(button), description);
 
@@ -77,12 +77,12 @@ namespace Peach
 		}
 	}
 
-	std::string PlayerController::keyToString(const sf::Keyboard::Key& key) const
+	std::string PlayerController::keyToString(sf::Keyboard::Key key) const
 	{
 		return sf::Keyboard::getDescription(sf::Keyboard::delocalize(key)).toAnsiString();
 	}
 
-	std::string PlayerController::buttonToString(const sf::Mouse::Button& button) const
+	std::string PlayerController::buttonToString(sf::Mouse::Button button) const
 	{
 		using Button = sf::Mouse::Button;
 		switch (button)

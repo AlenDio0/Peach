@@ -18,12 +18,12 @@ namespace Peach
 		PEACH_CORE_TRACE("GUIManager distrutto");
 	}
 
-	Ref<GUIObject> GUIManager::operator[](const uint32_t& key)
+	Ref<GUIObject> GUIManager::operator[](GUIKey key)
 	{
 		return m_Objects[key];
 	}
 
-	void GUIManager::add(const uint32_t& key, GUIObject* object)
+	void GUIManager::add(GUIKey key, GUIObject* object)
 	{
 		PEACH_CORE_TRACE("GUIManager::add(key: {}, object: {})", key, object ? "EXISTS" : "NULL");
 		if (!object)
@@ -35,7 +35,7 @@ namespace Peach
 		m_Objects[key] = Ref<GUIObject>(object);
 	}
 
-	void GUIManager::remove(const uint32_t& key)
+	void GUIManager::remove(GUIKey key)
 	{
 		m_Objects.erase(key);
 	}
