@@ -34,9 +34,9 @@ namespace Peach
 		void removeState();
 
 		template<typename T>
-		T& getAsset(const AssetKey& key)
+		const T& getAsset(const AssetKey& key)
 		{
-			return m_Data->assets.getAsset<T>(key);
+			return *m_Data->assets.getAsset<T>(key);
 		}
 	private:
 		std::string m_DebugName;
