@@ -10,10 +10,24 @@
 DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	: State(data, "Demo")
 {
-	Peach::Button* button1 = new Peach::Button({ 225.f, 55.f }, "RIMPIAZZA", {});
-	Peach::Button* button2 = new Peach::Button({ 225.f, 55.f }, "GIOCA", {});
+	Peach::Button* button1 = new Peach::Button({ 225.f, 55.f }, "RIMPIAZZA", getAsset<Peach::Font>("consola"));
+	Peach::Button* button2 = new Peach::Button({ 225.f, 55.f }, "GIOCA", getAsset<Peach::Font>("consola"));
+
+	Peach::Checkbox* box1 = new Peach::Checkbox({ 32.f, 32.f });
+	box1->setCheckTexture(getAsset<Peach::Texture>("check"));
+
+	Peach::TextBox* textbox1 = new Peach::TextBox({ 200.f, 50.f }, "Placeholder", getAsset<Peach::Font>("consola"), 16);
+	Peach::TextBox* textbox2 = new Peach::TextBox({ 200.f, 50.f }, "PIN", getAsset<Peach::Font>("consola"), 16);
+
 	m_GUIManager.add(RIMPIAZZA, button1);
 	m_GUIManager.add(GIOCA, button2);
+	m_GUIManager.add(BOX, box1);
+	m_GUIManager.add(TEXTBOX1, textbox1);
+	m_GUIManager.add(TEXTBOX2, textbox2);
+
+	m_Sound.setBuffer(getAsset<Peach::Sound>("removed"));
+
+	getAsset<Peach::Texture>("invalid key example");
 
 	button1->setCallback
 	(
@@ -39,7 +53,6 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 
 	for (auto& button : buttons)
 	{
-		button->setFont(getAsset<Peach::Font>("consola"));
 		button->setPrimaryColor(sf::Color(230, 230, 230));
 		button->setSecondaryColor(sf::Color::Black);
 		button->setOutlineThickness(2.f);
@@ -51,20 +64,10 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	button1->setPosition({ m_Data->window.getRenderer()->getSize().x / 2.f - button1->getSize().x / 2.f, 100 });
 	button2->setPosition({ m_Data->window.getRenderer()->getSize().x / 2.f - button2->getSize().x / 2.f, 165 });
 
-	Peach::Checkbox* box1 = new Peach::Checkbox({ 32.f, 32.f });
-	m_GUIManager.add(BOX, box1);
-
-	box1->setCheckTexture(getAsset<Peach::Texture>("check"));
-
 	box1->setPrimaryColor(sf::Color(230, 230, 230));
 	box1->setSecondaryColor(sf::Color::Black);
 	box1->setOutlineThickness(3.f);
 	box1->setPosition({ 150.f, 40.f });
-
-	Peach::TextBox* textbox1 = new Peach::TextBox({ 200.f, 50.f }, "Placeholder", getAsset<Peach::Font>("consola"), 16);
-	Peach::TextBox* textbox2 = new Peach::TextBox({ 200.f, 50.f }, "PIN", getAsset<Peach::Font>("consola"), 16);
-	m_GUIManager.add(TEXTBOX1, textbox1);
-	m_GUIManager.add(TEXTBOX2, textbox2);
 
 	textbox1->setRestriction(Peach::TextBox::Restriction::Regular);
 	textbox2->setRestriction(Peach::TextBox::Restriction::Digit);
@@ -79,7 +82,6 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	textbox2->setSecondaryColor(sf::Color::Green);
 	textbox2->setPosition({ m_Data->window.getRenderer()->getSize().x / 2.f - textbox2->getSize().x / 2.f, 350 });
 
-	m_Sound.setBuffer(getAsset<Peach::Sound>("removed"));
 }
 
 DemoState::~DemoState()
