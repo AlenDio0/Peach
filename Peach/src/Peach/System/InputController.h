@@ -10,7 +10,7 @@
 
 namespace Peach
 {
-	class PEACH_API PlayerController
+	class PEACH_API InputController
 	{
 	public:
 		void bind(sf::Keyboard::Key key, const std::function<void()>& callbackback, const std::string& description = "", bool logcall = false);
