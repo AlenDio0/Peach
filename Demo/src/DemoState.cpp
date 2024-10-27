@@ -10,8 +10,8 @@
 DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	: State(data, "Demo")
 {
-	Peach::Button* button1 = new Peach::Button({ 225.f, 55.f }, "RIMPIAZZA", NULL);
-	Peach::Button* button2 = new Peach::Button({ 225.f, 55.f }, "GIOCA", NULL);
+	Peach::Button* button1 = new Peach::Button({ 225.f, 55.f }, "RIMPIAZZA", {});
+	Peach::Button* button2 = new Peach::Button({ 225.f, 55.f }, "GIOCA", {});
 	m_GUIManager.add(RIMPIAZZA, button1);
 	m_GUIManager.add(GIOCA, button2);
 

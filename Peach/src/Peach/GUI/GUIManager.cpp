@@ -2,7 +2,6 @@
 #include "GUIManager.h"
 
 #include "Button.h"
-#include "Checkbox.h"
 #include "TextBox.h"
 
 namespace Peach
@@ -105,22 +104,18 @@ namespace Peach
 			m_MousePosition = { event.mouseMove.x, event.mouseMove.y };
 			for (auto& [key, value] : m_Objects)
 			{
-				switch (value->getType())
+				if (!value->isCursorOn(m_MousePosition))
 				{
-				case GUIType::Button:
-				{
-					Button* button = static_cast<Button*>(value.get());
-					if (button->isCursorOn(m_MousePosition))
+					if (value->getType() == GUIType::Button)
 					{
-						button->setState(Button::State::HOVER);
-					}
-					else
-					{
+						Button* button = static_cast<Button*>(value.get());
 						button->setState(Button::State::IDLE);
 					}
+
+					continue;
 				}
-				break;
-				}
+
+				value->onHover();
 			}
 			break;
 		case sf::Event::MouseButtonPressed:
@@ -131,43 +126,18 @@ namespace Peach
 
 			for (const auto& [key, value] : m_Objects)
 			{
-				const bool& is_cursor_on = value->isCursorOn(m_MousePosition);
-
-				if (value->getType() == GUIType::TextBox)
+				if (!value->isCursorOn(m_MousePosition))
 				{
-					TextBox* textbox = static_cast<TextBox*>(value.get());
+					if (value->getType() == GUIType::TextBox)
+					{
+						TextBox* textbox = static_cast<TextBox*>(value.get());
+						textbox->setSelected(false);
+					}
 
-					textbox->setSelected(is_cursor_on);
-				}
-
-				if (!is_cursor_on)
-				{
 					continue;
 				}
 
-				value->callback();
-
-				switch (value->getType())
-				{
-				case GUIType::Button:
-				{
-					Button* button = static_cast<Button*>(value.get());
-
-					button->setState(Button::State::PRESSED);
-
-					PEACH_CORE_TRACE("GUIManager::handleEvent(...), Premuto pulsante ({}, \"{}\")", key, button->getLabel().toAnsiString());
-				}
-				break;
-				case GUIType::Checkbox:
-				{
-					Checkbox* checkbox = static_cast<Checkbox*>(value.get());
-
-					checkbox->setActive(!checkbox->getActive());
-
-					PEACH_CORE_TRACE("GUIManager::handleEvent(...), Premuto checkbox ({}, \"{}\")", key, checkbox->getActive() ? "ATTIVATO" : "DISATTIVATO");
-				}
-				break;
-				}
+				value->onPressed();
 			}
 			break;
 		case sf::Event::TextEntered:

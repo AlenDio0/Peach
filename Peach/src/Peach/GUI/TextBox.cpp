@@ -3,17 +3,17 @@
 
 namespace Peach
 {
-	TextBox::TextBox(const sf::Vector2f& size, const sf::Font& font, bool selected)
+	TextBox::TextBox(const sf::Vector2f& size, const sf::Font& font, const bool& selected)
 		: TextBox(size, font, 16, selected)
 	{
 	}
 
-	TextBox::TextBox(const sf::Vector2f& size, const sf::Font& font, const size_t& length, bool selected)
+	TextBox::TextBox(const sf::Vector2f& size, const sf::Font& font, const size_t& length, const bool& selected)
 		: TextBox(size, "", font, length, selected)
 	{
 	}
 
-	TextBox::TextBox(const sf::Vector2f& size, const std::string& placeholder, const sf::Font& font, const size_t& length, bool selected)
+	TextBox::TextBox(const sf::Vector2f& size, const std::string& placeholder, const sf::Font& font, const size_t& length, const bool& selected)
 		: GUIObject(m_Container), m_Placeholder(placeholder), m_TextLabel("", font), m_Length(length), m_Selected(selected)
 	{
 		setSize(size);
@@ -21,7 +21,7 @@ namespace Peach
 		setPosition({ 0, 0 });
 	}
 
-	void TextBox::setSelected(bool selected)
+	void TextBox::setSelected(const bool& selected)
 	{
 		m_Selected = selected;
 
@@ -65,6 +65,13 @@ namespace Peach
 	void TextBox::setFont(const sf::Font& font)
 	{
 		m_TextLabel.setFont(font);
+	}
+
+	void TextBox::onPressed()
+	{
+		setSelected(true);
+
+		callback();
 	}
 
 	std::string TextBox::getBuff() const
@@ -164,6 +171,12 @@ namespace Peach
 		m_Container.setOutlineColor(getPrimaryColor());
 		m_TextLabel.setFillColor(getPrimaryColor());
 
+		if (!m_Buff.str().empty())
+		{
+			m_TextLabel.setStyle(sf::Text::Style::Regular);
+			m_TextLabel.setFillColor(getPrimaryColor());
+		}
+
 		if (!m_Selected)
 		{
 			if (m_Buff.str().empty())
@@ -172,11 +185,6 @@ namespace Peach
 				m_TextLabel.setFillColor({ 128, 128, 128 });
 				m_TextLabel.setString(m_Placeholder);
 				setPosition(getPosition());
-			}
-			else
-			{
-				m_TextLabel.setStyle(sf::Text::Style::Regular);
-				m_TextLabel.setFillColor(getPrimaryColor());
 			}
 
 			return;
@@ -191,7 +199,7 @@ namespace Peach
 
 			if (blink)
 			{
-				m_TextLabel.setString(m_Buff.str() + "|");
+				m_TextLabel.setString(m_Buff.str() + '|');
 			}
 			else
 			{

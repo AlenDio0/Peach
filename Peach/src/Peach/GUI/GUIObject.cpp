@@ -44,6 +44,14 @@ namespace Peach
 		m_Shape->setTexture(texture);
 	}
 
+	void GUIObject::onHover()
+	{
+	}
+
+	void GUIObject::onPressed()
+	{
+	}
+
 	void GUIObject::callback() const
 	{
 		if (!m_Callback)

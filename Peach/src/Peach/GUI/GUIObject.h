@@ -30,6 +30,9 @@ namespace Peach
 		void setOutlineThickness(const float& thickness);
 		void setTexture(const sf::Texture* texture);
 
+		virtual void onHover();
+		virtual void onPressed();
+
 		void callback() const;
 		const sf::Color& getPrimaryColor() const;
 		const sf::Color& getSecondaryColor() const;

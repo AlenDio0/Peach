@@ -3,15 +3,15 @@
 
 namespace Peach
 {
-	Button::Button(const sf::Vector2f& size, const sf::String& label, const sf::Font* font)
-		: GUIObject(m_Container), m_TextLabel(label, *font), m_State(State::IDLE)
+	Button::Button(const sf::Vector2f& size, const sf::String& label, const sf::Font& font)
+		: GUIObject(m_Container), m_TextLabel(label, font), m_State(State::IDLE)
 	{
 		setSize(size);
 
 		setPosition({ 0, 0 });
 	}
 
-	void Button::setState(const Button::State& state)
+	void Button::setState(const State& state)
 	{
 		m_State = state;
 	}
@@ -60,9 +60,16 @@ namespace Peach
 		setPosition(getPosition());
 	}
 
-	const Button::State& Button::getState() const
+	void Button::onHover()
 	{
-		return m_State;
+		setState(State::HOVER);
+	}
+
+	void Button::onPressed()
+	{
+		setState(State::PRESSED);
+
+		callback();
 	}
 
 	const sf::Vector2f& Button::getSize() const
@@ -114,7 +121,7 @@ namespace Peach
 			m_Container.setOutlineColor(getPrimaryColor());
 			m_TextLabel.setFillColor(getPrimaryColor());
 
-			m_State = State::HOVER;
+			setState(State::HOVER);
 			break;
 		}
 	}
