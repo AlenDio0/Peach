@@ -17,28 +17,38 @@ namespace Peach
 		m_MouseBinds[button] = { callback, (logcall ? description : "") };
 	}
 
-	void InputController::handleEvent(sf::Event& event)
+	void InputController::handleEvent(const sf::Event& event)
 	{
 		switch (event.type)
 		{
 		case sf::Event::KeyPressed:
-			for (const auto& [key, callback] : m_KeyBinds)
-			{
-				if (key == event.key.code)
-				{
-					m_Keys.push(key);
-				}
-			}
+			onKeyPressed(event);
 			break;
 		case sf::Event::MouseButtonPressed:
-			for (const auto& [button, callback] : m_MouseBinds)
-			{
-				if (button == event.mouseButton.button)
-				{
-					m_Buttons.push(button);
-				}
-			}
+			onMousePressed(event);
 			break;
+		}
+	}
+
+	void InputController::onKeyPressed(const sf::Event& event)
+	{
+		for (const auto& [key, callback] : m_KeyBinds)
+		{
+			if (key == event.key.code)
+			{
+				m_Keys.push(key);
+			}
+		}
+	}
+
+	void InputController::onMousePressed(const sf::Event& event)
+	{
+		for (const auto& [button, callback] : m_MouseBinds)
+		{
+			if (button == event.mouseButton.button)
+			{
+				m_Buttons.push(button);
+			}
 		}
 	}
 

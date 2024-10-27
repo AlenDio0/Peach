@@ -13,10 +13,13 @@ namespace Peach
 	class PEACH_API InputController
 	{
 	public:
-		void bind(sf::Keyboard::Key key, const std::function<void()>& callbackback, const std::string& description = "", bool logcall = false);
+		void bind(sf::Keyboard::Key key, const std::function<void()>& callback, const std::string& description = "", bool logcall = false);
 		void bind(sf::Mouse::Button button, const std::function<void()>& callback, const std::string& description = "", bool logcall = false);
 
-		void handleEvent(sf::Event& event);
+		void handleEvent(const sf::Event& event);
+		void onKeyPressed(const sf::Event& event);
+		void onMousePressed(const sf::Event& event);
+
 		void update();
 	private:
 		struct Bind

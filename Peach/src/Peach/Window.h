@@ -23,7 +23,7 @@ namespace Peach
 		bool isRunning() const;
 
 		bool pollEvent(sf::Event& event) const;
-		void handleEvent(sf::Event& event);
+		void handleEvent(const sf::Event& event);
 		void onClosed();
 
 		sf::RenderTarget* getRenderer();

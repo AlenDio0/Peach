@@ -61,7 +61,7 @@ namespace Peach
 		return m_Window->pollEvent(event);
 	}
 
-	void Window::handleEvent(sf::Event& event)
+	void Window::handleEvent(const sf::Event& event)
 	{
 		switch (event.type)
 		{
