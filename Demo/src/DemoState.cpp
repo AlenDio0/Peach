@@ -15,7 +15,7 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	m_GUIManager.add(RIMPIAZZA, button1);
 	m_GUIManager.add(GIOCA, button2);
 
-	button1->setCallback
+	button1->addCallback
 	(
 		[&]() {
 			PEACH_INFO("RIMPIAZZA");
@@ -23,7 +23,7 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 		}
 	);
 
-	button2->setCallback
+	button2->addCallback
 	(
 		[&]() {
 			PEACH_INFO("GIOCA");

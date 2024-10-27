@@ -22,7 +22,7 @@ namespace Peach
 		GUIObject(sf::Shape& container);
 		virtual ~GUIObject();
 
-		void setCallback(const std::function<void()>& callback);
+		void addCallback(const std::function<void()>& callback);
 		virtual void setSize(const sf::Vector2f& size) = 0;
 		virtual void setPosition(const sf::Vector2f& position);
 		void setPrimaryColor(sf::Color color);
@@ -50,6 +50,6 @@ namespace Peach
 		sf::Color m_PrimaryColor;
 		sf::Color m_SecondaryColor;
 
-		std::function<void()> m_Callback;
+		std::vector<std::function<void()>> m_CallbackSink;
 	};
 }
