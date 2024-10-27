@@ -14,9 +14,9 @@ namespace Peach
 		Tile(const Vec2f& size, const Vec2f& position = {});
 		Tile(const FloatRect& rect);
 
-		void setID(const TileID& id);
+		void setID(TileID id);
 
-		const TileID& getID() const;
+		TileID getID() const;
 
 		virtual void render(sf::RenderTarget* target);
 	private:

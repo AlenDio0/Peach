@@ -12,14 +12,14 @@ namespace Peach
 	class PEACH_API SpriteSheet
 	{
 	public:
-		SpriteSheet(const sf::Texture& texture, const Vec2u spritesize);
+		SpriteSheet(const sf::Texture& texture, const Vec2u& spritesize);
 
 		void setTexture(const sf::Texture& texture);
 		void setSpriteSize(const Vec2u& spritesize);
 
 		const sf::Texture& getTexture() const;
 		SpriteID getMaxID() const;
-		IntRect getRect(const SpriteID& id) const;
+		IntRect getRect(SpriteID id) const;
 	private:
 		const sf::Texture* m_Texture;
 		Vec2u m_SpriteSize;

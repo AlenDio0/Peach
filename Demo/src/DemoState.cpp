@@ -3,14 +3,15 @@
 #include <Peach/Log.h>
 #include <Peach/GUI/Button.h>
 #include <Peach/GUI/Checkbox.h>
+#include <Peach/GUI/TextBox.h>
 
 #include "GameState.h"
 
 DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	: State(data, "Demo")
 {
-	Peach::Button* button1 = new Peach::Button({ 225.f, 55.f }, "RIMPIAZZA", NULL);
-	Peach::Button* button2 = new Peach::Button({ 225.f, 55.f }, "GIOCA", NULL);
+	Peach::Button* button1 = new Peach::Button({ 225.f, 55.f }, "RIMPIAZZA", {});
+	Peach::Button* button2 = new Peach::Button({ 225.f, 55.f }, "GIOCA", {});
 	m_GUIManager.add(RIMPIAZZA, button1);
 	m_GUIManager.add(GIOCA, button2);
 
@@ -31,10 +32,9 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	);
 
 	std::vector<Peach::Button*> buttons;
-
-	for (auto& [key, value] : m_GUIManager.getGUIObjects({ Peach::GUIType::Button }))
+	for (auto& [key, button] : m_GUIManager.getGUIObjects<Peach::Button>(Peach::GUIType::Button))
 	{
-		buttons.push_back(static_cast<Peach::Button*>(value.get()));
+		buttons.push_back(button);
 	}
 
 	for (auto& button : buttons)
@@ -60,6 +60,24 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	box1->setSecondaryColor(sf::Color::Black);
 	box1->setOutlineThickness(3.f);
 	box1->setPosition({ 150.f, 40.f });
+
+	Peach::TextBox* textbox1 = new Peach::TextBox({ 200.f, 50.f }, "Placeholder", getAsset<Peach::Font>("consola"), 16);
+	Peach::TextBox* textbox2 = new Peach::TextBox({ 200.f, 50.f }, "PIN", getAsset<Peach::Font>("consola"), 16);
+	m_GUIManager.add(TEXTBOX1, textbox1);
+	m_GUIManager.add(TEXTBOX2, textbox2);
+
+	textbox1->setRestriction(Peach::TextBox::Restriction::Regular);
+	textbox2->setRestriction(Peach::TextBox::Restriction::Digit);
+
+	textbox1->setOutlineThickness(2.f);
+	textbox1->setPrimaryColor(sf::Color::Black);
+	textbox1->setSecondaryColor(sf::Color::Black);
+	textbox1->setPosition({ m_Data->window.getRenderer()->getSize().x / 2.f - textbox1->getSize().x / 2.f, 250 });
+
+	textbox2->setOutlineThickness(2.f);
+	textbox2->setPrimaryColor(sf::Color::Magenta);
+	textbox2->setSecondaryColor(sf::Color::Green);
+	textbox2->setPosition({ m_Data->window.getRenderer()->getSize().x / 2.f - textbox2->getSize().x / 2.f, 350 });
 
 	m_Sound.setBuffer(getAsset<Peach::Sound>("removed"));
 }
@@ -98,15 +116,13 @@ void DemoState::onEvent()
 
 void DemoState::onUpdate()
 {
-	sf::Cursor cursor;
-	cursor.loadFromSystem(m_GUIManager.getCursor());
-	m_Data->window.setMouseCursor(cursor);
-
 	m_GUIManager.update();
 }
 
 void DemoState::onRender()
 {
+	m_Data->window.setMouseCursor(m_GUIManager.getCursor());
+
 	m_Data->window.getRenderer()->setView(m_Data->window.getRenderer()->getView());
 
 	m_Data->window.getRenderer()->clear(sf::Color::White);

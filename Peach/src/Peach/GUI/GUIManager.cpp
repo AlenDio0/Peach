@@ -2,7 +2,7 @@
 #include "GUIManager.h"
 
 #include "Button.h"
-#include "Checkbox.h"
+#include "TextBox.h"
 
 namespace Peach
 {
@@ -18,12 +18,12 @@ namespace Peach
 		PEACH_CORE_TRACE("GUIManager distrutto");
 	}
 
-	Ref<GUIObject> GUIManager::operator[](const uint32_t& key)
+	Ref<GUIObject> GUIManager::operator[](GUIKey key)
 	{
 		return m_Objects[key];
 	}
 
-	void GUIManager::add(const uint32_t& key, GUIObject* object)
+	void GUIManager::add(GUIKey key, GUIObject* object)
 	{
 		PEACH_CORE_TRACE("GUIManager::add(key: {}, object: {})", key, object ? "EXISTS" : "NULL");
 		if (!object)
@@ -35,34 +35,60 @@ namespace Peach
 		m_Objects[key] = Ref<GUIObject>(object);
 	}
 
-	sf::Cursor::Type GUIManager::getCursor() const
+	void GUIManager::remove(GUIKey key)
 	{
+		m_Objects.erase(key);
+	}
+
+	void GUIManager::remove(GUIObject* object)
+	{
+		for (auto& [key, value] : m_Objects)
+		{
+			if (value.get() == object)
+			{
+				remove(key);
+				break;
+			}
+		}
+	}
+
+	const sf::Cursor& GUIManager::getCursor() const
+	{
+		static sf::Cursor cursor;
+		cursor.loadFromSystem(sf::Cursor::Arrow);
+
 		for (const auto& [key, value] : m_Objects)
 		{
 			if (value->isCursorOn(m_MousePosition))
 			{
-				return sf::Cursor::Hand;
+				cursor.loadFromSystem(sf::Cursor::Hand);
 			}
 		}
 
-		return sf::Cursor::Arrow;
+		return cursor;
 	}
 
-	GUIObjectMap GUIManager::getGUIObjects(const std::vector<GUIType>& types)
+	RawMap<GUIObject> GUIManager::getGUIObjects(const std::vector<GUIType>& types)
 	{
+		RawMap<GUIObject> objects;
+
 		if (types.empty())
 		{
-			return m_Objects;
+			for (auto& [key, value] : m_Objects)
+			{
+				objects[key] = value.get();
+			}
+
+			return objects;
 		}
 
-		GUIObjectMap objects;
 		for (const auto& type : types)
 		{
 			for (auto& [key, value] : m_Objects)
 			{
 				if (value->getType() == type)
 				{
-					objects[key] = value;
+					objects[key] = value.get();
 				}
 			}
 		}
@@ -75,61 +101,67 @@ namespace Peach
 		switch (event.type)
 		{
 		case sf::Event::MouseMoved:
-			m_MousePosition = { event.mouseMove.x, event.mouseMove.y };
-			for (auto& [key, value] : m_Objects)
-			{
-				switch (value->getType())
-				{
-				case GUIType::Button:
-				{
-					Button* button = static_cast<Button*>(value.get());
-					if (button->isCursorOn(m_MousePosition))
-					{
-						button->setState(Button::State::HOVER);
-					}
-					else
-					{
-						button->setState(Button::State::IDLE);
-					}
-				}
-				break;
-				}
-			}
+			onMouseMoved(event);
 			break;
 		case sf::Event::MouseButtonPressed:
-			if (event.mouseButton.button == sf::Mouse::Button::Left)
-			{
-				for (const auto& [key, value] : m_Objects)
-				{
-					if (value->isCursorOn(m_MousePosition))
-					{
-						value->callback();
-
-						switch (value->getType())
-						{
-						case GUIType::Button:
-						{
-							Button* button = static_cast<Button*>(value.get());
-
-							button->setState(Button::State::PRESSED);
-
-							PEACH_CORE_TRACE("GUIManager::handleEvent(...), Premuto pulsante ({}, \"{}\")", key, button->getLabel().toAnsiString());
-						}
-						break;
-						case GUIType::Checkbox:
-						{
-							Checkbox* checkbox = static_cast<Checkbox*>(value.get());
-
-							checkbox->setActive(!checkbox->getActive());
-
-							PEACH_CORE_TRACE("GUIManager::handleEvent(...), Premuto checkbox ({}, \"{}\")", key, checkbox->getActive() ? "ATTIVATO" : "DISATTIVATO");
-						}
-						break;
-						}
-					}
-				}
-			}
+			onMousePressed(event);
 			break;
+		case sf::Event::TextEntered:
+			onTextEntered(event);
+			break;
+		}
+	}
+
+	void GUIManager::onMouseMoved(const sf::Event& event)
+	{
+		m_MousePosition = { event.mouseMove.x, event.mouseMove.y };
+		for (auto& [key, value] : m_Objects)
+		{
+			if (!value->isCursorOn(m_MousePosition))
+			{
+				if (value->getType() == GUIType::Button)
+				{
+					Button* button = static_cast<Button*>(value.get());
+					button->setState(Button::State::IDLE);
+				}
+
+				continue;
+			}
+
+			value->onHover();
+		}
+	}
+
+	void GUIManager::onMousePressed(const sf::Event& event)
+	{
+		if (event.mouseButton.button != sf::Mouse::Button::Left)
+		{
+			return;
+		}
+
+		for (const auto& [key, value] : m_Objects)
+		{
+			if (!value->isCursorOn(m_MousePosition))
+			{
+				if (value->getType() == GUIType::TextBox)
+				{
+					TextBox* textbox = static_cast<TextBox*>(value.get());
+					textbox->setSelected(false);
+				}
+
+				continue;
+			}
+
+			value->onPressed();
+		}
+	}
+
+	void GUIManager::onTextEntered(const sf::Event& event)
+	{
+		auto& textboxes = getGUIObjects<TextBox>(GUIType::TextBox);
+		for (auto& [key, textbox] : textboxes)
+		{
+			textbox->onTextEntered(event.text.unicode);
 		}
 	}
 

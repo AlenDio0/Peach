@@ -18,7 +18,9 @@ private:
 	{
 		RIMPIAZZA = 0,
 		GIOCA,
-		BOX
+		BOX,
+		TEXTBOX1,
+		TEXTBOX2
 	};
 
 	sf::Sound m_Sound;

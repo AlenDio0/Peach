@@ -9,16 +9,18 @@ namespace Peach
 	class PEACH_API Checkbox : public GUIObject
 	{
 	public:
-		Checkbox(const sf::Vector2f& size);
+		Checkbox(const sf::Vector2f& size, bool active = false);
 		~Checkbox() = default;
 
-		void setActive(bool active);
 		void setSize(const sf::Vector2f& size);
 		void setPosition(const sf::Vector2f& position);
 		void setCheckTexture(const sf::Texture& texture);
+		void setActive(bool active);
 
-		const bool& getActive() const;
 		const sf::Vector2f& getSize() const;
+		bool isActive() const;
+
+		virtual void onPressed();
 
 		static GUIType getStaticType();
 		GUIType getType() const;

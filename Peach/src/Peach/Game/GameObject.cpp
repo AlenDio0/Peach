@@ -42,7 +42,7 @@ namespace Peach
 		m_Shape.setTextureRect(rect);
 	}
 
-	Vec2f GameObject::getSize() const
+	const sf::Vector2f& GameObject::getSize() const
 	{
 		return m_Shape.getSize();
 	}

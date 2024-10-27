@@ -3,15 +3,15 @@
 
 namespace Peach
 {
-	Button::Button(const sf::Vector2f& size, const sf::String& label, const sf::Font* font)
-		: GUIObject(m_Container), m_TextLabel(label, *font), m_State(State::IDLE)
+	Button::Button(const sf::Vector2f& size, const sf::String& label, const sf::Font& font)
+		: GUIObject(m_Container), m_TextLabel(label, font), m_State(State::IDLE)
 	{
 		setSize(size);
 
 		setPosition({ 0, 0 });
 	}
 
-	void Button::setState(const Button::State& state)
+	void Button::setState(State state)
 	{
 		m_State = state;
 	}
@@ -29,7 +29,7 @@ namespace Peach
 	void Button::setSize(const sf::Vector2f& size)
 	{
 		m_Container.setSize(size);
-		setCharSize((sf::Uint32)((size.x * size.y) / (size.x * 1.75f)));
+		setCharSize((sf::Uint32)(size.y / 1.75f));
 
 		setPosition(getPosition());
 	}
@@ -39,7 +39,7 @@ namespace Peach
 		m_TextLabel.setString(label);
 	}
 
-	void Button::setCharSize(const sf::Uint32& size)
+	void Button::setCharSize(uint32_t size)
 	{
 		m_TextLabel.setCharacterSize(size);
 
@@ -53,16 +53,23 @@ namespace Peach
 		setPosition(getPosition());
 	}
 
-	void Button::setLabelStyle(const sf::Text::Style& style)
+	void Button::setLabelStyle(sf::Text::Style style)
 	{
 		m_TextLabel.setStyle(style);
 
 		setPosition(getPosition());
 	}
 
-	const Button::State& Button::getState() const
+	void Button::onHover()
 	{
-		return m_State;
+		setState(State::HOVER);
+	}
+
+	void Button::onPressed()
+	{
+		setState(State::PRESSED);
+
+		callback();
 	}
 
 	const sf::Vector2f& Button::getSize() const
@@ -90,31 +97,31 @@ namespace Peach
 		switch (m_State)
 		{
 		case State::IDLE:
-			if (m_Container.getOutlineColor() == m_SecondaryColor)
+			if (m_Container.getOutlineColor() == getSecondaryColor())
 			{
 				break;
 			}
 
-			m_Container.setFillColor(m_PrimaryColor);
-			m_Container.setOutlineColor(m_SecondaryColor);
-			m_TextLabel.setFillColor(m_SecondaryColor);
+			m_Container.setFillColor(getPrimaryColor());
+			m_Container.setOutlineColor(getSecondaryColor());
+			m_TextLabel.setFillColor(getSecondaryColor());
 			break;
 		case State::HOVER:
-			if (m_TextLabel.getFillColor() == m_PrimaryColor)
+			if (m_TextLabel.getFillColor() == getPrimaryColor())
 			{
 				break;
 			}
 
-			m_Container.setFillColor(m_SecondaryColor);
-			m_Container.setOutlineColor(m_PrimaryColor);
-			m_TextLabel.setFillColor(m_PrimaryColor);
+			m_Container.setFillColor(getSecondaryColor());
+			m_Container.setOutlineColor(getPrimaryColor());
+			m_TextLabel.setFillColor(getPrimaryColor());
 			break;
 		case State::PRESSED:
-			m_Container.setFillColor(m_SecondaryColor);
-			m_Container.setOutlineColor(m_PrimaryColor);
-			m_TextLabel.setFillColor(m_SecondaryColor);
+			m_Container.setFillColor(getSecondaryColor());
+			m_Container.setOutlineColor(getPrimaryColor());
+			m_TextLabel.setFillColor(getPrimaryColor());
 
-			m_State = State::HOVER;
+			setState(State::HOVER);
 			break;
 		}
 	}

@@ -1,23 +1,23 @@
 #include "peachpch.h"
-#include "PlayerController.h"
+#include "InputController.h"
 
 namespace Peach
 {
-	void PlayerController::bind(const sf::Keyboard::Key& key, const std::function<void()>& callback, const std::string& description, bool logcall)
+	void InputController::bind(sf::Keyboard::Key key, const std::function<void()>& callback, const std::string& description, bool logcall)
 	{
-		PEACH_CORE_TRACE("PlayerController::bind(key: {}, description: {})", keyToString(key), description);
+		PEACH_CORE_TRACE("InputController::bind(key: {}, description: {})", keyToString(key), description);
 
 		m_KeyBinds[key] = { callback, (logcall ? description : "") };
 	}
 
-	void PlayerController::bind(const sf::Mouse::Button& button, const std::function<void()>& callback, const std::string& description, bool logcall)
+	void InputController::bind(sf::Mouse::Button button, const std::function<void()>& callback, const std::string& description, bool logcall)
 	{
-		PEACH_CORE_TRACE("PlayerController::bind(button: {}, description: {})", buttonToString(button), description);
+		PEACH_CORE_TRACE("InputController::bind(button: {}, description: {})", buttonToString(button), description);
 
 		m_MouseBinds[button] = { callback, (logcall ? description : "") };
 	}
 
-	void PlayerController::handleEvent(sf::Event& event)
+	void InputController::handleEvent(sf::Event& event)
 	{
 		switch (event.type)
 		{
@@ -42,7 +42,7 @@ namespace Peach
 		}
 	}
 
-	void PlayerController::update()
+	void InputController::update()
 	{
 		while (!m_Keys.empty())
 		{
@@ -51,7 +51,7 @@ namespace Peach
 			{
 				PEACH_CORE_INFO
 				(
-					"PlayerController::update(), Chiamato bind: {}, Descrizione: {}",
+					"InputController::update(), Chiamato bind: {}, Descrizione: {}",
 					keyToString(m_Keys.top()), bind.description
 				);
 			}
@@ -67,7 +67,7 @@ namespace Peach
 			{
 				PEACH_CORE_INFO
 				(
-					"PlayerController::update(), Chiamato bind: {}, Descrizione: {}",
+					"InputController::update(), Chiamato bind: {}, Descrizione: {}",
 					buttonToString(m_Buttons.top()), bind.description
 				);
 			}
@@ -77,12 +77,12 @@ namespace Peach
 		}
 	}
 
-	std::string PlayerController::keyToString(const sf::Keyboard::Key& key) const
+	std::string InputController::keyToString(sf::Keyboard::Key key) const
 	{
 		return sf::Keyboard::getDescription(sf::Keyboard::delocalize(key)).toAnsiString();
 	}
 
-	std::string PlayerController::buttonToString(const sf::Mouse::Button& button) const
+	std::string InputController::buttonToString(sf::Mouse::Button button) const
 	{
 		using Button = sf::Mouse::Button;
 		switch (button)

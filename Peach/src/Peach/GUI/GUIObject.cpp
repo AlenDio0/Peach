@@ -24,17 +24,17 @@ namespace Peach
 		m_Shape->setPosition(position);
 	}
 
-	void GUIObject::setPrimaryColor(const sf::Color& color)
+	void GUIObject::setPrimaryColor(sf::Color color)
 	{
 		m_PrimaryColor = color;
 	}
 
-	void GUIObject::setSecondaryColor(const sf::Color& color)
+	void GUIObject::setSecondaryColor(sf::Color color)
 	{
 		m_SecondaryColor = color;
 	}
 
-	void GUIObject::setOutlineThickness(const float& thickness)
+	void GUIObject::setOutlineThickness(float thickness)
 	{
 		m_Shape->setOutlineThickness(thickness);
 	}
@@ -44,23 +44,30 @@ namespace Peach
 		m_Shape->setTexture(texture);
 	}
 
+	void GUIObject::onHover()
+	{
+	}
+
+	void GUIObject::onPressed()
+	{
+	}
+
 	void GUIObject::callback() const
 	{
 		if (!m_Callback)
 		{
-			PEACH_CORE_WARN("Il callback non e' stato impostato per questo GUIObject");
 			return;
 		}
 
 		m_Callback();
 	}
 
-	const sf::Color& GUIObject::getPrimaryColor() const
+	sf::Color GUIObject::getPrimaryColor() const
 	{
 		return m_PrimaryColor;
 	}
 
-	const sf::Color& GUIObject::getSecondaryColor() const
+	sf::Color GUIObject::getSecondaryColor() const
 	{
 		return m_SecondaryColor;
 	}

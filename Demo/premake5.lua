@@ -7,6 +7,11 @@ project "Demo"
 	targetdir ("../bin/" .. output_dir .. "/%{prj.name}")
 	objdir ("../bin-int/" .. output_dir .. "/%{prj.name}")
 
+	flags
+	{
+		"MultiProcessorCompile"
+	}
+
 	files
 	{
 		"src/**.h",

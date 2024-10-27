@@ -3,17 +3,12 @@
 
 namespace Peach
 {
-	Checkbox::Checkbox(const sf::Vector2f& size)
-		: GUIObject(m_Container), m_Active(false)
+	Checkbox::Checkbox(const sf::Vector2f& size, bool active)
+		: GUIObject(m_Container), m_Active(active)
 	{
 		setSize(size);
 
 		setPosition({ 0, 0 });
-	}
-
-	void Checkbox::setActive(bool active)
-	{
-		m_Active = active;
 	}
 
 	void Checkbox::setSize(const sf::Vector2f& size)
@@ -34,14 +29,26 @@ namespace Peach
 		setSize(getSize());
 	}
 
-	const bool& Checkbox::getActive() const
+	void Checkbox::setActive(bool active)
 	{
-		return m_Active;
+		m_Active = active;
 	}
 
 	const sf::Vector2f& Checkbox::getSize() const
 	{
 		return m_Container.getSize();
+	}
+
+	bool Checkbox::isActive() const
+	{
+		return m_Active;
+	}
+
+	void Checkbox::onPressed()
+	{
+		setActive(!m_Active);
+
+		callback();
 	}
 
 	GUIType Checkbox::getStaticType()
@@ -56,14 +63,14 @@ namespace Peach
 
 	void Checkbox::update()
 	{
-		if (m_Container.getFillColor() != m_PrimaryColor)
+		if (m_Container.getFillColor() != getPrimaryColor())
 		{
-			m_Container.setFillColor(m_PrimaryColor);
+			m_Container.setFillColor(getPrimaryColor());
 		}
 
-		if (m_Container.getOutlineColor() != m_SecondaryColor)
+		if (m_Container.getOutlineColor() != getSecondaryColor())
 		{
-			m_Container.setOutlineColor(m_SecondaryColor);
+			m_Container.setOutlineColor(getSecondaryColor());
 		}
 	}
 

@@ -16,18 +16,20 @@ namespace Peach
 			PRESSED
 		};
 	public:
-		Button(const sf::Vector2f& size, const sf::String& label, const sf::Font* font);
+		Button(const sf::Vector2f& size, const sf::String& label, const sf::Font& font);
 		~Button() = default;
 
-		void setState(const Button::State& state);
+		void setState(State state);
 		void setPosition(const sf::Vector2f& position);
 		void setSize(const sf::Vector2f& size);
 		void setLabel(const sf::String& label);
-		void setCharSize(const sf::Uint32& size);
+		void setCharSize(uint32_t size);
 		void setFont(const sf::Font& font);
-		void setLabelStyle(const sf::Text::Style& style);
+		void setLabelStyle(sf::Text::Style style);
 
-		const Button::State& getState() const;
+		virtual void onHover();
+		virtual void onPressed();
+
 		const sf::Vector2f& getSize() const;
 		const sf::String& getLabel() const;
 
@@ -36,11 +38,9 @@ namespace Peach
 
 		void update();
 		void render(sf::RenderTarget* target) const;
-	protected:
+	private:
 		sf::RectangleShape m_Container;
 		sf::Text m_TextLabel;
-
-		std::function<void()> m_Callback;
 
 		State m_State;
 	};

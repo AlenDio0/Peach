@@ -19,11 +19,11 @@ namespace Peach
 		PEACH_CORE_INFO("Log inizializzati");
 	}
 
-	void Log::initFile(const spdlog::filename_t& filename, const size_t& maxsizemb, const size_t& maxfiles)
+	void Log::initFile(const spdlog::filename_t& filename, size_t maxsizemb, size_t maxfiles)
 	{
-		size_t maxsizebytes = maxsizemb * (1024 * 1024);
+		size_t max_size_bytes = maxsizemb * (1024 * 1024);
 
-		auto s_FileLogger = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(filename, maxsizebytes, maxfiles, true);
+		auto s_FileLogger = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(filename, max_size_bytes, maxfiles, true);
 
 		s_CoreLogger->sinks().push_back(s_FileLogger);
 		s_ClientLogger->sinks().push_back(s_FileLogger);
