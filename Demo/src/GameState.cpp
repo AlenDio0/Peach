@@ -14,13 +14,8 @@ void GameState::onEvent()
 {
 	for (sf::Event event; m_Data->window.pollEvent(event);)
 	{
+		m_Data->window.handleEvent(event);
 		m_Controller.handleEvent(event);
-		switch (event.type)
-		{
-		case sf::Event::Closed:
-			m_Data->window.close();
-			break;
-		}
 	}
 }
 

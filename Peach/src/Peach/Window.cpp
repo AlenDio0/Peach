@@ -41,9 +41,9 @@ namespace Peach
 		m_Window->close();
 	}
 
-	bool Window::isRunning() const
+	void Window::setMouseCursor(const sf::Cursor& cursor)
 	{
-		return m_Window->isOpen() && m_Window;
+		m_Window->setMouseCursor(cursor);
 	}
 
 	WindowConfig& Window::getConfig()
@@ -51,14 +51,29 @@ namespace Peach
 		return m_Config;
 	}
 
-	void Window::setMouseCursor(const sf::Cursor& cursor)
+	bool Window::isRunning() const
 	{
-		m_Window->setMouseCursor(cursor);
+		return m_Window->isOpen() && m_Window;
 	}
 
 	bool Window::pollEvent(sf::Event& event) const
 	{
 		return m_Window->pollEvent(event);
+	}
+
+	void Window::handleEvent(sf::Event& event)
+	{
+		switch (event.type)
+		{
+		case sf::Event::Closed:
+			onClosed();
+			break;
+		}
+	}
+
+	void Window::onClosed()
+	{
+		close();
 	}
 
 	sf::RenderTarget* Window::getRenderer()

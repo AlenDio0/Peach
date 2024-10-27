@@ -92,12 +92,10 @@ void DemoState::onEvent()
 {
 	for (sf::Event event; m_Data->window.pollEvent(event);)
 	{
+		m_Data->window.handleEvent(event);
 		m_GUIManager.handleEvent(event);
 		switch (event.type)
 		{
-		case sf::Event::Closed:
-			m_Data->window.close();
-			break;
 		case sf::Event::KeyPressed:
 			PEACH_TRACE("KeyPressedEvent: {}", sf::Keyboard::getDescription(event.key.scancode).toAnsiString());
 
