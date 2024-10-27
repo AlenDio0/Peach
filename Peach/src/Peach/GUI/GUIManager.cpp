@@ -101,52 +101,67 @@ namespace Peach
 		switch (event.type)
 		{
 		case sf::Event::MouseMoved:
-			m_MousePosition = { event.mouseMove.x, event.mouseMove.y };
-			for (auto& [key, value] : m_Objects)
-			{
-				if (!value->isCursorOn(m_MousePosition))
-				{
-					if (value->getType() == GUIType::Button)
-					{
-						Button* button = static_cast<Button*>(value.get());
-						button->setState(Button::State::IDLE);
-					}
-
-					continue;
-				}
-
-				value->onHover();
-			}
+			onMouseMoved(event);
 			break;
 		case sf::Event::MouseButtonPressed:
-			if (event.mouseButton.button != sf::Mouse::Button::Left)
-			{
-				break;
-			}
-
-			for (const auto& [key, value] : m_Objects)
-			{
-				if (!value->isCursorOn(m_MousePosition))
-				{
-					if (value->getType() == GUIType::TextBox)
-					{
-						TextBox* textbox = static_cast<TextBox*>(value.get());
-						textbox->setSelected(false);
-					}
-
-					continue;
-				}
-
-				value->onPressed();
-			}
+			onMousePressed(event);
 			break;
 		case sf::Event::TextEntered:
-			auto& textboxes = getGUIObjects<TextBox>(GUIType::TextBox);
-			for (auto& [key, textbox] : textboxes)
-			{
-				textbox->onTextEntered(event.text.unicode);
-			}
+			onTextEntered(event);
 			break;
+		}
+	}
+
+	void GUIManager::onMouseMoved(const sf::Event& event)
+	{
+		m_MousePosition = { event.mouseMove.x, event.mouseMove.y };
+		for (auto& [key, value] : m_Objects)
+		{
+			if (!value->isCursorOn(m_MousePosition))
+			{
+				if (value->getType() == GUIType::Button)
+				{
+					Button* button = static_cast<Button*>(value.get());
+					button->setState(Button::State::IDLE);
+				}
+
+				continue;
+			}
+
+			value->onHover();
+		}
+	}
+
+	void GUIManager::onMousePressed(const sf::Event& event)
+	{
+		if (event.mouseButton.button != sf::Mouse::Button::Left)
+		{
+			return;
+		}
+
+		for (const auto& [key, value] : m_Objects)
+		{
+			if (!value->isCursorOn(m_MousePosition))
+			{
+				if (value->getType() == GUIType::TextBox)
+				{
+					TextBox* textbox = static_cast<TextBox*>(value.get());
+					textbox->setSelected(false);
+				}
+
+				continue;
+			}
+
+			value->onPressed();
+		}
+	}
+
+	void GUIManager::onTextEntered(const sf::Event& event)
+	{
+		auto& textboxes = getGUIObjects<TextBox>(GUIType::TextBox);
+		for (auto& [key, textbox] : textboxes)
+		{
+			textbox->onTextEntered(event.text.unicode);
 		}
 	}
 
