@@ -29,7 +29,7 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 
 	getAsset<Peach::Texture>("invalid key example");
 
-	button1->setCallback
+	button1->addCallback
 	(
 		[&]() {
 			PEACH_INFO("RIMPIAZZA");
@@ -37,7 +37,7 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 		}
 	);
 
-	button2->setCallback
+	button2->addCallback
 	(
 		[&]() {
 			PEACH_INFO("GIOCA");
