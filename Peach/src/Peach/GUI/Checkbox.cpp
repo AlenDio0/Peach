@@ -29,11 +29,6 @@ namespace Peach
 		setSize(getSize());
 	}
 
-	void Checkbox::setActive(bool active)
-	{
-		m_Active = active;
-	}
-
 	const sf::Vector2f& Checkbox::getSize() const
 	{
 		return m_Container.getSize();
@@ -44,11 +39,29 @@ namespace Peach
 		return m_Active;
 	}
 
-	void Checkbox::onPressed()
+	void Checkbox::handleEvent(const sf::Event& event)
 	{
-		setActive(!m_Active);
+		switch (event.type)
+		{
+		case sf::Event::MouseButtonPressed:
+			onMousePressedEvent(event.mouseButton);
+			break;
+		}
+	}
 
-		callback();
+	void Checkbox::onMousePressedEvent(const sf::Event::MouseButtonEvent& event)
+	{
+		if (event.button != sf::Mouse::Button::Left)
+		{
+			return;
+		}
+
+		if (isCursorOn({ event.x, event.y }))
+		{
+			m_Active = !m_Active;
+
+			callback();
+		}
 	}
 
 	GUIType Checkbox::getStaticType()

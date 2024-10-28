@@ -67,38 +67,44 @@ namespace Peach
 		m_TextLabel.setFont(font);
 	}
 
-	void TextBox::onPressed()
+	void TextBox::handleEvent(const sf::Event& event)
 	{
-		setSelected(true);
-
-		callback();
+		switch (event.type)
+		{
+		case sf::Event::MouseButtonPressed:
+			onMousePressedEvent(event.mouseButton);
+		case sf::Event::TextEntered:
+			onTextEnteredEvent(event.text);
+			break;
+		}
 	}
 
-	std::string TextBox::getBuff() const
+	void TextBox::onMousePressedEvent(const sf::Event::MouseButtonEvent& event)
 	{
-		return m_Buff.str();
+		if (isCursorOn({ event.x, event.y }) && !m_Selected)
+		{
+			if (event.button != sf::Mouse::Button::Left)
+			{
+				return;
+			}
+
+			setSelected(true);
+
+			callback();
+		}
+		else if (m_Selected)
+		{
+			setSelected(false);
+		}
 	}
 
-	const sf::Vector2f& TextBox::getSize() const
+	void TextBox::onTextEnteredEvent(sf::Event::TextEvent event)
 	{
-		return m_Container.getSize();
-	}
+		uint32_t input = event.unicode;
 
-	GUIType TextBox::getStaticType()
-	{
-		return GUIType::TextBox;
-	}
-
-	GUIType TextBox::getType() const
-	{
-		return getStaticType();
-	}
-
-	void TextBox::onTextEntered(uint32_t input)
-	{
-		const bool& is_char = input < 128;
-		const bool& over_limit = m_Buff.str().size() >= m_Length;
-		const bool& is_delete = input == DELETE_KEY;
+		bool is_char = input < 128;
+		bool over_limit = m_Buff.str().size() >= m_Length;
+		bool is_delete = input == DELETE_KEY;
 
 		if (!m_Selected || !is_char || (over_limit && !is_delete))
 		{
@@ -163,6 +169,26 @@ namespace Peach
 		setPosition(getPosition());
 
 		m_BlinkTimer.restart();
+	}
+
+	std::string TextBox::getBuff() const
+	{
+		return m_Buff.str();
+	}
+
+	const sf::Vector2f& TextBox::getSize() const
+	{
+		return m_Container.getSize();
+	}
+
+	GUIType TextBox::getStaticType()
+	{
+		return GUIType::TextBox;
+	}
+
+	GUIType TextBox::getType() const
+	{
+		return getStaticType();
 	}
 
 	void TextBox::update()

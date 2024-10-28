@@ -31,15 +31,15 @@ namespace Peach
 		void setCharSize(uint32_t size);
 		void setFont(const sf::Font& font);
 
-		virtual void onPressed();
+		virtual void handleEvent(const sf::Event& event);
+		void onMousePressedEvent(const sf::Event::MouseButtonEvent& event);
+		void onTextEnteredEvent(sf::Event::TextEvent event);
 
 		std::string getBuff() const;
 		const sf::Vector2f& getSize() const;
 
 		static GUIType getStaticType();
 		GUIType getType() const;
-
-		void onTextEntered(uint32_t input);
 
 		void update();
 		void render(sf::RenderTarget* target) const;

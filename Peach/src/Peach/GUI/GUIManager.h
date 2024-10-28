@@ -43,9 +43,6 @@ namespace Peach
 		RawMap<GUIObject> getGUIObjects(const std::vector<GUIType>& types = {});
 
 		void handleEvent(const sf::Event& event);
-		void onMouseMoved(const sf::Event& event);
-		void onMousePressed(const sf::Event& event);
-		void onTextEntered(const sf::Event& event);
 
 		void update();
 		void render(sf::RenderTarget* target) const;

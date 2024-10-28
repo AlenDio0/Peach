@@ -11,11 +11,6 @@ namespace Peach
 		setPosition({ 0, 0 });
 	}
 
-	void Button::setState(State state)
-	{
-		m_State = state;
-	}
-
 	void Button::setPosition(const sf::Vector2f& position)
 	{
 		m_Container.setPosition(position);
@@ -60,16 +55,44 @@ namespace Peach
 		setPosition(getPosition());
 	}
 
-	void Button::onHover()
+	void Button::handleEvent(const sf::Event& event)
 	{
-		setState(State::HOVER);
+		switch (event.type)
+		{
+		case sf::Event::MouseMoved:
+			onMouseMovedEvent(event.mouseMove);
+			break;
+		case sf::Event::MouseButtonPressed:
+			onMousePressedEvent(event.mouseButton);
+			break;
+		}
 	}
 
-	void Button::onPressed()
+	void Button::onMouseMovedEvent(const sf::Event::MouseMoveEvent& event)
 	{
-		setState(State::PRESSED);
+		if (isCursorOn({ event.x, event.y }))
+		{
+			m_State = State::HOVER;
+		}
+		else
+		{
+			m_State = State::IDLE;
+		}
+	}
 
-		callback();
+	void Button::onMousePressedEvent(const sf::Event::MouseButtonEvent& event)
+	{
+		if (event.button != sf::Mouse::Button::Left)
+		{
+			return;
+		}
+
+		if (isCursorOn({ event.x, event.y }))
+		{
+			m_State = State::PRESSED;
+
+			callback();
+		}
 	}
 
 	const sf::Vector2f& Button::getSize() const
@@ -121,7 +144,7 @@ namespace Peach
 			m_Container.setOutlineColor(getPrimaryColor());
 			m_TextLabel.setFillColor(getPrimaryColor());
 
-			setState(State::HOVER);
+			m_State = State::HOVER;
 			break;
 		}
 	}

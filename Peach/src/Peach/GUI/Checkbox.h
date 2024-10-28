@@ -15,12 +15,12 @@ namespace Peach
 		void setSize(const sf::Vector2f& size);
 		void setPosition(const sf::Vector2f& position);
 		void setCheckTexture(const sf::Texture& texture);
-		void setActive(bool active);
 
 		const sf::Vector2f& getSize() const;
 		bool isActive() const;
 
-		virtual void onPressed();
+		virtual void handleEvent(const sf::Event& event);
+		void onMousePressedEvent(const sf::Event::MouseButtonEvent& event);
 
 		static GUIType getStaticType();
 		GUIType getType() const;
