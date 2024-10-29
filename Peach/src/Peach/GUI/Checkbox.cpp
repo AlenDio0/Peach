@@ -64,27 +64,18 @@ namespace Peach
 		}
 	}
 
-	GuiType Checkbox::getStaticType()
+	GuiType Checkbox::getType() const
 	{
 		return GuiType::Checkbox;
 	}
 
-	GuiType Checkbox::getType() const
-	{
-		return getStaticType();
-	}
-
 	void Checkbox::update()
 	{
-		if (m_Container.getFillColor() != getPrimaryColor())
-		{
-			m_Container.setFillColor(getPrimaryColor());
-		}
+		const auto [_, primary, secondary, background] = getAppearance();
 
-		if (m_Container.getOutlineColor() != getSecondaryColor())
-		{
-			m_Container.setOutlineColor(getSecondaryColor());
-		}
+		m_Check.setColor(primary);
+		m_Container.setOutlineColor(secondary);
+		m_Container.setFillColor(background);
 	}
 
 	void Checkbox::render(sf::RenderTarget* target) const

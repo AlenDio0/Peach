@@ -22,7 +22,6 @@ namespace Peach
 		virtual void handleEvent(const sf::Event& event);
 		void onMousePressedEvent(const sf::Event::MouseButtonEvent& event);
 
-		static GuiType getStaticType();
 		GuiType getType() const;
 
 		void update();

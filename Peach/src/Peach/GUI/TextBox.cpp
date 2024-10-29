@@ -114,23 +114,6 @@ namespace Peach
 
 		switch (input)
 		{
-		case ESCAPE_KEY:
-		case ENTER_KEY:
-			setSelected(false);
-			return;
-		case DELETE_KEY:
-		{
-			if (m_Buff.str().empty())
-			{
-				return;
-			}
-			const size_t& size = m_Buff.str().size();
-			std::string sub = m_Buff.str().substr(0, size - 1);
-
-			m_Buff.str("");
-			m_Buff << sub;
-		}
-		break;
 		default:
 			if (m_Restriction)
 			{
@@ -141,6 +124,21 @@ namespace Peach
 			}
 
 			m_Buff << (char)input;
+			break;
+		case ESCAPE_KEY:
+		case ENTER_KEY:
+			setSelected(false);
+			return;
+		case DELETE_KEY:
+			if (m_Buff.str().empty())
+			{
+				return;
+			}
+			const size_t& size = m_Buff.str().size();
+			std::string sub = m_Buff.str().substr(0, size - 1);
+
+			m_Buff.str("");
+			m_Buff << sub;
 			break;
 		}
 
@@ -165,26 +163,24 @@ namespace Peach
 		return m_Buff.str().size() >= m_Length;
 	}
 
-	GuiType TextBox::getStaticType()
+	GuiType TextBox::getType() const
 	{
 		return GuiType::TextBox;
 	}
 
-	GuiType TextBox::getType() const
-	{
-		return getStaticType();
-	}
-
 	void TextBox::update()
 	{
-		m_Container.setOutlineColor(getSecondaryColor());
-		m_Container.setFillColor(sf::Color::White);
-		m_TextLabel.setFillColor(getPrimaryColor());
+		const auto [_, primary, secondary, background] = getAppearance();
+		sf::Color placeholder_color = sf::Color(secondary.r, secondary.g, secondary.b, 140u);
+
+		m_TextLabel.setFillColor(primary);
+		m_Container.setOutlineColor(secondary);
+		m_Container.setFillColor(background);
 
 		if (!m_Buff.str().empty())
 		{
 			m_TextLabel.setStyle(sf::Text::Style::Regular);
-			m_TextLabel.setFillColor(getPrimaryColor());
+			m_TextLabel.setFillColor(primary);
 		}
 
 		if (!m_Selected)
@@ -192,7 +188,7 @@ namespace Peach
 			if (m_Buff.str().empty())
 			{
 				m_TextLabel.setStyle(sf::Text::Style::Italic);
-				m_TextLabel.setFillColor({ 128, 128, 128 });
+				m_TextLabel.setFillColor(placeholder_color);
 				m_TextLabel.setString(m_Placeholder);
 				setPosition(getPosition());
 			}

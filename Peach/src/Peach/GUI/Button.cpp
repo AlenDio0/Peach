@@ -105,44 +105,32 @@ namespace Peach
 		return m_TextLabel.getString();
 	}
 
-	GuiType Button::getStaticType()
+	GuiType Button::getType() const
 	{
 		return GuiType::Button;
 	}
 
-	GuiType Button::getType() const
-	{
-		return getStaticType();
-	}
-
 	void Button::update()
 	{
+		const auto [_, primary, secondary, background] = getAppearance();
+		sf::Color inverted_background = sf::Color(primary.r, primary.g, primary.b, 200u);
+
 		switch (m_State)
 		{
 		case State::IDLE:
-			if (m_Container.getOutlineColor() == getSecondaryColor())
-			{
-				break;
-			}
-
-			m_Container.setFillColor(getPrimaryColor());
-			m_Container.setOutlineColor(getSecondaryColor());
-			m_TextLabel.setFillColor(getSecondaryColor());
+			m_TextLabel.setFillColor(primary);
+			m_Container.setOutlineColor(secondary);
+			m_Container.setFillColor(background);
 			break;
 		case State::HOVER:
-			if (m_TextLabel.getFillColor() == getPrimaryColor())
-			{
-				break;
-			}
-
-			m_Container.setFillColor(getSecondaryColor());
-			m_Container.setOutlineColor(getPrimaryColor());
-			m_TextLabel.setFillColor(getPrimaryColor());
+			m_TextLabel.setFillColor(background);
+			m_Container.setOutlineColor(secondary);
+			m_Container.setFillColor(inverted_background);
 			break;
 		case State::PRESSED:
-			m_Container.setFillColor(getSecondaryColor());
-			m_Container.setOutlineColor(getPrimaryColor());
-			m_TextLabel.setFillColor(getPrimaryColor());
+			m_TextLabel.setFillColor(background);
+			m_Container.setOutlineColor(secondary);
+			m_Container.setFillColor(inverted_background);
 
 			m_State = State::HOVER;
 			break;

@@ -24,28 +24,51 @@ namespace Peach
 		m_Shape->setPosition(position);
 	}
 
-	void GuiObject::setPrimaryColor(sf::Color color)
+	void GuiObject::setAppearance(Appearance appearance)
 	{
-		m_PrimaryColor = color;
-	}
-
-	void GuiObject::setSecondaryColor(sf::Color color)
-	{
-		m_SecondaryColor = color;
+		m_Appearance = appearance;
+		m_Shape->setOutlineThickness(m_Appearance.outline_thickness);
 	}
 
 	void GuiObject::setOutlineThickness(float thickness)
 	{
-		m_Shape->setOutlineThickness(thickness);
+		m_Appearance.outline_thickness = thickness;
+		m_Shape->setOutlineThickness(m_Appearance.outline_thickness);
 	}
 
-	void GuiObject::setTexture(const sf::Texture* texture)
+	void GuiObject::setPrimaryColor(sf::Color color)
 	{
-		m_Shape->setTexture(texture);
+		m_Appearance.primary_color = color;
 	}
 
-	void GuiObject::handleEvent(const sf::Event& event)
+	void GuiObject::setSecondaryColor(sf::Color color)
 	{
+		m_Appearance.secondary_color = color;
+	}
+
+	void GuiObject::setBackgroundColor(sf::Color color)
+	{
+		m_Appearance.background_color = color;
+	}
+
+	const sf::Vector2f& GuiObject::getPosition() const
+	{
+		return m_Shape->getPosition();
+	}
+
+	bool GuiObject::isCursorOn(const sf::Vector2i& mouseposition) const
+	{
+		return m_Shape->getGlobalBounds().contains((sf::Vector2f)mouseposition);
+	}
+
+	GuiObject::Appearance GuiObject::getAppearance() const
+	{
+		return m_Appearance;
+	}
+
+	GuiType GuiObject::getType() const
+	{
+		return GuiType::None;
 	}
 
 	void GuiObject::callback() const
@@ -61,23 +84,7 @@ namespace Peach
 		}
 	}
 
-	sf::Color GuiObject::getPrimaryColor() const
+	void GuiObject::handleEvent(const sf::Event& event)
 	{
-		return m_PrimaryColor;
-	}
-
-	sf::Color GuiObject::getSecondaryColor() const
-	{
-		return m_SecondaryColor;
-	}
-
-	const sf::Vector2f& GuiObject::getPosition() const
-	{
-		return m_Shape->getPosition();
-	}
-
-	bool GuiObject::isCursorOn(const sf::Vector2i& mouseposition) const
-	{
-		return m_Shape->getGlobalBounds().contains((sf::Vector2f)mouseposition);
 	}
 }

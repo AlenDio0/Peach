@@ -31,7 +31,6 @@ namespace Peach
 
 		bool isOverLimit() const;
 
-		static GuiType getStaticType();
 		GuiType getType() const;
 
 		void update();

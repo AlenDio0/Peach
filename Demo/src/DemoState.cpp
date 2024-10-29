@@ -31,6 +31,9 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 
 	getTexture("invalid key example");
 
+	button1->setOutlineThickness(3.f);
+	button1->setLabelStyle(sf::Text::Bold);
+	button1->setPosition({ getRenderer()->getSize().x / 2.f - button1->getSize().x / 2.f, 100 });
 	button1->addCallback
 	(
 		[&]() {
@@ -39,6 +42,9 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 		}
 	);
 
+	button2->setOutlineThickness(3.f);
+	button2->setLabelStyle(sf::Text::Italic);
+	button2->setPosition({ getRenderer()->getSize().x / 2.f - button2->getSize().x / 2.f, 165 });
 	button2->addCallback
 	(
 		[&]() {
@@ -47,44 +53,24 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 		}
 	);
 
-	std::vector<Peach::Button*> buttons;
-	for (auto& [key, button] : m_GuiManager.getGuiObjects<Peach::Button>(Peach::GuiType::Button))
-	{
-		buttons.push_back(button);
-	}
-
-	for (auto& button : buttons)
-	{
-		button->setPrimaryColor(sf::Color(230, 230, 230));
-		button->setSecondaryColor(sf::Color::Black);
-		button->setOutlineThickness(2.f);
-	}
-
-	button1->setLabelStyle(sf::Text::Bold);
-	button2->setLabelStyle(sf::Text::Italic);
-
-	button1->setPosition({ getRenderer()->getSize().x / 2.f - button1->getSize().x / 2.f, 100 });
-	button2->setPosition({ getRenderer()->getSize().x / 2.f - button2->getSize().x / 2.f, 165 });
-
-	box1->setPrimaryColor(sf::Color(230, 230, 230));
-	box1->setSecondaryColor(sf::Color::Black);
+	box1->setSecondaryColor(sf::Color::Blue);
+	box1->setBackgroundColor(sf::Color(128, 128, 128, 50));
 	box1->setOutlineThickness(3.f);
 	box1->setPosition({ 150.f, 40.f });
 
 	textbox1->setRestriction(isalnum);
-	textbox2->setRestriction(isdigit, false);
-	textbox3->setRestriction([](char c) { return c > ' ' && c <= '~'; });
-
 	textbox1->setOutlineThickness(2.f);
 	textbox1->setPrimaryColor(sf::Color::Black);
 	textbox1->setSecondaryColor(sf::Color::Black);
 	textbox1->setPosition({ getRenderer()->getSize().x / 2.f - textbox1->getSize().x / 2.f, 250 });
 
+	textbox2->setRestriction(isdigit, false);
 	textbox2->setOutlineThickness(2.f);
 	textbox2->setPrimaryColor(sf::Color::Magenta);
 	textbox2->setSecondaryColor(sf::Color::Green);
 	textbox2->setPosition({ getRenderer()->getSize().x / 2.f - textbox2->getSize().x / 2.f, 325 });
 
+	textbox3->setRestriction([](char c) { return c > ' ' && c <= '~'; });
 	textbox3->setOutlineThickness(2.f);
 	textbox3->setPrimaryColor(sf::Color::Red);
 	textbox3->setSecondaryColor(sf::Color::Cyan);

@@ -33,7 +33,6 @@ namespace Peach
 		const sf::Vector2f& getSize() const;
 		const sf::String& getLabel() const;
 
-		static GuiType getStaticType();
 		GuiType getType() const;
 
 		void update();
