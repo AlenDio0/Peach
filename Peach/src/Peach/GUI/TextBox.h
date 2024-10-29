@@ -9,22 +9,13 @@ namespace Peach
 	class PEACH_API TextBox : public GUIObject
 	{
 	public:
-		enum class Restriction
-		{
-			None = 0,
-			Regular,
-			AlphaDigit,
-			Alpha,
-			Digit
-		};
-	public:
 		TextBox(const sf::Vector2f& size, const sf::Font& font, bool selected = false);
 		TextBox(const sf::Vector2f& size, const sf::Font& font, size_t length, bool selected = false);
 		TextBox(const sf::Vector2f& size, const std::string& placeholder, const sf::Font& font, size_t length, bool selected = false);
 		~TextBox() = default;
 
 		void setSelected(bool selected);
-		void setRestriction(Restriction restriction);
+		void setRestriction(const std::function<bool(char)> restriciton, bool space = true);
 		void setSize(const sf::Vector2f& size);
 		void setPosition(const sf::Vector2f& position);
 		void setPlaceholder(const std::string& placeholder);
@@ -38,6 +29,8 @@ namespace Peach
 		std::string getBuff() const;
 		const sf::Vector2f& getSize() const;
 
+		bool isOverLimit() const;
+
 		static GUIType getStaticType();
 		GUIType getType() const;
 
@@ -46,15 +39,15 @@ namespace Peach
 	private:
 		sf::RectangleShape m_Container;
 		sf::Text m_TextLabel;
+
+		std::string m_Placeholder;
 		std::ostringstream m_Buff;
 		size_t m_Length;
 
-		std::string m_Placeholder;
+		std::function<bool(char)> m_Restriction;
+		bool m_Space;
 
 		bool m_Selected;
-
-		Restriction m_Restriction;
-
 		static inline sf::Clock m_BlinkTimer;
 	private:
 		enum

@@ -20,7 +20,8 @@ private:
 		GIOCA,
 		BOX,
 		TEXTBOX1,
-		TEXTBOX2
+		TEXTBOX2,
+		TEXTBOX3
 	};
 
 	sf::Sound m_Sound;

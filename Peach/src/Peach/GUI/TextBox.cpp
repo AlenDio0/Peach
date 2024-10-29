@@ -14,7 +14,7 @@ namespace Peach
 	}
 
 	TextBox::TextBox(const sf::Vector2f& size, const std::string& placeholder, const sf::Font& font, size_t length, bool selected)
-		: GUIObject(m_Container), m_Placeholder(placeholder), m_TextLabel("", font), m_Length(length), m_Selected(selected)
+		: GUIObject(m_Container), m_Placeholder(placeholder), m_TextLabel("", font), m_Length(length), m_Space(true), m_Selected(selected)
 	{
 		setSize(size);
 
@@ -29,9 +29,10 @@ namespace Peach
 		setPosition(getPosition());
 	}
 
-	void TextBox::setRestriction(Restriction restriction)
+	void TextBox::setRestriction(const std::function<bool(char)> restriciton, bool space)
 	{
-		m_Restriction = restriction;
+		m_Restriction = restriciton;
+		m_Space = space;
 	}
 
 	void TextBox::setSize(const sf::Vector2f& size)
@@ -73,6 +74,7 @@ namespace Peach
 		{
 		case sf::Event::MouseButtonPressed:
 			onMousePressedEvent(event.mouseButton);
+			break;
 		case sf::Event::TextEntered:
 			onTextEnteredEvent(event.text);
 			break;
@@ -103,10 +105,9 @@ namespace Peach
 		uint32_t input = event.unicode;
 
 		bool is_char = input < 128;
-		bool over_limit = m_Buff.str().size() >= m_Length;
 		bool is_delete = input == DELETE_KEY;
 
-		if (!m_Selected || !is_char || (over_limit && !is_delete))
+		if (!m_Selected || !is_char || (isOverLimit() && !is_delete))
 		{
 			return;
 		}
@@ -131,36 +132,14 @@ namespace Peach
 		}
 		break;
 		default:
-			if (input != ' ')
+			if (m_Restriction)
 			{
-				switch (m_Restriction)
+				if (!(m_Restriction(input) || (input == ' ' && m_Space)))
 				{
-				case Restriction::Regular:
-					if (input < ' ')
-					{
-						return;
-					}
-					break;
-				case Restriction::AlphaDigit:
-					if (!isalnum(input))
-					{
-						return;
-					}
-					break;
-				case Restriction::Alpha:
-					if (!isalpha(input))
-					{
-						return;
-					}
-					break;
-				case Restriction::Digit:
-					if (!isdigit(input))
-					{
-						return;
-					}
-					break;
+					return;
 				}
 			}
+
 			m_Buff << (char)input;
 			break;
 		}
@@ -181,6 +160,11 @@ namespace Peach
 		return m_Container.getSize();
 	}
 
+	bool TextBox::isOverLimit() const
+	{
+		return m_Buff.str().size() >= m_Length;
+	}
+
 	GUIType TextBox::getStaticType()
 	{
 		return GUIType::TextBox;
@@ -194,7 +178,7 @@ namespace Peach
 	void TextBox::update()
 	{
 		m_Container.setOutlineColor(getSecondaryColor());
-		m_Container.setOutlineColor(getPrimaryColor());
+		m_Container.setFillColor(sf::Color::White);
 		m_TextLabel.setFillColor(getPrimaryColor());
 
 		if (!m_Buff.str().empty())
@@ -216,7 +200,7 @@ namespace Peach
 			return;
 		}
 
-		if (m_BlinkTimer.getElapsedTime().asMilliseconds() >= 500)
+		if (m_BlinkTimer.getElapsedTime().asMilliseconds() >= 500 && !isOverLimit())
 		{
 			static bool blink = false;
 			blink = !blink;

@@ -18,12 +18,14 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 
 	Peach::TextBox* textbox1 = new Peach::TextBox({ 200.f, 50.f }, "Placeholder", getFont("consola"), 16);
 	Peach::TextBox* textbox2 = new Peach::TextBox({ 200.f, 50.f }, "PIN", getFont("consola"), 16);
+	Peach::TextBox* textbox3 = new Peach::TextBox({ 200.f, 40.f }, "Text", getFont("consola"), 16);
 
 	m_GUIManager.add(RIMPIAZZA, button1);
 	m_GUIManager.add(GIOCA, button2);
 	m_GUIManager.add(BOX, box1);
 	m_GUIManager.add(TEXTBOX1, textbox1);
 	m_GUIManager.add(TEXTBOX2, textbox2);
+	m_GUIManager.add(TEXTBOX3, textbox3);
 
 	m_Sound.setBuffer(getSound("removed"));
 
@@ -69,8 +71,9 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	box1->setOutlineThickness(3.f);
 	box1->setPosition({ 150.f, 40.f });
 
-	textbox1->setRestriction(Peach::TextBox::Restriction::Regular);
-	textbox2->setRestriction(Peach::TextBox::Restriction::Digit);
+	textbox1->setRestriction(isalnum);
+	textbox2->setRestriction(isdigit, false);
+	textbox3->setRestriction([](char c) { return c > ' ' && c <= '~'; });
 
 	textbox1->setOutlineThickness(2.f);
 	textbox1->setPrimaryColor(sf::Color::Black);
@@ -80,7 +83,12 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	textbox2->setOutlineThickness(2.f);
 	textbox2->setPrimaryColor(sf::Color::Magenta);
 	textbox2->setSecondaryColor(sf::Color::Green);
-	textbox2->setPosition({ getRenderer()->getSize().x / 2.f - textbox2->getSize().x / 2.f, 350 });
+	textbox2->setPosition({ getRenderer()->getSize().x / 2.f - textbox2->getSize().x / 2.f, 325 });
+
+	textbox3->setOutlineThickness(2.f);
+	textbox3->setPrimaryColor(sf::Color::Red);
+	textbox3->setSecondaryColor(sf::Color::Cyan);
+	textbox3->setPosition({ getRenderer()->getSize().x / 2.f - textbox3->getSize().x / 2.f, 400 });
 
 }
 
