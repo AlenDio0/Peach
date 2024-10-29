@@ -10,10 +10,24 @@
 DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	: State(data, "Demo")
 {
-	Peach::Button* button1 = new Peach::Button({ 225.f, 55.f }, "RIMPIAZZA", {});
-	Peach::Button* button2 = new Peach::Button({ 225.f, 55.f }, "GIOCA", {});
+	Peach::Button* button1 = new Peach::Button({ 225.f, 55.f }, "RIMPIAZZA", getFont("consola"));
+	Peach::Button* button2 = new Peach::Button({ 225.f, 55.f }, "GIOCA", getFont("consola"));
+
+	Peach::Checkbox* box1 = new Peach::Checkbox({ 32.f, 32.f });
+	box1->setCheckTexture(getTexture("check"));
+
+	Peach::TextBox* textbox1 = new Peach::TextBox({ 200.f, 50.f }, "Placeholder", getFont("consola"), 16);
+	Peach::TextBox* textbox2 = new Peach::TextBox({ 200.f, 50.f }, "PIN", getFont("consola"), 16);
+
 	m_GUIManager.add(RIMPIAZZA, button1);
 	m_GUIManager.add(GIOCA, button2);
+	m_GUIManager.add(BOX, box1);
+	m_GUIManager.add(TEXTBOX1, textbox1);
+	m_GUIManager.add(TEXTBOX2, textbox2);
+
+	m_Sound.setBuffer(getSound("removed"));
+
+	getTexture("invalid key example");
 
 	button1->addCallback
 	(
@@ -39,7 +53,6 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 
 	for (auto& button : buttons)
 	{
-		button->setFont(getAsset<Peach::Font>("consola"));
 		button->setPrimaryColor(sf::Color(230, 230, 230));
 		button->setSecondaryColor(sf::Color::Black);
 		button->setOutlineThickness(2.f);
@@ -48,23 +61,13 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	button1->setLabelStyle(sf::Text::Bold);
 	button2->setLabelStyle(sf::Text::Italic);
 
-	button1->setPosition({ m_Data->window.getRenderer()->getSize().x / 2.f - button1->getSize().x / 2.f, 100 });
-	button2->setPosition({ m_Data->window.getRenderer()->getSize().x / 2.f - button2->getSize().x / 2.f, 165 });
-
-	Peach::Checkbox* box1 = new Peach::Checkbox({ 32.f, 32.f });
-	m_GUIManager.add(BOX, box1);
-
-	box1->setCheckTexture(getAsset<Peach::Texture>("check"));
+	button1->setPosition({ getRenderer()->getSize().x / 2.f - button1->getSize().x / 2.f, 100 });
+	button2->setPosition({ getRenderer()->getSize().x / 2.f - button2->getSize().x / 2.f, 165 });
 
 	box1->setPrimaryColor(sf::Color(230, 230, 230));
 	box1->setSecondaryColor(sf::Color::Black);
 	box1->setOutlineThickness(3.f);
 	box1->setPosition({ 150.f, 40.f });
-
-	Peach::TextBox* textbox1 = new Peach::TextBox({ 200.f, 50.f }, "Placeholder", getAsset<Peach::Font>("consola"), 16);
-	Peach::TextBox* textbox2 = new Peach::TextBox({ 200.f, 50.f }, "PIN", getAsset<Peach::Font>("consola"), 16);
-	m_GUIManager.add(TEXTBOX1, textbox1);
-	m_GUIManager.add(TEXTBOX2, textbox2);
 
 	textbox1->setRestriction(Peach::TextBox::Restriction::Regular);
 	textbox2->setRestriction(Peach::TextBox::Restriction::Digit);
@@ -72,14 +75,13 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	textbox1->setOutlineThickness(2.f);
 	textbox1->setPrimaryColor(sf::Color::Black);
 	textbox1->setSecondaryColor(sf::Color::Black);
-	textbox1->setPosition({ m_Data->window.getRenderer()->getSize().x / 2.f - textbox1->getSize().x / 2.f, 250 });
+	textbox1->setPosition({ getRenderer()->getSize().x / 2.f - textbox1->getSize().x / 2.f, 250 });
 
 	textbox2->setOutlineThickness(2.f);
 	textbox2->setPrimaryColor(sf::Color::Magenta);
 	textbox2->setSecondaryColor(sf::Color::Green);
-	textbox2->setPosition({ m_Data->window.getRenderer()->getSize().x / 2.f - textbox2->getSize().x / 2.f, 350 });
+	textbox2->setPosition({ getRenderer()->getSize().x / 2.f - textbox2->getSize().x / 2.f, 350 });
 
-	m_Sound.setBuffer(getAsset<Peach::Sound>("removed"));
 }
 
 DemoState::~DemoState()
@@ -90,22 +92,20 @@ DemoState::~DemoState()
 
 void DemoState::onEvent()
 {
-	for (sf::Event event; m_Data->window.pollEvent(event);)
+	for (sf::Event event; pollEvent(event);)
 	{
+		getWindow().handleEvent(event);
 		m_GUIManager.handleEvent(event);
 		switch (event.type)
 		{
-		case sf::Event::Closed:
-			m_Data->window.close();
-			break;
 		case sf::Event::KeyPressed:
 			PEACH_TRACE("KeyPressedEvent: {}", sf::Keyboard::getDescription(event.key.scancode).toAnsiString());
 
 			switch (event.key.code)
 			{
 			case sf::Keyboard::B:
-				int x = m_Data->window.getRenderer()->getSize().x;
-				int y = m_Data->window.getRenderer()->getSize().y;
+				int x = getRenderer()->getSize().x;
+				int y = getRenderer()->getSize().y;
 				PEACH_TRACE("Window Size: {}, {}", x, y);
 				break;
 			}
@@ -121,13 +121,13 @@ void DemoState::onUpdate()
 
 void DemoState::onRender()
 {
-	m_Data->window.setMouseCursor(m_GUIManager.getCursor());
+	getWindow().setMouseCursor(m_GUIManager.getCursor());
 
-	m_Data->window.getRenderer()->setView(m_Data->window.getRenderer()->getView());
+	getRenderer()->setView(getRenderer()->getView());
 
-	m_Data->window.getRenderer()->clear(sf::Color::White);
+	getRenderer()->clear(sf::Color::White);
 
-	m_GUIManager.render(m_Data->window.getRenderer());
+	m_GUIManager.render(getRenderer());
 
-	m_Data->window.display();
+	getWindow().display();
 }

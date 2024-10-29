@@ -29,8 +29,39 @@ namespace Peach
 		return m_DebugName;
 	}
 
-	void State::removeState()
+	Peach::Window& State::getWindow() const
+	{
+		return m_Data->window;
+	}
+
+	bool State::pollEvent(sf::Event& event) const
+	{
+		return getWindow().pollEvent(event);
+	}
+
+	sf::RenderTarget* State::getRenderer() const
+	{
+		return getWindow().getRenderer();
+	}
+
+	void State::removeState() const
 	{
 		m_Data->machine.removeState();
 	}
+
+	const Peach::Texture& State::getTexture(const AssetKey& key) const
+	{
+		return getAsset<Peach::Texture>(key);
+	}
+
+	const Peach::Font& State::getFont(const AssetKey& key) const
+	{
+		return getAsset<Peach::Font>(key);
+	}
+
+	const Peach::Sound& State::getSound(const AssetKey& key) const
+	{
+		return getAsset<Peach::Sound>(key);
+	}
+
 }

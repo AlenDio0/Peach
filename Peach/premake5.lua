@@ -10,6 +10,11 @@ project "Peach"
 	pchheader "peachpch.h"
 	pchsource "src/peachpch.cpp"
 
+	flags
+	{
+		"MultiProcessorCompile"
+	}
+
 	files
 	{
 		"src/**.h",

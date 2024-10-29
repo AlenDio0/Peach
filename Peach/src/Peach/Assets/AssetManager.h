@@ -5,8 +5,6 @@
 #include "Asset.h"
 #include "Peach/Config/AssetConfig.h"
 
-#include <optional>
-
 namespace Peach
 {
 	using AssetKey = std::string;
@@ -76,7 +74,7 @@ namespace Peach
 
 			if (T::getType() == Asset::Type::None)
 			{
-				throw "AssetType non definito";
+				throw std::exception("Asset non ha un AssetType definito");
 			}
 
 			m_Assets[key] = Ref<Asset>(new T());
@@ -92,7 +90,7 @@ namespace Peach
 		}
 
 		template<typename T>
-		T& getAsset(AssetKey key)
+		const T* getAsset(AssetKey key)
 		{
 			for (auto& c : key)
 			{
@@ -104,12 +102,12 @@ namespace Peach
 
 			try
 			{
-				return *static_cast<T*>(m_Assets.at(key).get());
+				return static_cast<T*>(m_Assets.at(key).get());
 			}
 			catch (const std::exception& e)
 			{
 				PEACH_CORE_ERROR("AssetManager::(key: {}), Catturata eccezione: {}", key, e.what());
-				return T();
+				return NULL;
 			}
 		}
 	private:

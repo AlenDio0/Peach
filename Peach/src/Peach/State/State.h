@@ -26,18 +26,19 @@ namespace Peach
 	protected:
 		Ref<Data> m_Data;
 	protected:
-		template<typename T>
-		void addState(bool replacing = false)
-		{
-			m_Data->machine.addState(MakeRef<T>(m_Data), replacing);
-		}
-		void removeState();
+		Peach::Window& getWindow() const;
+		bool pollEvent(sf::Event& event) const;
+		sf::RenderTarget* getRenderer() const;
 
 		template<typename T>
-		T& getAsset(const AssetKey& key)
-		{
-			return m_Data->assets.getAsset<T>(key);
-		}
+		void addState(bool replacing = false) const { m_Data->machine.addState(MakeRef<T>(m_Data), replacing); }
+		void removeState() const;
+
+		template<typename T>
+		const T& getAsset(const AssetKey& key) const { return *m_Data->assets.getAsset<T>(key); }
+		const Peach::Texture& getTexture(const AssetKey& key) const;
+		const Peach::Font& getFont(const AssetKey& key) const;
+		const Peach::Sound& getSound(const AssetKey& key) const;
 	private:
 		std::string m_DebugName;
 	};

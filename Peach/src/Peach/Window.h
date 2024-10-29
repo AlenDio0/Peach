@@ -17,16 +17,17 @@ namespace Peach
 		bool create();
 		void close();
 
-		bool isRunning() const;
+		void setMouseCursor(const sf::Cursor& cursor);
 
 		WindowConfig& getConfig();
+		bool isRunning() const;
 
-		void setMouseCursor(const sf::Cursor& cursor);
+		bool pollEvent(sf::Event& event) const;
+		void handleEvent(const sf::Event& event);
+		void onClosed();
 
 		sf::RenderTarget* getRenderer();
 		void display();
-
-		bool pollEvent(sf::Event& event) const;
 	private:
 		Scope<sf::RenderWindow> m_Window;
 

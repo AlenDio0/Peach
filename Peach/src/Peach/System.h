@@ -6,3 +6,5 @@
 #include "System/Random.h"
 
 #include "System/SpriteSheet.h"
+
+#include "System/InputController.h"
