@@ -16,9 +16,9 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	Peach::Checkbox* box1 = new Peach::Checkbox({ 32.f, 32.f });
 	box1->setCheckTexture(getTexture("check"));
 
-	Peach::TextBox* textbox1 = new Peach::TextBox({ 200.f, 50.f }, "Placeholder", getFont("consola"), 16);
-	Peach::TextBox* textbox2 = new Peach::TextBox({ 200.f, 50.f }, "PIN", getFont("consola"), 16);
-	Peach::TextBox* textbox3 = new Peach::TextBox({ 200.f, 40.f }, "Text", getFont("consola"), 16);
+	Peach::TextBox* textbox1 = new Peach::TextBox({ 300.f, 70.f }, getFont("consola"), "Placeholder", false);
+	Peach::TextBox* textbox2 = new Peach::TextBox({ 300.f, 50.f }, getFont("consola"), "PIN", false);
+	Peach::TextBox* textbox3 = new Peach::TextBox({ 300.f, 25.f }, getFont("consola"), "Text", false);
 
 	m_GuiManager.add(RIMPIAZZA, button1);
 	m_GuiManager.add(GIOCA, button2);
@@ -75,7 +75,6 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	textbox3->setPrimaryColor(sf::Color::Red);
 	textbox3->setSecondaryColor(sf::Color::Cyan);
 	textbox3->setPosition({ getRenderer()->getSize().x / 2.f - textbox3->getSize().x / 2.f, 400 });
-
 }
 
 DemoState::~DemoState()
