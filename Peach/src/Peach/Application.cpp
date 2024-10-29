@@ -36,6 +36,11 @@ namespace Peach
 		loadAsset<Peach::Sound>(key, path, force);
 	}
 
+	void Application::initAssetFile()
+	{
+		m_Data->assets.initFile();
+	}
+
 	void Application::run()
 	{
 		const std::chrono::microseconds FRAME_DURATION(16667);

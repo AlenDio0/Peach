@@ -22,6 +22,7 @@ namespace Peach
 		void loadTexture(const AssetKey& key, const std::string& path, bool force = true) const;
 		void loadFont(const AssetKey& key, const std::string& path, bool force = true) const;
 		void loadSound(const AssetKey& key, const std::string& path, bool force = true) const;
+		void initAssetFile();
 
 		void run();
 	protected:
