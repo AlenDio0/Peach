@@ -2,7 +2,7 @@
 
 #include "Peach/Core.h"
 
-#include "GUIObject.h"
+#include "GuiObject.h"
 
 namespace Peach
 {
@@ -12,22 +12,22 @@ namespace Peach
 	template<typename T>
 	using RefMap = std::unordered_map<uint32_t, Ref<T>>;
 
-	class PEACH_API GUIManager
+	class PEACH_API GuiManager
 	{
 	public:
-		GUIManager();
-		~GUIManager();
+		GuiManager();
+		~GuiManager();
 
-		Ref<GUIObject> operator[](GUIKey key);
+		Ref<GuiObject> operator[](GUIKey key);
 
-		void add(GUIKey key, GUIObject* object);
+		void add(GUIKey key, GuiObject* object);
 		void remove(GUIKey key);
-		void remove(GUIObject* object);
+		void remove(GuiObject* object);
 
 		const sf::Cursor& getCursor() const;
 
-		template<typename T = GUIObject>
-		RawMap<T> getGUIObjects(GUIType type)
+		template<typename T = GuiObject>
+		RawMap<T> getGuiObjects(GuiType type)
 		{
 			RawMap<T> objects;
 			for (auto& [key, object] : m_Objects)
@@ -40,14 +40,14 @@ namespace Peach
 
 			return objects;
 		}
-		RawMap<GUIObject> getGUIObjects(const std::vector<GUIType>& types = {});
+		RawMap<GuiObject> getGuiObjects(const std::vector<GuiType>& types = {});
 
 		void handleEvent(const sf::Event& event);
 
 		void update();
 		void render(sf::RenderTarget* target) const;
 	private:
-		RefMap<GUIObject> m_Objects;
+		RefMap<GuiObject> m_Objects;
 
 		static sf::Vector2i m_MousePosition;
 	};

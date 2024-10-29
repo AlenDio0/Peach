@@ -4,7 +4,7 @@
 namespace Peach
 {
 	Button::Button(const sf::Vector2f& size, const sf::String& label, const sf::Font& font)
-		: GUIObject(m_Container), m_TextLabel(label, font), m_State(State::IDLE)
+		: GuiObject(m_Container), m_TextLabel(label, font), m_State(State::IDLE)
 	{
 		setSize(size);
 
@@ -105,12 +105,12 @@ namespace Peach
 		return m_TextLabel.getString();
 	}
 
-	GUIType Button::getStaticType()
+	GuiType Button::getStaticType()
 	{
-		return GUIType::Button;
+		return GuiType::Button;
 	}
 
-	GUIType Button::getType() const
+	GuiType Button::getType() const
 	{
 		return getStaticType();
 	}

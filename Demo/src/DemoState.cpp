@@ -20,12 +20,12 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	Peach::TextBox* textbox2 = new Peach::TextBox({ 200.f, 50.f }, "PIN", getFont("consola"), 16);
 	Peach::TextBox* textbox3 = new Peach::TextBox({ 200.f, 40.f }, "Text", getFont("consola"), 16);
 
-	m_GUIManager.add(RIMPIAZZA, button1);
-	m_GUIManager.add(GIOCA, button2);
-	m_GUIManager.add(BOX, box1);
-	m_GUIManager.add(TEXTBOX1, textbox1);
-	m_GUIManager.add(TEXTBOX2, textbox2);
-	m_GUIManager.add(TEXTBOX3, textbox3);
+	m_GuiManager.add(RIMPIAZZA, button1);
+	m_GuiManager.add(GIOCA, button2);
+	m_GuiManager.add(BOX, box1);
+	m_GuiManager.add(TEXTBOX1, textbox1);
+	m_GuiManager.add(TEXTBOX2, textbox2);
+	m_GuiManager.add(TEXTBOX3, textbox3);
 
 	m_Sound.setBuffer(getSound("removed"));
 
@@ -48,7 +48,7 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	);
 
 	std::vector<Peach::Button*> buttons;
-	for (auto& [key, button] : m_GUIManager.getGUIObjects<Peach::Button>(Peach::GUIType::Button))
+	for (auto& [key, button] : m_GuiManager.getGuiObjects<Peach::Button>(Peach::GuiType::Button))
 	{
 		buttons.push_back(button);
 	}
@@ -103,7 +103,7 @@ void DemoState::onEvent()
 	for (sf::Event event; pollEvent(event);)
 	{
 		getWindow().handleEvent(event);
-		m_GUIManager.handleEvent(event);
+		m_GuiManager.handleEvent(event);
 		switch (event.type)
 		{
 		case sf::Event::KeyPressed:
@@ -124,18 +124,18 @@ void DemoState::onEvent()
 
 void DemoState::onUpdate()
 {
-	m_GUIManager.update();
+	m_GuiManager.update();
 }
 
 void DemoState::onRender()
 {
-	getWindow().setMouseCursor(m_GUIManager.getCursor());
+	getWindow().setMouseCursor(m_GuiManager.getCursor());
 
 	getRenderer()->setView(getRenderer()->getView());
 
 	getRenderer()->clear(sf::Color::White);
 
-	m_GUIManager.render(getRenderer());
+	m_GuiManager.render(getRenderer());
 
 	getWindow().display();
 }

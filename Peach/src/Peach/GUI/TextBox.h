@@ -2,11 +2,11 @@
 
 #include "Peach/Core.h"
 
-#include "GUIObject.h"
+#include "GuiObject.h"
 
 namespace Peach
 {
-	class PEACH_API TextBox : public GUIObject
+	class PEACH_API TextBox : public GuiObject
 	{
 	public:
 		TextBox(const sf::Vector2f& size, const sf::Font& font, bool selected = false);
@@ -31,8 +31,8 @@ namespace Peach
 
 		bool isOverLimit() const;
 
-		static GUIType getStaticType();
-		GUIType getType() const;
+		static GuiType getStaticType();
+		GuiType getType() const;
 
 		void update();
 		void render(sf::RenderTarget* target) const;

@@ -13,7 +13,7 @@ public:
 	void onUpdate() override;
 	void onRender() override;
 private:
-	Peach::GUIManager m_GUIManager;
+	Peach::GuiManager m_GuiManager;
 	enum
 	{
 		RIMPIAZZA = 0,

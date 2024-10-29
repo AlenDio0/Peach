@@ -14,7 +14,7 @@ namespace Peach
 	}
 
 	TextBox::TextBox(const sf::Vector2f& size, const std::string& placeholder, const sf::Font& font, size_t length, bool selected)
-		: GUIObject(m_Container), m_Placeholder(placeholder), m_TextLabel("", font), m_Length(length), m_Space(true), m_Selected(selected)
+		: GuiObject(m_Container), m_Placeholder(placeholder), m_TextLabel("", font), m_Length(length), m_Space(true), m_Selected(selected)
 	{
 		setSize(size);
 
@@ -165,12 +165,12 @@ namespace Peach
 		return m_Buff.str().size() >= m_Length;
 	}
 
-	GUIType TextBox::getStaticType()
+	GuiType TextBox::getStaticType()
 	{
-		return GUIType::TextBox;
+		return GuiType::TextBox;
 	}
 
-	GUIType TextBox::getType() const
+	GuiType TextBox::getType() const
 	{
 		return getStaticType();
 	}

@@ -4,7 +4,7 @@
 namespace Peach
 {
 	Checkbox::Checkbox(const sf::Vector2f& size, bool active)
-		: GUIObject(m_Container), m_Active(active)
+		: GuiObject(m_Container), m_Active(active)
 	{
 		setSize(size);
 
@@ -64,12 +64,12 @@ namespace Peach
 		}
 	}
 
-	GUIType Checkbox::getStaticType()
+	GuiType Checkbox::getStaticType()
 	{
-		return GUIType::Checkbox;
+		return GuiType::Checkbox;
 	}
 
-	GUIType Checkbox::getType() const
+	GuiType Checkbox::getType() const
 	{
 		return getStaticType();
 	}

@@ -2,11 +2,11 @@
 
 #include "Button.h"
 
-#include "GUIObject.h"
+#include "GuiObject.h"
 
 namespace Peach
 {
-	class PEACH_API Checkbox : public GUIObject
+	class PEACH_API Checkbox : public GuiObject
 	{
 	public:
 		Checkbox(const sf::Vector2f& size, bool active = false);
@@ -22,8 +22,8 @@ namespace Peach
 		virtual void handleEvent(const sf::Event& event);
 		void onMousePressedEvent(const sf::Event::MouseButtonEvent& event);
 
-		static GUIType getStaticType();
-		GUIType getType() const;
+		static GuiType getStaticType();
+		GuiType getType() const;
 
 		void update();
 		void render(sf::RenderTarget* target) const;

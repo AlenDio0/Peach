@@ -8,7 +8,7 @@
 
 namespace Peach
 {
-	enum class GUIType
+	enum class GuiType
 	{
 		None = 0,
 		Button,
@@ -16,11 +16,11 @@ namespace Peach
 		TextBox
 	};
 
-	class PEACH_API GUIObject
+	class PEACH_API GuiObject
 	{
 	public:
-		GUIObject(sf::Shape& container);
-		virtual ~GUIObject();
+		GuiObject(sf::Shape& container);
+		virtual ~GuiObject();
 
 		void addCallback(const std::function<void()>& callback);
 		virtual void setSize(const sf::Vector2f& size) = 0;
@@ -39,7 +39,7 @@ namespace Peach
 
 		bool isCursorOn(const sf::Vector2i& mouseposition) const;
 
-		virtual GUIType getType() const = 0;
+		virtual GuiType getType() const = 0;
 
 		virtual void update() = 0;
 		virtual void render(sf::RenderTarget* target) const = 0;

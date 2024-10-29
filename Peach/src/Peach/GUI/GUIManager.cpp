@@ -1,46 +1,46 @@
 #include "peachpch.h"
-#include "GUIManager.h"
+#include "GuiManager.h"
 
 #include "Button.h"
 #include "TextBox.h"
 
 namespace Peach
 {
-	PEACH_API sf::Vector2i GUIManager::m_MousePosition;
+	PEACH_API sf::Vector2i GuiManager::m_MousePosition;
 
-	GUIManager::GUIManager()
+	GuiManager::GuiManager()
 	{
-		PEACH_CORE_TRACE("GUIManager costruito");
+		PEACH_CORE_TRACE("GuiManager costruito");
 	}
 
-	GUIManager::~GUIManager()
+	GuiManager::~GuiManager()
 	{
-		PEACH_CORE_TRACE("GUIManager distrutto");
+		PEACH_CORE_TRACE("GuiManager distrutto");
 	}
 
-	Ref<GUIObject> GUIManager::operator[](GUIKey key)
+	Ref<GuiObject> GuiManager::operator[](GUIKey key)
 	{
 		return m_Objects[key];
 	}
 
-	void GUIManager::add(GUIKey key, GUIObject* object)
+	void GuiManager::add(GUIKey key, GuiObject* object)
 	{
-		PEACH_CORE_TRACE("GUIManager::add(key: {}, object: {})", key, object ? "EXISTS" : "NULL");
+		PEACH_CORE_TRACE("GuiManager::add(key: {}, object: {})", key, object ? "EXISTS" : "NULL");
 		if (!object)
 		{
-			PEACH_CORE_ERROR("GUIManager::add(...), Impossibile aggiungere un GUIObject nullo");
+			PEACH_CORE_ERROR("GuiManager::add(...), Impossibile aggiungere un GuiObject nullo");
 			return;
 		}
 
-		m_Objects[key] = Ref<GUIObject>(object);
+		m_Objects[key] = Ref<GuiObject>(object);
 	}
 
-	void GUIManager::remove(GUIKey key)
+	void GuiManager::remove(GUIKey key)
 	{
 		m_Objects.erase(key);
 	}
 
-	void GUIManager::remove(GUIObject* object)
+	void GuiManager::remove(GuiObject* object)
 	{
 		for (auto& [key, value] : m_Objects)
 		{
@@ -52,7 +52,7 @@ namespace Peach
 		}
 	}
 
-	const sf::Cursor& GUIManager::getCursor() const
+	const sf::Cursor& GuiManager::getCursor() const
 	{
 		static sf::Cursor cursor;
 		cursor.loadFromSystem(sf::Cursor::Arrow);
@@ -68,9 +68,9 @@ namespace Peach
 		return cursor;
 	}
 
-	RawMap<GUIObject> GUIManager::getGUIObjects(const std::vector<GUIType>& types)
+	RawMap<GuiObject> GuiManager::getGuiObjects(const std::vector<GuiType>& types)
 	{
-		RawMap<GUIObject> objects;
+		RawMap<GuiObject> objects;
 
 		if (types.empty())
 		{
@@ -96,7 +96,7 @@ namespace Peach
 		return objects;
 	}
 
-	void GUIManager::handleEvent(const sf::Event& event)
+	void GuiManager::handleEvent(const sf::Event& event)
 	{
 		switch (event.type)
 		{
@@ -111,7 +111,7 @@ namespace Peach
 		}
 	}
 
-	void GUIManager::update()
+	void GuiManager::update()
 	{
 		for (auto& [key, object] : m_Objects)
 		{
@@ -119,7 +119,7 @@ namespace Peach
 		}
 	}
 
-	void GUIManager::render(sf::RenderTarget* target) const
+	void GuiManager::render(sf::RenderTarget* target) const
 	{
 		for (const auto& [key, object] : m_Objects)
 		{
