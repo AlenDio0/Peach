@@ -1,58 +1,77 @@
 #include "peachpch.h"
-#include "GUIObject.h"
+#include "GuiObject.h"
 
 namespace Peach
 {
-	GUIObject::GUIObject(sf::Shape& container)
+	GuiObject::GuiObject(sf::Shape& container)
 		: m_Shape(&container)
 	{
-		PEACH_CORE_TRACE("GUIObject costruito");
+		PEACH_CORE_TRACE("GuiObject costruito");
 	}
 
-	GUIObject::~GUIObject()
+	GuiObject::~GuiObject()
 	{
-		PEACH_CORE_TRACE("GUIObject distrutto");
+		PEACH_CORE_TRACE("GuiObject distrutto");
 	}
 
-	void GUIObject::addCallback(const std::function<void()>& callback)
+	void GuiObject::addCallback(const std::function<void()>& callback)
 	{
 		m_CallbackSink.push_back(callback);
 	}
 
-	void GUIObject::setPosition(const sf::Vector2f& position)
+	void GuiObject::setPosition(const sf::Vector2f& position)
 	{
 		m_Shape->setPosition(position);
 	}
 
-	void GUIObject::setPrimaryColor(sf::Color color)
+	void GuiObject::setAppearance(Appearance appearance)
 	{
-		m_PrimaryColor = color;
+		m_Appearance = appearance;
+		m_Shape->setOutlineThickness(m_Appearance.outline_thickness);
 	}
 
-	void GUIObject::setSecondaryColor(sf::Color color)
+	void GuiObject::setOutlineThickness(float thickness)
 	{
-		m_SecondaryColor = color;
+		m_Appearance.outline_thickness = thickness;
+		m_Shape->setOutlineThickness(m_Appearance.outline_thickness);
 	}
 
-	void GUIObject::setOutlineThickness(float thickness)
+	void GuiObject::setPrimaryColor(sf::Color color)
 	{
-		m_Shape->setOutlineThickness(thickness);
+		m_Appearance.primary_color = color;
 	}
 
-	void GUIObject::setTexture(const sf::Texture* texture)
+	void GuiObject::setSecondaryColor(sf::Color color)
 	{
-		m_Shape->setTexture(texture);
+		m_Appearance.secondary_color = color;
 	}
 
-	void GUIObject::onHover()
+	void GuiObject::setBackgroundColor(sf::Color color)
 	{
+		m_Appearance.background_color = color;
 	}
 
-	void GUIObject::onPressed()
+	const sf::Vector2f& GuiObject::getPosition() const
 	{
+		return m_Shape->getPosition();
 	}
 
-	void GUIObject::callback() const
+	bool GuiObject::isCursorOn(const sf::Vector2i& mouseposition) const
+	{
+		return m_Shape->getGlobalBounds().contains((sf::Vector2f)mouseposition);
+	}
+
+	GuiObject::Appearance GuiObject::getAppearance() const
+	{
+		return m_Appearance;
+	}
+
+	GuiType GuiObject::getType() const
+	{
+		return GuiType::None;
+	}
+
+	void GuiObject::callback() const
 	{
 		for (auto& cback : m_CallbackSink)
 		{
@@ -65,23 +84,7 @@ namespace Peach
 		}
 	}
 
-	sf::Color GUIObject::getPrimaryColor() const
+	void GuiObject::handleEvent(const sf::Event& event)
 	{
-		return m_PrimaryColor;
-	}
-
-	sf::Color GUIObject::getSecondaryColor() const
-	{
-		return m_SecondaryColor;
-	}
-
-	const sf::Vector2f& GUIObject::getPosition() const
-	{
-		return m_Shape->getPosition();
-	}
-
-	bool GUIObject::isCursorOn(const sf::Vector2i& mouseposition) const
-	{
-		return m_Shape->getGlobalBounds().contains((sf::Vector2f)mouseposition);
 	}
 }

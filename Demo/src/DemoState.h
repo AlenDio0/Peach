@@ -13,14 +13,15 @@ public:
 	void onUpdate() override;
 	void onRender() override;
 private:
-	Peach::GUIManager m_GUIManager;
+	Peach::GuiManager m_GuiManager;
 	enum
 	{
 		RIMPIAZZA = 0,
 		GIOCA,
 		BOX,
 		TEXTBOX1,
-		TEXTBOX2
+		TEXTBOX2,
+		TEXTBOX3
 	};
 
 	sf::Sound m_Sound;

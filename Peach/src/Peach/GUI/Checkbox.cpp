@@ -4,7 +4,7 @@
 namespace Peach
 {
 	Checkbox::Checkbox(const sf::Vector2f& size, bool active)
-		: GUIObject(m_Container), m_Active(active)
+		: GuiObject(m_Container), m_Active(active)
 	{
 		setSize(size);
 
@@ -29,11 +29,6 @@ namespace Peach
 		setSize(getSize());
 	}
 
-	void Checkbox::setActive(bool active)
-	{
-		m_Active = active;
-	}
-
 	const sf::Vector2f& Checkbox::getSize() const
 	{
 		return m_Container.getSize();
@@ -44,34 +39,43 @@ namespace Peach
 		return m_Active;
 	}
 
-	void Checkbox::onPressed()
+	void Checkbox::handleEvent(const sf::Event& event)
 	{
-		setActive(!m_Active);
-
-		callback();
+		switch (event.type)
+		{
+		case sf::Event::MouseButtonPressed:
+			onMousePressedEvent(event.mouseButton);
+			break;
+		}
 	}
 
-	GUIType Checkbox::getStaticType()
+	void Checkbox::onMousePressedEvent(const sf::Event::MouseButtonEvent& event)
 	{
-		return GUIType::Checkbox;
+		if (event.button != sf::Mouse::Button::Left)
+		{
+			return;
+		}
+
+		if (isCursorOn({ event.x, event.y }))
+		{
+			m_Active = !m_Active;
+
+			callback();
+		}
 	}
 
-	GUIType Checkbox::getType() const
+	GuiType Checkbox::getType() const
 	{
-		return getStaticType();
+		return GuiType::Checkbox;
 	}
 
 	void Checkbox::update()
 	{
-		if (m_Container.getFillColor() != getPrimaryColor())
-		{
-			m_Container.setFillColor(getPrimaryColor());
-		}
+		const auto [_, primary, secondary, background] = getAppearance();
 
-		if (m_Container.getOutlineColor() != getSecondaryColor())
-		{
-			m_Container.setOutlineColor(getSecondaryColor());
-		}
+		m_Check.setColor(primary);
+		m_Container.setOutlineColor(secondary);
+		m_Container.setFillColor(background);
 	}
 
 	void Checkbox::render(sf::RenderTarget* target) const

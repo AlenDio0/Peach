@@ -2,11 +2,11 @@
 
 #include "Peach/Core.h"
 
-#include "GUIObject.h"
+#include "GuiObject.h"
 
 namespace Peach
 {
-	class PEACH_API Button : public GUIObject
+	class PEACH_API Button : public GuiObject
 	{
 	public:
 		enum class State
@@ -19,7 +19,6 @@ namespace Peach
 		Button(const sf::Vector2f& size, const sf::String& label, const sf::Font& font);
 		~Button() = default;
 
-		void setState(State state);
 		void setPosition(const sf::Vector2f& position);
 		void setSize(const sf::Vector2f& size);
 		void setLabel(const sf::String& label);
@@ -27,14 +26,14 @@ namespace Peach
 		void setFont(const sf::Font& font);
 		void setLabelStyle(sf::Text::Style style);
 
-		virtual void onHover();
-		virtual void onPressed();
+		virtual void handleEvent(const sf::Event& event);
+		void onMouseMovedEvent(const sf::Event::MouseMoveEvent& event);
+		void onMousePressedEvent(const sf::Event::MouseButtonEvent& event);
 
 		const sf::Vector2f& getSize() const;
 		const sf::String& getLabel() const;
 
-		static GUIType getStaticType();
-		GUIType getType() const;
+		GuiType getType() const;
 
 		void update();
 		void render(sf::RenderTarget* target) const;
