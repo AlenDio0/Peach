@@ -1,0 +1,126 @@
+#include "peachpch.h"
+#include "GuiManager.h"
+
+namespace Peach
+{
+	PEACH_API sf::Vector2i GuiManager::m_MousePosition;
+
+	GuiManager::GuiManager()
+	{
+		PEACH_CORE_TRACE("GuiManager costruito");
+	}
+
+	GuiManager::~GuiManager()
+	{
+		PEACH_CORE_TRACE("GuiManager distrutto");
+	}
+
+	Ref<GuiObject> GuiManager::operator[](GUIKey key)
+	{
+		return m_Objects[key];
+	}
+
+	void GuiManager::add(GUIKey key, GuiObject* object)
+	{
+		PEACH_CORE_TRACE("GuiManager::add(key: {}, object: {})", key, object ? "EXISTS" : "NULL");
+		if (!object)
+		{
+			PEACH_CORE_ERROR("GuiManager::add(...), Impossibile aggiungere un GuiObject nullo");
+			return;
+		}
+
+		m_Objects[key] = Ref<GuiObject>(object);
+	}
+
+	void GuiManager::remove(GUIKey key)
+	{
+		m_Objects.erase(key);
+	}
+
+	void GuiManager::remove(GuiObject* object)
+	{
+		for (auto& [key, value] : m_Objects)
+		{
+			if (value.get() == object)
+			{
+				remove(key);
+				break;
+			}
+		}
+	}
+
+	const sf::Cursor& GuiManager::getCursor() const
+	{
+		static sf::Cursor cursor;
+		cursor.loadFromSystem(sf::Cursor::Arrow);
+
+		for (const auto& [key, object] : m_Objects)
+		{
+			if (object->isCursorOn(m_MousePosition))
+			{
+				cursor.loadFromSystem(sf::Cursor::Hand);
+			}
+		}
+
+		return cursor;
+	}
+
+	RawMap<GuiObject> GuiManager::getGuiObjects(const std::vector<GuiType>& types)
+	{
+		RawMap<GuiObject> objects;
+
+		if (types.empty())
+		{
+			for (auto& [key, object] : m_Objects)
+			{
+				objects[key] = object.get();
+			}
+
+			return objects;
+		}
+
+		for (const auto& type : types)
+		{
+			for (auto& [key, object] : m_Objects)
+			{
+				if (object->getType() == type)
+				{
+					objects[key] = object.get();
+				}
+			}
+		}
+
+		return objects;
+	}
+
+	void GuiManager::handleEvent(const sf::Event& event)
+	{
+		switch (event.type)
+		{
+		case sf::Event::MouseMoved:
+			m_MousePosition = { event.mouseMove.x, event.mouseMove.y };
+			break;
+		}
+
+		for (auto& [key, object] : m_Objects)
+		{
+			object->handleEvent(event);
+		}
+	}
+
+	void GuiManager::update()
+	{
+		for (auto& [key, object] : m_Objects)
+		{
+			object->update();
+		}
+	}
+
+	void GuiManager::render(sf::RenderTarget* target) const
+	{
+		for (const auto& [key, object] : m_Objects)
+		{
+			object->render(target);
+		}
+	}
+}
