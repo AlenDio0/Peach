@@ -1,7 +1,8 @@
 #pragma once
+
 #include <Peach/State/State.h>
 
-#include <Peach\Game\Level\Level.h>
+#include <Peach\Game.h>
 
 class GameState : public Peach::State
 {

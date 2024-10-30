@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Peach/Core.h"
+#include "Peach/Core/Core.h"
 
 #include "Peach/System.h"
 #include <SFML/Graphics/Texture.hpp>

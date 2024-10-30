@@ -10,7 +10,7 @@
 #include <stack>
 #include <unordered_map>
 
-#include "Peach/Log.h"
+#include "Peach/Core/Log.h"
 #include "Peach/System.h"
 
 #include <SFML/Graphics.hpp>

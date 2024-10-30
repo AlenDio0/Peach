@@ -1,10 +1,8 @@
 #pragma once
 
-#include "Peach/Core.h"
 #include "IState.h"
 
-#include "Peach/Data.h"
-
+#include "Peach/Core/Data.h"
 #include <SFML/Graphics.hpp>
 #include <string>
 

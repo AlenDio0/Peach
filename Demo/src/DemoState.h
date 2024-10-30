@@ -1,5 +1,7 @@
 #pragma once
+
 #include <Peach/State/State.h>
+
 #include <Peach/GUI/GUIManager.h>
 #include <Peach/Assets/AssetManager.h>
 

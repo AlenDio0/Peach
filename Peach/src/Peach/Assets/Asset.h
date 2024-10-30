@@ -1,10 +1,9 @@
 #pragma once
 
-#include "Peach/Core.h"
+#include "Peach/Core/Core.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-
 #include <filesystem>
 
 namespace Peach

@@ -1,6 +1,5 @@
 #include "DemoState.h"
 
-#include <Peach/Log.h>
 #include <Peach/GUI/Button.h>
 #include <Peach/GUI/Checkbox.h>
 #include <Peach/GUI/TextBox.h>

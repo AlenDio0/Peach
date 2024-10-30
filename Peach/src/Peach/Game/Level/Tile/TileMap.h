@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Peach/Core.h"
-
 #include "Tile.h"
 
 namespace Peach

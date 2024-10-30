@@ -1,9 +1,6 @@
 #include "peachpch.h"
 #include "GuiManager.h"
 
-#include "Button.h"
-#include "TextBox.h"
-
 namespace Peach
 {
 	PEACH_API sf::Vector2i GuiManager::m_MousePosition;

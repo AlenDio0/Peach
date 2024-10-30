@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Peach/Core.h"
-
 #include "Asset.h"
 #include "Peach/Config/AssetConfig.h"
 

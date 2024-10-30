@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Peach/Core.h"
-
 #include "GuiObject.h"
 
 namespace Peach
