@@ -22,6 +22,9 @@ namespace Peach
 		~AssetManager()
 		{
 			PEACH_CORE_TRACE("AssetManager distrutto");
+
+			m_Assets.clear();
+			delete m_Config;
 		}
 
 		void initFile()

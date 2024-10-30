@@ -12,6 +12,16 @@ namespace Peach
 	StateMachine::~StateMachine()
 	{
 		PEACH_CORE_TRACE("StateMachine distrutto");
+
+		clean();
+	}
+
+	void StateMachine::clean()
+	{
+		while (!m_States.empty())
+		{
+			m_States.pop();
+		}
 	}
 
 	Ref<IState> StateMachine::getCurrentState() const
