@@ -1,8 +1,8 @@
 #include "DemoState.h"
 
-#include <Peach/GUI/Button.h>
-#include <Peach/GUI/Checkbox.h>
-#include <Peach/GUI/TextBox.h>
+#include <Peach/Gui/Button.h>
+#include <Peach/Gui/Checkbox.h>
+#include <Peach/Gui/TextBox.h>
 
 #include "GameState.h"
 
