@@ -13,6 +13,9 @@ namespace Peach
 	GuiManager::~GuiManager()
 	{
 		PEACH_CORE_TRACE("GuiManager distrutto");
+
+		PEACH_CORE_TRACE("[GuiManager] {} GuiObject distrutti", m_Objects.size());
+		m_Objects.clear();
 	}
 
 	Ref<GuiObject> GuiManager::operator[](GuiKey key)
