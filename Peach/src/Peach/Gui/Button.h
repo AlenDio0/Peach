@@ -15,7 +15,7 @@ namespace Peach
 		};
 	public:
 		Button(const sf::Vector2f& size, const sf::String& label, const sf::Font& font);
-		~Button() = default;
+		~Button();
 
 		void setPosition(const sf::Vector2f& position);
 		void setSize(const sf::Vector2f& size);

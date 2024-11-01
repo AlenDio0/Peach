@@ -8,7 +8,7 @@ namespace Peach
 	{
 	public:
 		Checkbox(const sf::Vector2f& size, bool active = false);
-		~Checkbox() = default;
+		~Checkbox();
 
 		void setSize(const sf::Vector2f& size);
 		void setPosition(const sf::Vector2f& position);
