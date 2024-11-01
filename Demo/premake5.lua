@@ -62,31 +62,7 @@ project "Demo"
 	}
 	
 	filter "system:windows"
-		cppdialect "C++17"
 		systemversion "latest"
-
-		defines
-		{
-			"PEACH_PLATFORM_WINDOWS"
-		}
-
-	filter "system:linux"
-		cppdialect "C++17"
-		systemversion "latest"
-
-		defines
-		{
-			"PEACH_PLATFORM_LINUX"
-		}
-
-	filter "system:macos"
-		cppdialect "C++17"
-		systemversion "latest"
-
-		defines
-		{
-			"PEACH_PLATFORM_MACOS"
-		}
 
 	filter "configurations:Debug"
 		defines "PEACH_DEBUG"
@@ -100,7 +76,7 @@ project "Demo"
 		defines "PEACH_RELEASE"
 		runtime "Release"
 		optimize "Off"
-		libdirs "../%{LibraryDir.SFML}//Release"
+		libdirs "../%{LibraryDir.SFML}/Release"
 		links { Library["SFML"]["Release"] }
 		postbuildcommands { PostBuildSFML["Release"] }
 
@@ -109,6 +85,6 @@ project "Demo"
 		defines "PEACH_DIST"
 		runtime "Release"
 		optimize "Off"
-		libdirs "../%{LibraryDir.SFML}//Release"
+		libdirs "../%{LibraryDir.SFML}/Release"
 		links { Library["SFML"]["Dist"] }
 		postbuildcommands { PostBuildSFML["Release"] }

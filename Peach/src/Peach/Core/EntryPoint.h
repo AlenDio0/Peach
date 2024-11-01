@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef PEACH_PLATFORM_WINDOWS || PEACH_PLATFORM_LINUX || PEACH_PLATFORM_MACOS
+#ifdef PEACH_PLATFORM_WINDOWS
 int main(int argc, char** argv)
 {
 	Peach::Log::init();

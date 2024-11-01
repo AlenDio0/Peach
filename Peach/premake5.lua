@@ -52,24 +52,6 @@ project "Peach"
 			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. output_dir .. "/Demo/\"")
 		}
 
-	filter "system:linux"
-		cppdialect "C++17"
-		systemversion "latest"
-
-		defines
-		{
-			"PEACH_PLATFORM_LINUX"
-		}
-
-	filter "system:macos"
-		cppdialect "C++17"
-		systemversion "latest"
-
-		defines
-		{
-			"PEACH_PLATFORM_MACOS"
-		}
-
 	filter "configurations:Debug"
 		defines "PEACH_DEBUG"
 		runtime "Debug"
