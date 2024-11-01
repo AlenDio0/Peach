@@ -5,14 +5,17 @@
 
 namespace Peach
 {
-	void Log::init()
+	void Log::init(const std::string& appname, Log::Level level, Log::Level flushon, const std::string& pattern)
 	{
-		spdlog::set_pattern("[%T] <%n> %^[%l] %v.%$");
+		spdlog::set_pattern(pattern);
 
 		s_CoreLogger = spdlog::stdout_color_mt("PEACH");
-		s_ClientLogger = spdlog::stdout_color_mt("APP");
+		s_CoreLogger->flush_on((spdlog::level::level_enum)flushon);
 
-		setLevel(Log::Level::Trace);
+		s_ClientLogger = spdlog::stdout_color_mt(appname);
+		s_ClientLogger->flush_on((spdlog::level::level_enum)flushon);
+
+		setLevel(level);
 
 		PEACH_CORE_INFO("Log inizializzati");
 	}

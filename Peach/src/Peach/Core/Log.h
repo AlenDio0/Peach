@@ -21,7 +21,7 @@ namespace Peach
 			Off = SPDLOG_LEVEL_OFF
 		};
 	public:
-		static void init();
+		static void init(const std::string& appname = "APP", Log::Level level = Level::Trace, Log::Level flushon = Level::Error, const std::string& pattern = "[%T] <%n> %^[%l] %v.%$");
 		static void initFile(const spdlog::filename_t& filename, size_t maxsizemb, size_t maxfiles);
 
 		static void setLevel(Log::Level level);
