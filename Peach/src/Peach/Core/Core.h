@@ -1,5 +1,13 @@
 #pragma once
 
+#ifdef _WIN32
+#ifdef _WIN64
+#define PEACH_PLATFORM_WINDOWS
+#else
+#error Peach doesn't support Win32
+#endif // _WIN64
+#endif // _WIN32
+
 #ifdef PEACH_PLATFORM_WINDOWS
 #ifdef PEACH_BUILD_DLL
 #define PEACH_API __declspec(dllexport)

@@ -3,6 +3,7 @@ project "Peach"
 	language "C++"
     cppdialect "C++17"
 	staticruntime "Off"
+	defines "PEACH_BUILD_DLL"
 
 	targetdir ("../bin/" .. output_dir .. "/%{prj.name}")
 	objdir ("../bin-int/" .. output_dir .. "/%{prj.name}")
@@ -42,11 +43,6 @@ project "Peach"
 
 	filter "system:windows"
 		systemversion "latest"
-		defines
-		{
-			"PEACH_PLATFORM_WINDOWS",
-			"PEACH_BUILD_DLL"
-		}
 		postbuildcommands
 		{
 			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. output_dir .. "/Demo/\"")
