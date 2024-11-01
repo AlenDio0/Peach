@@ -70,6 +70,24 @@ project "Demo"
 			"PEACH_PLATFORM_WINDOWS"
 		}
 
+	filter "system:linux"
+		cppdialect "C++17"
+		systemversion "latest"
+
+		defines
+		{
+			"PEACH_PLATFORM_LINUX"
+		}
+
+	filter "system:macos"
+		cppdialect "C++17"
+		systemversion "latest"
+
+		defines
+		{
+			"PEACH_PLATFORM_MACOS"
+		}
+
 	filter "configurations:Debug"
 		defines "PEACH_DEBUG"
 		runtime "Debug"
