@@ -4,6 +4,11 @@ GameState::GameState(Peach::Ref<Peach::Data> data)
 	: Peach::State(data, "Game"), m_Level("level.txt", getTexture("tiles"))
 {
 	initBinds();
+
+	Peach::TileMap map({ 3, 3 }, { 2, 2 }, {}, { 10, 10 });
+	map.setSize({ 2, 2 });
+	map.setSize({ 2, 3 });
+	map.setSize({ 3, 3 });
 }
 
 GameState::~GameState()

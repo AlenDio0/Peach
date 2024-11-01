@@ -13,7 +13,7 @@ namespace Peach
 		TileMap();
 		TileMap(const sf::Texture& texture);
 		TileMap(const Vec2u& mapsize, const Vec2f& tilesize, const sf::Texture& texture, const Vec2u& spritesize);
-		~TileMap() = default;
+		~TileMap();
 
 		const Vec2u& getSize() const;
 		const Vec2f& getTileSize() const;

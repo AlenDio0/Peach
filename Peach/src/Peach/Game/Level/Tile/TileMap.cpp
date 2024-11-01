@@ -20,6 +20,14 @@ namespace Peach
 		setSize(mapsize);
 	}
 
+	TileMap::~TileMap()
+	{
+		PEACH_CORE_TRACE("TileMap distrutto");
+
+		PEACH_CORE_TRACE("{} Tile distrutti", m_Size.x * m_Size.y);
+		m_TileMap.clear();
+	}
+
 	const Vec2u& TileMap::getSize() const
 	{
 		return m_Size;
@@ -89,8 +97,11 @@ namespace Peach
 			return;
 		}
 
+
 		if (m_Size == Vec2u(0, 0))
 		{
+			PEACH_CORE_TRACE("TileMap::setSize(newsize: {}), Creati {} Tile", newsize, newsize.x * newsize.y);
+
 			for (uint32_t x = 0; x < newsize.x; ++x)
 			{
 				for (uint32_t y = 0; y < newsize.y; ++y)
@@ -179,6 +190,7 @@ namespace Peach
 	{
 		if (m_Size.x < sizex)
 		{
+			PEACH_CORE_TRACE("TileMap::resizeX(sizex: {}), {} Tile costruiti", sizex, (sizex - m_Size.x) * m_Size.y);
 			for (uint32_t x = m_Size.x; x < sizex; ++x)
 			{
 				for (uint32_t y = 0; y < m_Size.y; ++y)
@@ -187,8 +199,9 @@ namespace Peach
 				}
 			}
 		}
-		else
+		else if (m_Size.x > sizex)
 		{
+			PEACH_CORE_TRACE("TileMap::resizeX(sizex: {}), {} Tile distrutti", sizex, (m_Size.x - sizex) * m_Size.y);
 			for (uint32_t x = sizex; x < m_Size.x; ++x)
 			{
 				for (uint32_t y = 0; y < m_Size.y; ++y)
@@ -204,6 +217,7 @@ namespace Peach
 	{
 		if (m_Size.y < sizey)
 		{
+			PEACH_CORE_TRACE("TileMap::resizeY(sizey: {}), {} Tile costruiti", sizey, (sizey - m_Size.y) * m_Size.x);
 			for (uint32_t x = 0; x < m_Size.x; ++x)
 			{
 				for (uint32_t y = m_Size.y; y < sizey; ++y)
@@ -212,8 +226,9 @@ namespace Peach
 				}
 			}
 		}
-		else
+		else if (m_Size.y > sizey)
 		{
+			PEACH_CORE_TRACE("TileMap::resizeY(sizey: {}), {} Tile distrutti", sizey, (m_Size.y - sizey) * m_Size.x);
 			for (uint32_t x = 0; x < m_Size.x; ++x)
 			{
 				for (uint32_t y = sizey; y < m_Size.y; ++y)

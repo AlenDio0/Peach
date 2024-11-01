@@ -3,10 +3,13 @@
 
 namespace Peach
 {
-	GameObject::GameObject(const Vec2f& size, const Vec2f& position, const FloatRect& hitbox)
-		: m_Shape(size)
+	GameObject::GameObject(const Vec2f& size, const Vec2f& position, const FloatRect& hitbox, bool debuglog)
+		: m_Shape(size), m_DebugLog(debuglog)
 	{
-		PEACH_CORE_TRACE("GameObject costruito");
+		if (m_DebugLog)
+		{
+			PEACH_CORE_TRACE("GameObject costruito");
+		}
 
 		setPosition(position);
 		setHitbox(hitbox);
@@ -14,7 +17,10 @@ namespace Peach
 
 	GameObject::~GameObject()
 	{
-		PEACH_CORE_TRACE("GameObject distrutto");
+		if (m_DebugLog)
+		{
+			PEACH_CORE_TRACE("GameObject distrutto");
+		}
 	}
 
 	void GameObject::setSize(const Vec2f& size)
