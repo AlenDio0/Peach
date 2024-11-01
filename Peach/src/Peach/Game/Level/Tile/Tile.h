@@ -9,7 +9,7 @@ namespace Peach
 	class PEACH_API Tile : public GameObject
 	{
 	public:
-		Tile(const Vec2f& size, const Vec2f& position = {});
+		Tile(const Vec2f& size, const Vec2f& position = {}, bool debuglog = false);
 		Tile(const FloatRect& rect);
 
 		void setID(TileID id);

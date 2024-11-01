@@ -10,7 +10,7 @@ namespace Peach
 	class PEACH_API GameObject
 	{
 	public:
-		GameObject(const Vec2f& size, const Vec2f& position = {}, const FloatRect& hitbox = {});
+		GameObject(const Vec2f& size, const Vec2f& position = {}, const FloatRect& hitbox = {}, bool debuglog = true);
 		virtual ~GameObject();
 
 		void setSize(const Vec2f& size);
@@ -30,5 +30,7 @@ namespace Peach
 	private:
 		Vec2f m_Position;
 		FloatRect m_Hitbox;
+
+		bool m_DebugLog;
 	};
 }

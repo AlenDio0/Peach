@@ -3,8 +3,8 @@
 
 namespace Peach
 {
-	Tile::Tile(const Vec2f& size, const Vec2f& position)
-		: GameObject(size, position, { {}, size }), m_ID(0)
+	Tile::Tile(const Vec2f& size, const Vec2f& position, bool debuglog)
+		: GameObject(size, position, { {}, size }, debuglog), m_ID(0)
 	{
 		update();
 	}
