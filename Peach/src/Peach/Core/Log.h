@@ -4,14 +4,27 @@
 
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/ostr.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
 
 namespace Peach
 {
 	class PEACH_API Log
 	{
 	public:
+		enum class Level
+		{
+			Trace = SPDLOG_LEVEL_TRACE,
+			Info = SPDLOG_LEVEL_INFO,
+			Warn = SPDLOG_LEVEL_WARN,
+			Error = SPDLOG_LEVEL_ERROR,
+			Fatal = SPDLOG_LEVEL_CRITICAL,
+			Off = SPDLOG_LEVEL_OFF
+		};
+	public:
 		static void init();
 		static void initFile(const spdlog::filename_t& filename, size_t maxsizemb, size_t maxfiles);
+
+		static void setLevel(Log::Level level);
 
 		inline static Ref<spdlog::logger>& getCoreLogger() { return s_CoreLogger; }
 		inline static Ref<spdlog::logger>& getClientLogger() { return s_ClientLogger; }
