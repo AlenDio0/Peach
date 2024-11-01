@@ -3,15 +3,21 @@
 
 namespace Peach
 {
-	GuiObject::GuiObject(sf::Shape& container)
-		: m_Shape(&container)
+	GuiObject::GuiObject(sf::Shape& container, bool debuglog)
+		: m_Shape(&container), m_DebugLog(debuglog)
 	{
-		PEACH_CORE_TRACE("GuiObject costruito");
+		if (m_DebugLog)
+		{
+			PEACH_CORE_TRACE("GuiObject costruito");
+		}
 	}
 
 	GuiObject::~GuiObject()
 	{
-		PEACH_CORE_TRACE("GuiObject distrutto");
+		if (m_DebugLog)
+		{
+			PEACH_CORE_TRACE("GuiObject distrutto");
+		}
 	}
 
 	void GuiObject::addCallback(const std::function<void()>& callback)

@@ -13,14 +13,17 @@ namespace Peach
 	GuiManager::~GuiManager()
 	{
 		PEACH_CORE_TRACE("GuiManager distrutto");
+
+		PEACH_CORE_TRACE("[GuiManager] {} GuiObject distrutti", m_Objects.size());
+		m_Objects.clear();
 	}
 
-	Ref<GuiObject> GuiManager::operator[](GUIKey key)
+	Ref<GuiObject> GuiManager::operator[](GuiKey key)
 	{
 		return m_Objects[key];
 	}
 
-	void GuiManager::add(GUIKey key, GuiObject* object)
+	void GuiManager::add(GuiKey key, GuiObject* object)
 	{
 		PEACH_CORE_TRACE("GuiManager::add(key: {}, object: {})", key, object ? "EXISTS" : "NULL");
 		if (!object)
@@ -32,7 +35,7 @@ namespace Peach
 		m_Objects[key] = Ref<GuiObject>(object);
 	}
 
-	void GuiManager::remove(GUIKey key)
+	void GuiManager::remove(GuiKey key)
 	{
 		m_Objects.erase(key);
 	}

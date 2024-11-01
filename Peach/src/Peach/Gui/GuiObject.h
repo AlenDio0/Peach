@@ -40,7 +40,7 @@ namespace Peach
 			sf::Color background_color;
 		};
 	public:
-		GuiObject(sf::Shape& container);
+		GuiObject(sf::Shape& container, bool debuglog = true);
 		virtual ~GuiObject();
 
 		void addCallback(const std::function<void()>& callback);
@@ -70,5 +70,7 @@ namespace Peach
 		Appearance m_Appearance;
 
 		std::vector<std::function<void()>> m_CallbackSink;
+
+		bool m_DebugLog;
 	};
 }

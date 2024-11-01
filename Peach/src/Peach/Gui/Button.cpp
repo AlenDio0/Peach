@@ -4,11 +4,18 @@
 namespace Peach
 {
 	Button::Button(const sf::Vector2f& size, const sf::String& label, const sf::Font& font)
-		: GuiObject(m_Container), m_TextLabel(label, font), m_State(State::IDLE)
+		: GuiObject(m_Container, false), m_TextLabel(label, font), m_State(State::IDLE)
 	{
+		PEACH_CORE_TRACE("Button costruito");
+
 		setSize(size);
 
 		setPosition({ 0, 0 });
+	}
+
+	Button::~Button()
+	{
+		PEACH_CORE_TRACE("Button distrutto");
 	}
 
 	void Button::setPosition(const sf::Vector2f& position)

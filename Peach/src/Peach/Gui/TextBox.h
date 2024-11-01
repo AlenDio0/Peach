@@ -11,7 +11,7 @@ namespace Peach
 		TextBox(const sf::Vector2f& size, const sf::Font& font, size_t length, bool selected);
 		TextBox(const sf::Vector2f& size, const sf::Font& font, const std::string& placeholder, bool selected);
 		TextBox(const sf::Vector2f& size, const sf::Font& font, const std::string& placeholder, size_t length, bool selected);
-		~TextBox() = default;
+		~TextBox();
 
 		void setIndex(size_t index);
 		void setSelected(bool selected);

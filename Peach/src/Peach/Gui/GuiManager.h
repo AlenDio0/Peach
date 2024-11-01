@@ -4,7 +4,7 @@
 
 namespace Peach
 {
-	using GUIKey = uint32_t;
+	using GuiKey = uint32_t;
 	template<typename T>
 	using RawMap = std::unordered_map<uint32_t, T*>;
 	template<typename T>
@@ -16,10 +16,10 @@ namespace Peach
 		GuiManager();
 		~GuiManager();
 
-		Ref<GuiObject> operator[](GUIKey key);
+		Ref<GuiObject> operator[](GuiKey key);
 
-		void add(GUIKey key, GuiObject* object);
-		void remove(GUIKey key);
+		void add(GuiKey key, GuiObject* object);
+		void remove(GuiKey key);
 		void remove(GuiObject* object);
 
 		const sf::Cursor& getCursor() const;

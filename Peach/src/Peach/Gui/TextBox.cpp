@@ -19,8 +19,10 @@ namespace Peach
 	}
 
 	TextBox::TextBox(const sf::Vector2f& size, const sf::Font& font, const std::string& placeholder, size_t length, bool selected)
-		: GuiObject(m_Container), m_TextLabel("", font), m_Placeholder(placeholder), m_Length(length), m_Space(true), m_Selected(selected), m_Blink(false)
+		: GuiObject(m_Container, false), m_TextLabel("", font), m_Placeholder(placeholder), m_Length(length), m_Space(true), m_Selected(selected), m_Blink(false)
 	{
+		PEACH_CORE_TRACE("TextBox costruito");
+
 		m_Indicator.setOutlineThickness(1.f);
 		m_Indicator.setFillColor(sf::Color::White);
 		m_Indicator.setOutlineColor(sf::Color::Black);
@@ -34,6 +36,11 @@ namespace Peach
 		{
 			m_Length = calcMaxLength();
 		}
+	}
+
+	TextBox::~TextBox()
+	{
+		PEACH_CORE_TRACE("TextBox distrutto");
 	}
 
 	void TextBox::setIndex(size_t index)

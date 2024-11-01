@@ -2,7 +2,7 @@
 
 #include <Peach/State/State.h>
 
-#include <Peach/GUI/GUIManager.h>
+#include <Peach/Gui/GuiManager.h>
 #include <Peach/Assets/AssetManager.h>
 
 class DemoState : public Peach::State

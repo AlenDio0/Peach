@@ -1,9 +1,9 @@
 #pragma once
 
-#include "GUI/GUIObject.h"
+#include "Gui/GuiObject.h"
 
-#include "GUI/Checkbox.h"
-#include "GUI/Button.h"
-#include "GUI/Textbox.h"
+#include "Gui/Checkbox.h"
+#include "Gui/Button.h"
+#include "Gui/Textbox.h"
 
-#include "GUI/GUIManager.h"
+#include "Gui/GuiManager.h"

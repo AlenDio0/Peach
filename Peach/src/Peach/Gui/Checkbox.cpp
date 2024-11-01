@@ -4,11 +4,18 @@
 namespace Peach
 {
 	Checkbox::Checkbox(const sf::Vector2f& size, bool active)
-		: GuiObject(m_Container), m_Active(active)
+		: GuiObject(m_Container, false), m_Active(active)
 	{
+		PEACH_CORE_TRACE("Checkbox costruito");
+
 		setSize(size);
 
 		setPosition({ 0, 0 });
+	}
+
+	Checkbox::~Checkbox()
+	{
+		PEACH_CORE_TRACE("Checkbox distrutto");
 	}
 
 	void Checkbox::setSize(const sf::Vector2f& size)
