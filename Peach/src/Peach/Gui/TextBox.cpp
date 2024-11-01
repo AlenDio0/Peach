@@ -137,7 +137,7 @@ namespace Peach
 		{
 			for (size_t i = 0; i <= getBuffSize(); ++i)
 			{
-				int char_x = (int)m_TextLabel.findCharacterPos(i).x + (int)m_TextLabel.getGlobalBounds().width / getBuffSize() / 2;
+				int char_x = (int)m_TextLabel.findCharacterPos(i).x + (int)m_TextLabel.getGlobalBounds().width / (int)(getBuffSize() / 2);
 				if (x <= char_x)
 				{
 					setIndex(i);
@@ -266,7 +266,7 @@ namespace Peach
 
 	size_t TextBox::calcMaxLength() const
 	{
-		return m_Container.getSize().x / (m_TextLabel.getCharacterSize() / 1.75f);
+		return (size_t)m_Container.getSize().x / (size_t)(m_TextLabel.getCharacterSize() / 1.75f);
 	}
 
 	bool TextBox::isOverLimit() const
