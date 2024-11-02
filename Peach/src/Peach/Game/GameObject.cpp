@@ -3,16 +3,18 @@
 
 namespace Peach
 {
-	GameObject::GameObject(const Vec2f& size, const Vec2f& position, const FloatRect& hitbox, bool debuglog)
-		: m_Shape(size), m_DebugLog(debuglog)
+	GameObject::GameObject()
+		: GameObject({}, {})
+	{
+	}
+
+	GameObject::GameObject(const sf::Texture& texture, RigidBody body, bool dynamic, bool debuglog)
+		: m_Sprite(texture), m_Body(body), m_Dynamic(dynamic), m_DebugLog(debuglog)
 	{
 		if (m_DebugLog)
 		{
 			PEACH_CORE_TRACE("GameObject costruito");
 		}
-
-		setPosition(position);
-		setHitbox(hitbox);
 	}
 
 	GameObject::~GameObject()
@@ -23,53 +25,48 @@ namespace Peach
 		}
 	}
 
-	void GameObject::setSize(const Vec2f& size)
-	{
-		m_Shape.setSize(size);
-	}
-
-	void GameObject::setPosition(const Vec2f& position)
-	{
-		m_Position = position;
-	}
-
-	void GameObject::setHitbox(const FloatRect& hitbox)
-	{
-		m_Hitbox = hitbox;
-	}
-
 	void GameObject::setTexture(const sf::Texture& texture, bool resetrect)
 	{
-		m_Shape.setTexture(&texture, resetrect);
+		m_Sprite.setTexture(texture, resetrect);
 	}
 
-	void GameObject::setTextureRect(const IntRect& rect)
+	void GameObject::setTextureRect(IntRect rect)
 	{
-		m_Shape.setTextureRect(rect);
+		m_Sprite.setTextureRect(rect);
 	}
 
-	const sf::Vector2f& GameObject::getSize() const
+	void GameObject::setPosition(Vec2f position)
 	{
-		return m_Shape.getSize();
+		m_Body.transform.position = position;
+
+		if (!m_Dynamic)
+		{
+			m_Sprite.setPosition(position);
+		}
 	}
 
-	const Vec2f& GameObject::getPosition() const
+	void GameObject::setScale(Vec2f scale)
 	{
-		return m_Position;
+		m_Body.transform.scale = scale;
+
+		if (!m_Dynamic)
+		{
+			m_Sprite.setScale(scale);
+		}
 	}
 
-	const FloatRect& GameObject::getHitbox() const
+	void GameObject::setHitBox(FloatRect hitbox)
 	{
-		return m_Hitbox;
+		m_Body.hitbox = hitbox;
 	}
 
-	void GameObject::update()
+	void GameObject::render(sf::RenderTarget* target) const
 	{
-		m_Shape.setPosition(m_Position);
+		renderSprite(target);
 	}
 
-	void GameObject::render(sf::RenderTarget* target)
+	void GameObject::renderSprite(sf::RenderTarget* target) const
 	{
-		target->draw(m_Shape);
+		target->draw(m_Sprite);
 	}
 }

@@ -26,6 +26,16 @@ namespace Peach
 		return *m_Texture;
 	}
 
+	const Vec2u& SpriteSheet::getSpriteSize() const
+	{
+		return m_SpriteSize;
+	}
+
+	const Vec2u& SpriteSheet::getSize() const
+	{
+		return m_Size;
+	}
+
 	SpriteID SpriteSheet::getMaxID() const
 	{
 		return m_Size.x * m_Size.y;
