@@ -13,12 +13,7 @@ namespace Peach
 	{
 		PEACH_CORE_TRACE("StateMachine distrutto");
 
-		clean();
-	}
-
-	void StateMachine::clean()
-	{
-		while (!m_States.empty())
+		while (m_States.empty())
 		{
 			m_States.pop();
 		}

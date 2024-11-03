@@ -31,7 +31,12 @@ namespace Peach
 
 	Peach::Window& State::getWindow() const
 	{
-		return m_Data->window;
+		if (auto data = m_Data.lock())
+		{
+			return data->window;
+		}
+
+		throw std::runtime_error("Data inaccessibile");
 	}
 
 	bool State::pollEvent(sf::Event& event) const
@@ -46,7 +51,12 @@ namespace Peach
 
 	void State::removeState() const
 	{
-		m_Data->machine.removeState();
+		if (auto data = m_Data.lock())
+		{
+			data->machine.removeState();
+		}
+
+		PEACH_CORE_ERROR("State::removeState(), Impossibile rimuovere State [Data inaccessibile]");
 	}
 
 	const Peach::Texture& State::getTexture(const AssetKey& key) const

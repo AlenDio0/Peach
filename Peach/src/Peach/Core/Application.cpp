@@ -76,6 +76,5 @@ namespace Peach
 		} while (m_Data->window.isRunning());
 
 		PEACH_CORE_INFO("Application::run(), Applicazione chiusa nello State \"{}\"", m_Data->machine.getCurrentState()->getName());
-		m_Data->machine.clean();
 	}
 }
