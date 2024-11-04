@@ -194,14 +194,15 @@ namespace Peach
 							}
 						}
 
-						auto& tile = m_TileMap.getTile(tile_pos);
-						if (!tile)
+						if (auto tile = m_TileMap.getTile(tile_pos).lock())
+						{
+							tile->setID(stoi(id));
+						}
+						else
 						{
 							PEACH_CORE_WARN("Level::convertFile(...), La posizione del Tile {} va oltre la grandezza di TileMap {}", tile_pos, m_TileMap.getSize());
 							continue;
 						}
-
-						tile->setID(stoi(id));
 					}
 
 					if (found == npos || found == 0)
@@ -211,7 +212,6 @@ namespace Peach
 				}
 			}
 		}
-
 	}
 
 	void Level::setTileTexture(const sf::Texture& texture, bool resetrect)

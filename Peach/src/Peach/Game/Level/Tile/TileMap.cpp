@@ -23,7 +23,7 @@ namespace Peach
 	{
 		PEACH_CORE_TRACE("TileMap distrutto");
 
-		PEACH_CORE_TRACE("{} Tile distrutti", m_Size.x * m_Size.y);
+		PEACH_CORE_TRACE("[TileMap] {} Tile distrutti", m_Size.x * m_Size.y);
 		m_TileMap.clear();
 	}
 
@@ -88,7 +88,7 @@ namespace Peach
 		return m_TileSize;
 	}
 
-	Ref<Tile> TileMap::getTile(const MapKey& key)
+	std::weak_ptr<Tile> TileMap::getTile(const MapKey& key)
 	{
 		try
 		{
@@ -97,11 +97,11 @@ namespace Peach
 		catch (const std::exception& e)
 		{
 			PEACH_CORE_ERROR("TileMap::getTile(key: {}), Catturata eccezione: {}", key, e.what());
-			return nullptr;
+			return Ref<Tile>(nullptr);
 		}
 	}
 
-	std::vector<Ref<Tile>> TileMap::getTiles(const UIntRect& rect)
+	std::vector<std::weak_ptr<Tile>> TileMap::getTiles(const UIntRect& rect)
 	{
 		size_t map_area = (size_t)(m_Size.x * m_Size.y);
 		size_t rect_areapos = (size_t)((rect.x + rect.width) * (rect.y + rect.height));
@@ -117,7 +117,7 @@ namespace Peach
 		}
 
 		size_t rect_area = (size_t)(rect.width * rect.height);
-		std::vector<Ref<Tile>> tiles;
+		std::vector<std::weak_ptr<Tile>> tiles;
 		tiles.reserve(rect_area);
 
 		for (uint32_t x = rect.x; x < rect.width + rect.x; ++x)
@@ -238,7 +238,7 @@ namespace Peach
 
 	Ref<Tile> TileMap::createTile() const
 	{
-		static auto changed_id = [&](Tile& tile)
+		auto changed_id = [&](Tile& tile)
 			{
 				tile.setTextureRect(m_SpriteSheet.getRect(tile.getID()));
 			};
