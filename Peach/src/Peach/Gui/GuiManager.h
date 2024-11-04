@@ -18,8 +18,11 @@ namespace Peach
 
 		Ref<GuiObject> operator[](GuiKey key);
 
+		void add(GuiKey key, Ref<GuiObject> object);
 		void add(GuiKey key, GuiObject* object);
+
 		void remove(GuiKey key);
+		void remove(Ref<GuiObject> object);
 		void remove(GuiObject* object);
 
 		const sf::Cursor& getCursor() const;
