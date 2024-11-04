@@ -30,7 +30,7 @@ namespace Peach
 	class Texture : public sf::Texture, public Asset
 	{
 	public:
-		virtual bool load(const std::filesystem::path& path)
+		virtual bool load(const std::filesystem::path& path) override
 		{
 			return loadFromFile(path.string());
 		}
@@ -44,7 +44,7 @@ namespace Peach
 	class Font : public sf::Font, public Asset
 	{
 	public:
-		virtual bool load(const std::filesystem::path& path)
+		virtual bool load(const std::filesystem::path& path) override
 		{
 			return loadFromFile(path.string());
 		}
@@ -58,7 +58,7 @@ namespace Peach
 	class Sound : public sf::SoundBuffer, public Asset
 	{
 	public:
-		virtual bool load(const std::filesystem::path& path)
+		virtual bool load(const std::filesystem::path& path) override
 		{
 			return loadFromFile(path.string());
 		}

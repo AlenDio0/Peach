@@ -17,24 +17,24 @@ namespace Peach
 		Button(const sf::Vector2f& size, const sf::String& label, const sf::Font& font);
 		~Button();
 
-		void setPosition(const sf::Vector2f& position);
-		void setSize(const sf::Vector2f& size);
+		virtual void setPosition(const sf::Vector2f& position) override;
+		virtual void setSize(const sf::Vector2f& size) override;
 		void setLabel(const sf::String& label);
 		void setCharSize(uint32_t size);
 		void setFont(const sf::Font& font);
 		void setLabelStyle(sf::Text::Style style);
 
-		virtual void handleEvent(const sf::Event& event);
+		virtual void handleEvent(const sf::Event& event) override;
 		void onMouseMovedEvent(const sf::Event::MouseMoveEvent& event);
 		void onMousePressedEvent(const sf::Event::MouseButtonEvent& event);
 
 		const sf::Vector2f& getSize() const;
 		const sf::String& getLabel() const;
 
-		GuiType getType() const;
+		virtual GuiType getType() const override;
 
-		void update();
-		void render(sf::RenderTarget* target) const;
+		virtual void update() override;
+		virtual void render(sf::RenderTarget* target) const override;
 	private:
 		sf::RectangleShape m_Container;
 		sf::Text m_TextLabel;

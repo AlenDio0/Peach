@@ -10,20 +10,20 @@ namespace Peach
 		Checkbox(const sf::Vector2f& size, bool active = false);
 		~Checkbox();
 
-		void setSize(const sf::Vector2f& size);
-		void setPosition(const sf::Vector2f& position);
+		virtual void setSize(const sf::Vector2f& size) override;
+		virtual void setPosition(const sf::Vector2f& position) override;
 		void setCheckTexture(const sf::Texture& texture);
 
 		const sf::Vector2f& getSize() const;
 		bool isActive() const;
 
-		virtual void handleEvent(const sf::Event& event);
+		virtual void handleEvent(const sf::Event& event) override;
 		void onMousePressedEvent(const sf::Event::MouseButtonEvent& event);
 
-		GuiType getType() const;
+		virtual GuiType getType() const override;
 
-		void update();
-		void render(sf::RenderTarget* target) const;
+		virtual void update() override;
+		virtual void render(sf::RenderTarget* target) const override;
 	private:
 		sf::RectangleShape m_Container;
 		sf::Sprite m_Check;

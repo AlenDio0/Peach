@@ -28,14 +28,14 @@ namespace Peach
 			return getValue<std::string>("sound", key);
 		}
 
-		virtual void generate()
+		virtual void generate() override
 		{
 			setValue("texture", "", "");
 			setValue("font", "", "");
 			setValue("sound", "", "");
 		}
 
-		virtual std::string getKeyToString(const Key& key) const
+		virtual std::string getKeyToString(const Key& key) const override
 		{
 			return key;
 		}

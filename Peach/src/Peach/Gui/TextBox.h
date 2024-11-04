@@ -16,13 +16,13 @@ namespace Peach
 		void setIndex(size_t index);
 		void setSelected(bool selected);
 		void setRestriction(const std::function<bool(char)> restriciton, bool space = true);
-		void setSize(const sf::Vector2f& size);
-		void setPosition(const sf::Vector2f& position);
+		virtual void setSize(const sf::Vector2f& size) override;
+		virtual void setPosition(const sf::Vector2f& position) override;
 		void setPlaceholder(const std::string& placeholder);
 		void setCharSize(uint32_t size);
 		void setFont(const sf::Font& font);
 
-		virtual void handleEvent(const sf::Event& event);
+		virtual void handleEvent(const sf::Event& event) override;
 		void onMousePressedEvent(const sf::Event::MouseButtonEvent& event);
 		void onTextEnteredEvent(sf::Event::TextEvent event);
 		void onKeyPressedEvent(sf::Event::KeyEvent event);
@@ -35,10 +35,10 @@ namespace Peach
 
 		bool isOverLimit() const;
 
-		GuiType getType() const;
+		virtual GuiType getType() const override;
 
-		void update();
-		void render(sf::RenderTarget* target) const;
+		virtual void update() override;
+		virtual void render(sf::RenderTarget* target) const override;
 	private:
 		sf::RectangleShape m_Container;
 		sf::Text m_TextLabel;

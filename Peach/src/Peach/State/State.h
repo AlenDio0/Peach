@@ -12,15 +12,15 @@ namespace Peach
 	{
 	public:
 		State(Ref<Data> data, const std::string& name = "State");
-		virtual ~State();
+		virtual ~State() override;
 
-		virtual void onAdd();
-		virtual void onRemove();
-		virtual void onEvent() {}
-		virtual void onUpdate() {}
-		virtual void onRender() {}
+		virtual void onAdd() override;
+		virtual void onRemove() override;
+		virtual void onEvent() override {}
+		virtual void onUpdate() override {}
+		virtual void onRender() override {}
 
-		const std::string& getName() const;
+		virtual const std::string& getName() const override;
 	protected:
 		std::weak_ptr<Data> m_Data;
 	protected:
