@@ -9,7 +9,7 @@ namespace Peach
 	class PEACH_API Tile : public GameObject
 	{
 	public:
-		Tile(const sf::Texture& texture, RigidBody body, std::function<void(Tile&)> changedid = NULL, bool debuglog = false);
+		Tile(const sf::Texture& texture, RigidBody body, std::function<void(Tile&)> changedid = nullptr, bool debuglog = false);
 		virtual ~Tile() = default;
 
 		void setID(TileID id);

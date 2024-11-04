@@ -12,7 +12,7 @@ namespace Peach
 	{
 	public:
 		AssetManager()
-			: m_Config(NULL)
+			: m_Config(nullptr)
 		{
 			PEACH_CORE_TRACE("AssetManager costruito");
 		}
@@ -118,7 +118,7 @@ namespace Peach
 			catch (const std::exception& e)
 			{
 				PEACH_CORE_ERROR("AssetManager::(key: {}), Catturata eccezione: {}", key, e.what());
-				return NULL;
+				return nullptr;
 			}
 		}
 	private:

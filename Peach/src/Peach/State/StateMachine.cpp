@@ -4,7 +4,7 @@
 namespace Peach
 {
 	StateMachine::StateMachine()
-		: m_NewState(NULL), m_IsAdding(false), m_IsReplacing(false), m_IsRemoving(false)
+		: m_NewState(nullptr), m_IsAdding(false), m_IsReplacing(false), m_IsRemoving(false)
 	{
 		PEACH_CORE_TRACE("StateMachine costruito");
 	}
@@ -24,12 +24,12 @@ namespace Peach
 		if (m_States.empty())
 		{
 			PEACH_CORE_ERROR("StateMachine::getCurrentState(), StateStack e' vuoto");
-			return NULL;
+			return nullptr;
 		}
 		else if (!m_States.top())
 		{
 			PEACH_CORE_ERROR("StateMachine::getCurrentState(), State attuale e' nullo");
-			return NULL;
+			return nullptr;
 		}
 
 		return m_States.top();
@@ -119,7 +119,7 @@ namespace Peach
 
 				m_IsAdding = false;
 				m_IsReplacing = false;
-				m_NewState = NULL;
+				m_NewState = nullptr;
 			}
 			else
 			{

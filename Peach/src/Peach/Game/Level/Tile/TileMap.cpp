@@ -97,7 +97,7 @@ namespace Peach
 		catch (const std::exception& e)
 		{
 			PEACH_CORE_ERROR("TileMap::getTile(key: {}), Catturata eccezione: {}", key, e.what());
-			return NULL;
+			return nullptr;
 		}
 	}
 
