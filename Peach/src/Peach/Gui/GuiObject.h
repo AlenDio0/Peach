@@ -2,6 +2,7 @@
 
 #include "Peach/Core/Core.h"
 
+#include "Peach/System/Vec2.h"
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <functional>
@@ -24,7 +25,8 @@ namespace Peach
 			Appearance()
 				: Appearance(sf::Color::Black, sf::Color::Black, sf::Color::White)
 			{
-			}Appearance(sf::Color primary, sf::Color secondary, sf::Color background)
+			}
+			Appearance(sf::Color primary, sf::Color secondary, sf::Color background)
 				: Appearance(0.f, primary, secondary, background)
 			{
 			}
@@ -44,8 +46,8 @@ namespace Peach
 		virtual ~GuiObject();
 
 		void addCallback(const std::function<void()>& callback);
-		virtual void setSize(const sf::Vector2f& size) = 0;
-		virtual void setPosition(const sf::Vector2f& position);
+		virtual void setSize(Vec2f size) = 0;
+		virtual void setPosition(Vec2f position);
 
 		void setAppearance(Appearance appearance);
 		void setOutlineThickness(float thickness);
@@ -53,15 +55,16 @@ namespace Peach
 		void setSecondaryColor(sf::Color color);
 		void setBackgroundColor(sf::Color color);
 
-		const sf::Vector2f& getPosition() const;
-		bool isCursorOn(const sf::Vector2i& mouseposition) const;
+		Vec2f getSize() const;
+		Vec2f getPosition() const;
+		bool isCursorOn(Vec2i mouseposition) const;
 
 		Appearance getAppearance() const;
 
 		virtual GuiType getType() const;
 
 		void callback() const;
-		virtual void handleEvent(const sf::Event& event);
+		virtual void handleEvent(sf::Event event);
 
 		virtual void update() = 0;
 		virtual void render(sf::RenderTarget* target) const = 0;

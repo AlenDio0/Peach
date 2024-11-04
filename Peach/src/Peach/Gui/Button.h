@@ -14,22 +14,21 @@ namespace Peach
 			PRESSED
 		};
 	public:
-		Button(const sf::Vector2f& size, const sf::String& label, const sf::Font& font);
+		Button(Vec2f size, const sf::String& label, const sf::Font& font);
 		~Button();
 
-		virtual void setPosition(const sf::Vector2f& position) override;
-		virtual void setSize(const sf::Vector2f& size) override;
+		virtual void setPosition(Vec2f position) override;
+		virtual void setSize(Vec2f size) override;
 		void setLabel(const sf::String& label);
 		void setCharSize(uint32_t size);
 		void setFont(const sf::Font& font);
 		void setLabelStyle(sf::Text::Style style);
 
-		virtual void handleEvent(const sf::Event& event) override;
-		void onMouseMovedEvent(const sf::Event::MouseMoveEvent& event);
-		void onMousePressedEvent(const sf::Event::MouseButtonEvent& event);
-
-		const sf::Vector2f& getSize() const;
 		const sf::String& getLabel() const;
+
+		virtual void handleEvent(sf::Event event) override;
+		void onMouseMovedEvent(sf::Event::MouseMoveEvent event);
+		void onMousePressedEvent(sf::Event::MouseButtonEvent event);
 
 		virtual GuiType getType() const override;
 

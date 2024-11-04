@@ -7,18 +7,18 @@ namespace Peach
 	class PEACH_API Checkbox : public GuiObject
 	{
 	public:
-		Checkbox(const sf::Vector2f& size, bool active = false);
+		Checkbox(Vec2f size, const sf::Texture& texture, bool active = false);
 		~Checkbox();
 
-		virtual void setSize(const sf::Vector2f& size) override;
-		virtual void setPosition(const sf::Vector2f& position) override;
+		virtual void setSize(Vec2f size) override;
+		virtual void setPosition(Vec2f position) override;
 		void setCheckTexture(const sf::Texture& texture);
 
 		const sf::Vector2f& getSize() const;
 		bool isActive() const;
 
-		virtual void handleEvent(const sf::Event& event) override;
-		void onMousePressedEvent(const sf::Event::MouseButtonEvent& event);
+		virtual void handleEvent(sf::Event event) override;
+		void onMousePressedEvent(sf::Event::MouseButtonEvent event);
 
 		virtual GuiType getType() const override;
 

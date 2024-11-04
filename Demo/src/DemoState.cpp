@@ -12,8 +12,7 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	Peach::Button* button1 = new Peach::Button({ 225.f, 55.f }, "RIMPIAZZA", getFont("consola"));
 	Peach::Button* button2 = new Peach::Button({ 225.f, 55.f }, "GIOCA", getFont("consola"));
 
-	Peach::Checkbox* box1 = new Peach::Checkbox({ 32.f, 32.f });
-	box1->setCheckTexture(getTexture("check"));
+	Peach::Checkbox* box1 = new Peach::Checkbox({ 32.f, 32.f }, getTexture("check"));
 
 	Peach::TextBox* textbox1 = new Peach::TextBox({ 300.f, 70.f }, getFont("consola"), "Placeholder", false);
 	Peach::TextBox* textbox2 = new Peach::TextBox({ 300.f, 50.f }, getFont("consola"), "PIN", false);
@@ -32,7 +31,7 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 
 	button1->setOutlineThickness(3.f);
 	button1->setLabelStyle(sf::Text::Bold);
-	button1->setPosition({ getRenderer()->getSize().x / 2.f - button1->getSize().x / 2.f, 100 });
+	button1->setPosition({ (getRenderer()->getSize().x - button1->getSize().x) / 2.f, 100 });
 	button1->addCallback
 	(
 		[&]() {
@@ -43,7 +42,7 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 
 	button2->setOutlineThickness(3.f);
 	button2->setLabelStyle(sf::Text::Italic);
-	button2->setPosition({ getRenderer()->getSize().x / 2.f - button2->getSize().x / 2.f, 165 });
+	button2->setPosition({ (getRenderer()->getSize().x - button2->getSize().x) / 2.f, 165 });
 	button2->addCallback
 	(
 		[&]() {
@@ -52,28 +51,20 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 		}
 	);
 
-	box1->setSecondaryColor(sf::Color::Blue);
-	box1->setBackgroundColor(sf::Color(128, 128, 128, 50));
-	box1->setOutlineThickness(3.f);
+	box1->setAppearance({ 3.f, {}, sf::Color::Blue, sf::Color(128, 128, 128, 50) });
 	box1->setPosition({ 150.f, 40.f });
 
 	textbox1->setRestriction(isalnum);
-	textbox1->setOutlineThickness(2.f);
-	textbox1->setPrimaryColor(sf::Color::Black);
-	textbox1->setSecondaryColor(sf::Color::Black);
-	textbox1->setPosition({ getRenderer()->getSize().x / 2.f - textbox1->getSize().x / 2.f, 250 });
+	textbox1->setAppearance({ 2.f, sf::Color::Black, sf::Color::Black, sf::Color::White });
+	textbox1->setPosition({ (getRenderer()->getSize().x - textbox1->getSize().x) / 2.f, 250 });
 
 	textbox2->setRestriction(isdigit, false);
-	textbox2->setOutlineThickness(2.f);
-	textbox2->setPrimaryColor(sf::Color::Magenta);
-	textbox2->setSecondaryColor(sf::Color::Green);
-	textbox2->setPosition({ getRenderer()->getSize().x / 2.f - textbox2->getSize().x / 2.f, 325 });
+	textbox2->setAppearance({ 2.f, sf::Color::Magenta, sf::Color::Green, sf::Color::White });
+	textbox2->setPosition({ (getRenderer()->getSize().x - textbox2->getSize().x) / 2.f, 325 });
 
 	textbox3->setRestriction([](char c) { return c > ' ' && c <= '~'; });
-	textbox3->setOutlineThickness(2.f);
-	textbox3->setPrimaryColor(sf::Color::Red);
-	textbox3->setSecondaryColor(sf::Color::Cyan);
-	textbox3->setPosition({ getRenderer()->getSize().x / 2.f - textbox3->getSize().x / 2.f, 400 });
+	textbox3->setAppearance({ 2.f, sf::Color::Red, sf::Color::Cyan, sf::Color::White });
+	textbox3->setPosition({ (getRenderer()->getSize().x - textbox3->getSize().x) / 2.f, 400 });
 }
 
 DemoState::~DemoState()
