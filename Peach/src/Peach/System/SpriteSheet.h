@@ -18,6 +18,9 @@ namespace Peach
 		void setSpriteSize(const Vec2u& spritesize);
 
 		const sf::Texture& getTexture() const;
+		const Vec2u& getSpriteSize() const;
+		const Vec2u& getSize() const;
+
 		SpriteID getMaxID() const;
 		IntRect getRect(SpriteID id) const;
 	private:

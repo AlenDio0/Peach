@@ -212,7 +212,6 @@ namespace Peach
 			}
 		}
 
-		m_TileMap.update();
 	}
 
 	void Level::setTileTexture(const sf::Texture& texture, bool resetrect)
