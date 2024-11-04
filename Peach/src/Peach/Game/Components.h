@@ -17,7 +17,8 @@ namespace Peach
 		{
 		}
 
-		operator size_t() { return id; }
+		operator size_t() const { return id; }
+		operator size_t&() { return id; }
 
 		size_t id;
 	};
@@ -30,7 +31,8 @@ namespace Peach
 		{
 		}
 		
-		operator std::string() { return tag; }
+		operator const std::string&() const { return tag; }
+		operator std::string&() { return tag; }
 
 		std::string tag;
 	};
