@@ -10,9 +10,9 @@ public:
 	GameState(Peach::Ref<Peach::Data> data);
 	~GameState();
 
-	void onEvent() override;
-	void onUpdate() override;
-	void onRender() override;
+	virtual void onEvent() override;
+	virtual void onUpdate() override;
+	virtual void onRender() override;
 private:
 	Peach::Level m_Level;
 	Peach::InputController m_Controller;

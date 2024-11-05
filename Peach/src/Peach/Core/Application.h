@@ -29,6 +29,6 @@ namespace Peach
 		Ref<Data> m_Data;
 	};
 
-	//To be defined in CLIENT
+	// To be defined in CLIENT
 	Application* CreateApplication();
 }

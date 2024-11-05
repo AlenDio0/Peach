@@ -11,9 +11,9 @@ public:
 	DemoState(Peach::Ref<Peach::Data> data);
 	~DemoState();
 
-	void onEvent() override;
-	void onUpdate() override;
-	void onRender() override;
+	virtual void onEvent() override;
+	virtual void onUpdate() override;
+	virtual void onRender() override;
 private:
 	Peach::GuiManager m_GuiManager;
 	enum
