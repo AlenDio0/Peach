@@ -55,7 +55,7 @@ namespace Peach
 
 	void StateMachine::addState(Ref<IState> newstate, bool replacing)
 	{
-		PEACH_CORE_INFO("StateMachine::addState(newState: {}, isReplacing: {})", newstate ? "EXISTS" : "NULL", replacing);
+		PEACH_CORE_INFO("StateMachine::addState(newState: {}, isReplacing: {})", newstate, replacing);
 
 		if (!newstate)
 		{
@@ -74,7 +74,7 @@ namespace Peach
 	{
 		m_IsRemoving = true;
 
-		PEACH_CORE_INFO("StateMachine::removeState(), [currentState: {}]", getCurrentState() ? "EXISTS" : "NULL");
+		PEACH_CORE_INFO("StateMachine::removeState(), [currentState: {}]", getCurrentState());
 	}
 
 	void StateMachine::onAdding()

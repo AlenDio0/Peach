@@ -25,7 +25,7 @@ namespace Peach
 
 	void GuiManager::add(GuiKey key, Ref<GuiObject> object)
 	{
-		PEACH_CORE_TRACE("GuiManager::add(key: {}, object: {})", key, object ? "EXISTS" : "NULL");
+		PEACH_CORE_TRACE("GuiManager::add(key: {}, object: {})", key, object);
 		if (!object)
 		{
 			PEACH_CORE_ERROR("GuiManager::add(...), Impossibile aggiungere un GuiObject nullo");
@@ -48,7 +48,7 @@ namespace Peach
 
 	void GuiManager::remove(Ref<GuiObject> object)
 	{
-		PEACH_CORE_TRACE("GuiManager::remove(object: {})", object ? "EXISTS" : "NULL");
+		PEACH_CORE_TRACE("GuiManager::remove(object: {})", object);
 		for (auto& [key, value] : m_Objects)
 		{
 			if (value == object)

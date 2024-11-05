@@ -32,6 +32,23 @@ namespace Peach
 		inline static Ref<spdlog::logger> s_CoreLogger;
 		inline static Ref<spdlog::logger> s_ClientLogger;
 	};
+
+	template<typename T>
+	std::ostream& operator<<(std::ostream& os, const Ref<T>& obj)
+	{
+		return os << "0x" << (void*)obj.get();
+	}
+	template<typename T>
+	struct fmt::formatter<Ref<T>> : fmt::ostream_formatter {};
+
+	template<typename T>
+	std::ostream& operator<<(std::ostream& os, const Scope<T>& obj)
+	{
+		return os << "0x" << (void*)obj.get();
+	}
+	template<typename T>
+	struct fmt::formatter<Scope<T>> : fmt::ostream_formatter {};
+
 }
 
 // Core log macros
