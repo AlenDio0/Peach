@@ -25,7 +25,7 @@ namespace Peach
 		m_CallbackSink.push_back(callback);
 	}
 
-	void GuiObject::setPosition(const sf::Vector2f& position)
+	void GuiObject::setPosition(Vec2f position)
 	{
 		m_Shape->setPosition(position);
 	}
@@ -57,14 +57,19 @@ namespace Peach
 		m_Appearance.background_color = color;
 	}
 
-	const sf::Vector2f& GuiObject::getPosition() const
+	Vec2f GuiObject::getSize() const
+	{
+		return m_Shape->getGlobalBounds().getSize();
+	}
+
+	Vec2f GuiObject::getPosition() const
 	{
 		return m_Shape->getPosition();
 	}
 
-	bool GuiObject::isCursorOn(const sf::Vector2i& mouseposition) const
+	bool GuiObject::isCursorOn(Vec2i mouseposition) const
 	{
-		return m_Shape->getGlobalBounds().contains((sf::Vector2f)mouseposition);
+		return m_Shape->getGlobalBounds().contains((Vec2f)mouseposition);
 	}
 
 	GuiObject::Appearance GuiObject::getAppearance() const
@@ -90,7 +95,7 @@ namespace Peach
 		}
 	}
 
-	void GuiObject::handleEvent(const sf::Event& event)
+	void GuiObject::handleEvent(sf::Event event)
 	{
 	}
 }

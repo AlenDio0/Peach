@@ -7,33 +7,30 @@ namespace Peach
 	class PEACH_API TextBox : public GuiObject
 	{
 	public:
-		TextBox(const sf::Vector2f& size, const sf::Font& font, bool selected);
-		TextBox(const sf::Vector2f& size, const sf::Font& font, size_t length, bool selected);
-		TextBox(const sf::Vector2f& size, const sf::Font& font, const std::string& placeholder, bool selected);
-		TextBox(const sf::Vector2f& size, const sf::Font& font, const std::string& placeholder, size_t length, bool selected);
+		TextBox(Vec2f size, const sf::Font& font, bool selected);
+		TextBox(Vec2f size, const sf::Font& font, size_t length, bool selected);
+		TextBox(Vec2f size, const sf::Font& font, const std::string& placeholder, bool selected);
+		TextBox(Vec2f size, const sf::Font& font, const std::string& placeholder, size_t length, bool selected);
 		~TextBox();
 
 		void setIndex(size_t index);
 		void setSelected(bool selected);
 		void setRestriction(const std::function<bool(char)> restriciton, bool space = true);
-		virtual void setSize(const sf::Vector2f& size) override;
-		virtual void setPosition(const sf::Vector2f& position) override;
+		virtual void setSize(Vec2f size) override;
+		virtual void setPosition(Vec2f position) override;
 		void setPlaceholder(const std::string& placeholder);
 		void setCharSize(uint32_t size);
 		void setFont(const sf::Font& font);
 
-		virtual void handleEvent(const sf::Event& event) override;
-		void onMousePressedEvent(const sf::Event::MouseButtonEvent& event);
-		void onTextEnteredEvent(sf::Event::TextEvent event);
-		void onKeyPressedEvent(sf::Event::KeyEvent event);
-
 		std::string getBuff() const;
 		size_t getBuffSize() const;
-		const sf::Vector2f& getSize() const;
-
+		bool isOverLimit() const;
 		size_t calcMaxLength() const;
 
-		bool isOverLimit() const;
+		virtual void handleEvent(sf::Event event) override;
+		void onMousePressedEvent(sf::Event::MouseButtonEvent event);
+		void onTextEnteredEvent(sf::Event::TextEvent event);
+		void onKeyPressedEvent(sf::Event::KeyEvent event);
 
 		virtual GuiType getType() const override;
 

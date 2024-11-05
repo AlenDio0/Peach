@@ -3,22 +3,22 @@
 
 namespace Peach
 {
-	TextBox::TextBox(const sf::Vector2f& size, const sf::Font& font, bool selected)
+	TextBox::TextBox(Vec2f size, const sf::Font& font, bool selected)
 		: TextBox(size, font, 0, selected)
 	{
 	}
 
-	TextBox::TextBox(const sf::Vector2f& size, const sf::Font& font, size_t length, bool selected)
+	TextBox::TextBox(Vec2f size, const sf::Font& font, size_t length, bool selected)
 		: TextBox(size, font, "", length, selected)
 	{
 	}
 
-	TextBox::TextBox(const sf::Vector2f& size, const sf::Font& font, const std::string& placeholder, bool selected)
+	TextBox::TextBox(Vec2f size, const sf::Font& font, const std::string& placeholder, bool selected)
 		: TextBox(size, font, placeholder, 0, selected)
 	{
 	}
 
-	TextBox::TextBox(const sf::Vector2f& size, const sf::Font& font, const std::string& placeholder, size_t length, bool selected)
+	TextBox::TextBox(Vec2f size, const sf::Font& font, const std::string& placeholder, size_t length, bool selected)
 		: GuiObject(m_Container, false), m_TextLabel("", font), m_Placeholder(placeholder), m_Length(length), m_Space(true), m_Selected(selected), m_Blink(false)
 	{
 		PEACH_CORE_TRACE("TextBox costruito");
@@ -70,7 +70,7 @@ namespace Peach
 		m_Space = space;
 	}
 
-	void TextBox::setSize(const sf::Vector2f& size)
+	void TextBox::setSize(Vec2f size)
 	{
 		m_Container.setSize(size);
 		setCharSize((sf::Uint32)(size.y / 1.75f));
@@ -78,7 +78,7 @@ namespace Peach
 		setPosition(getPosition());
 	}
 
-	void TextBox::setPosition(const sf::Vector2f& position)
+	void TextBox::setPosition(Vec2f position)
 	{
 		m_Container.setPosition(position);
 		m_TextLabel.setPosition
@@ -108,7 +108,7 @@ namespace Peach
 		m_TextLabel.setFont(font);
 	}
 
-	void TextBox::handleEvent(const sf::Event& event)
+	void TextBox::handleEvent(sf::Event event)
 	{
 		switch (event.type)
 		{
@@ -124,7 +124,7 @@ namespace Peach
 		}
 	}
 
-	void TextBox::onMousePressedEvent(const sf::Event::MouseButtonEvent& event)
+	void TextBox::onMousePressedEvent(sf::Event::MouseButtonEvent event)
 	{
 		const auto& [button, x, y] = event;
 		if (!isCursorOn({ x, y }) || button != sf::Mouse::Button::Left)
@@ -257,11 +257,6 @@ namespace Peach
 	size_t TextBox::getBuffSize() const
 	{
 		return getBuff().size();
-	}
-
-	const sf::Vector2f& TextBox::getSize() const
-	{
-		return m_Container.getSize();
 	}
 
 	size_t TextBox::calcMaxLength() const

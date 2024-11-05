@@ -3,7 +3,7 @@
 
 namespace Peach
 {
-	Button::Button(const sf::Vector2f& size, const sf::String& label, const sf::Font& font)
+	Button::Button(Vec2f size, const sf::String& label, const sf::Font& font)
 		: GuiObject(m_Container, false), m_TextLabel(label, font), m_State(State::IDLE)
 	{
 		PEACH_CORE_TRACE("Button costruito");
@@ -18,7 +18,7 @@ namespace Peach
 		PEACH_CORE_TRACE("Button distrutto");
 	}
 
-	void Button::setPosition(const sf::Vector2f& position)
+	void Button::setPosition(Vec2f position)
 	{
 		m_Container.setPosition(position);
 		m_TextLabel.setPosition
@@ -28,7 +28,7 @@ namespace Peach
 		);
 	}
 
-	void Button::setSize(const sf::Vector2f& size)
+	void Button::setSize(Vec2f size)
 	{
 		m_Container.setSize(size);
 		setCharSize((sf::Uint32)(size.y / 1.75f));
@@ -62,7 +62,12 @@ namespace Peach
 		setPosition(getPosition());
 	}
 
-	void Button::handleEvent(const sf::Event& event)
+	const sf::String& Button::getLabel() const
+	{
+		return m_TextLabel.getString();
+	}
+
+	void Button::handleEvent(sf::Event event)
 	{
 		switch (event.type)
 		{
@@ -75,7 +80,7 @@ namespace Peach
 		}
 	}
 
-	void Button::onMouseMovedEvent(const sf::Event::MouseMoveEvent& event)
+	void Button::onMouseMovedEvent(sf::Event::MouseMoveEvent event)
 	{
 		if (isCursorOn({ event.x, event.y }))
 		{
@@ -87,7 +92,7 @@ namespace Peach
 		}
 	}
 
-	void Button::onMousePressedEvent(const sf::Event::MouseButtonEvent& event)
+	void Button::onMousePressedEvent(sf::Event::MouseButtonEvent event)
 	{
 		if (event.button != sf::Mouse::Button::Left)
 		{
@@ -100,16 +105,6 @@ namespace Peach
 
 			callback();
 		}
-	}
-
-	const sf::Vector2f& Button::getSize() const
-	{
-		return m_Container.getSize();
-	}
-
-	const sf::String& Button::getLabel() const
-	{
-		return m_TextLabel.getString();
 	}
 
 	GuiType Button::getType() const

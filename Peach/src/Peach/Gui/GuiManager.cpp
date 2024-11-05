@@ -23,7 +23,7 @@ namespace Peach
 		return m_Objects[key];
 	}
 
-	void GuiManager::add(GuiKey key, GuiObject* object)
+	void GuiManager::add(GuiKey key, Ref<GuiObject> object)
 	{
 		PEACH_CORE_TRACE("GuiManager::add(key: {}, object: {})", key, object ? "EXISTS" : "NULL");
 		if (!object)
@@ -32,24 +32,36 @@ namespace Peach
 			return;
 		}
 
-		m_Objects[key] = Ref<GuiObject>(object);
+		m_Objects[key] = object;
+	}
+
+	void GuiManager::add(GuiKey key, GuiObject* object)
+	{
+		add(key, Ref<GuiObject>(object));
 	}
 
 	void GuiManager::remove(GuiKey key)
 	{
+		PEACH_CORE_TRACE("GuiManager::remove(key: {})", key);
 		m_Objects.erase(key);
 	}
 
-	void GuiManager::remove(GuiObject* object)
+	void GuiManager::remove(Ref<GuiObject> object)
 	{
+		PEACH_CORE_TRACE("GuiManager::remove(object: {})", object ? "EXISTS" : "NULL");
 		for (auto& [key, value] : m_Objects)
 		{
-			if (value.get() == object)
+			if (value == object)
 			{
 				remove(key);
 				break;
 			}
 		}
+	}
+
+	void GuiManager::remove(GuiObject* object)
+	{
+		remove(Ref<GuiObject>(object));
 	}
 
 	const sf::Cursor& GuiManager::getCursor() const
