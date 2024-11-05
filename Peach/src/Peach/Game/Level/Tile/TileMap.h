@@ -24,8 +24,8 @@ namespace Peach
 
 		const Vec2u& getSize() const;
 		const Vec2f& getTileSize() const;
-		Ref<Tile> getTile(const MapKey& key);
-		std::vector<Ref<Tile>> getTiles(const UIntRect& rect = {});
+		std::weak_ptr<Tile> getTile(const MapKey& key);
+		std::vector<std::weak_ptr<Tile>> getTiles(const UIntRect& rect = {});
 
 		void render(sf::RenderTarget* target, const IntRect& view, bool convertrect = false) const;
 		void render(sf::RenderTarget* target) const;

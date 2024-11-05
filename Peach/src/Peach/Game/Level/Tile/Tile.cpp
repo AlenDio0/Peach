@@ -10,11 +10,6 @@ namespace Peach
 
 	void Tile::setID(TileID id)
 	{
-		if (m_ID == id)
-		{
-			return;
-		}
-
 		m_ID = id;
 
 		if (m_ChangedID)
