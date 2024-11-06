@@ -18,42 +18,40 @@ namespace Peach
 		m_Objects.clear();
 	}
 
-	Ref<GuiObject> GuiManager::operator[](GuiKey key)
+	UUID GuiManager::add(Ref<GuiObject> object)
 	{
-		return m_Objects[key];
-	}
+		UUID uuid;
 
-	void GuiManager::add(GuiKey key, Ref<GuiObject> object)
-	{
-		PEACH_CORE_TRACE("GuiManager::add(key: {}, object: {})", key, object);
+		PEACH_CORE_TRACE("GuiManager::add(object: {}), [uuid: {}]", uuid, object);
 		if (!object)
 		{
 			PEACH_CORE_ERROR("GuiManager::add(...), Impossibile aggiungere un GuiObject nullo");
-			return;
+			return 0;
 		}
 
-		m_Objects[key] = object;
+		m_Objects[uuid] = object;
+		return uuid;
 	}
 
-	void GuiManager::add(GuiKey key, GuiObject* object)
+	UUID GuiManager::add(GuiObject* object)
 	{
-		add(key, Ref<GuiObject>(object));
+		return add(Ref<GuiObject>(object));
 	}
 
-	void GuiManager::remove(GuiKey key)
+	void GuiManager::remove(UUID uuid)
 	{
-		PEACH_CORE_TRACE("GuiManager::remove(key: {})", key);
-		m_Objects.erase(key);
+		PEACH_CORE_TRACE("GuiManager::remove(uuid: {})", uuid);
+		m_Objects.erase(uuid);
 	}
 
 	void GuiManager::remove(Ref<GuiObject> object)
 	{
 		PEACH_CORE_TRACE("GuiManager::remove(object: {})", object);
-		for (auto& [key, value] : m_Objects)
+		for (auto& [uuid, value] : m_Objects)
 		{
 			if (value == object)
 			{
-				remove(key);
+				remove(uuid);
 				break;
 			}
 		}
@@ -69,7 +67,7 @@ namespace Peach
 		static sf::Cursor cursor;
 		cursor.loadFromSystem(sf::Cursor::Arrow);
 
-		for (const auto& [key, object] : m_Objects)
+		for (const auto& [uuid, object] : m_Objects)
 		{
 			if (object->isCursorOn(m_MousePosition))
 			{
@@ -86,9 +84,9 @@ namespace Peach
 
 		if (types.empty())
 		{
-			for (auto& [key, object] : m_Objects)
+			for (auto& [uuid, object] : m_Objects)
 			{
-				objects[key] = object.get();
+				objects[uuid] = object.get();
 			}
 
 			return objects;
@@ -96,11 +94,11 @@ namespace Peach
 
 		for (const auto& type : types)
 		{
-			for (auto& [key, object] : m_Objects)
+			for (auto& [uuid, object] : m_Objects)
 			{
 				if (object->getType() == type)
 				{
-					objects[key] = object.get();
+					objects[uuid] = object.get();
 				}
 			}
 		}
@@ -117,7 +115,7 @@ namespace Peach
 			break;
 		}
 
-		for (auto& [key, object] : m_Objects)
+		for (auto& [uuid, object] : m_Objects)
 		{
 			object->handleEvent(event);
 		}
@@ -125,7 +123,7 @@ namespace Peach
 
 	void GuiManager::update()
 	{
-		for (auto& [key, object] : m_Objects)
+		for (auto& [uuid, object] : m_Objects)
 		{
 			object->update();
 		}
@@ -133,7 +131,7 @@ namespace Peach
 
 	void GuiManager::render(sf::RenderTarget* target) const
 	{
-		for (const auto& [key, object] : m_Objects)
+		for (const auto& [uuid, object] : m_Objects)
 		{
 			object->render(target);
 		}

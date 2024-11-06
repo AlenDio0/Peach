@@ -18,12 +18,12 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	Peach::TextBox* textbox2 = new Peach::TextBox({ 300.f, 50.f }, getFont("consola"), "PIN", false);
 	Peach::TextBox* textbox3 = new Peach::TextBox({ 300.f, 25.f }, getFont("consola"), "Text", false);
 
-	m_GuiManager.add(RIMPIAZZA, button1);
-	m_GuiManager.add(GIOCA, button2);
-	m_GuiManager.add(BOX, box1);
-	m_GuiManager.add(TEXTBOX1, textbox1);
-	m_GuiManager.add(TEXTBOX2, textbox2);
-	m_GuiManager.add(TEXTBOX3, textbox3);
+	m_GuiManager.add(button1);
+	m_GuiManager.add(button2);
+	m_GuiManager.add(box1);
+	m_GuiManager.add(textbox1);
+	m_InsertPin = m_GuiManager.add(textbox2);
+	m_GuiManager.add(textbox3);
 
 	m_Sound.setBuffer(getSound("removed"));
 
@@ -65,6 +65,13 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	textbox3->setRestriction([](char c) { return c > ' ' && c <= '~'; });
 	textbox3->setAppearance({ 2.f, sf::Color::Red, sf::Color::Cyan, sf::Color::White });
 	textbox3->setPosition({ (getRenderer()->getSize().x - textbox3->getSize().x) / 2.f, 400 });
+
+	m_Input.bind(sf::Keyboard::A,
+		[&]() {
+			auto textbox = m_GuiManager.getGuiObject<Peach::TextBox>(m_InsertPin);
+			PEACH_INFO("PIN: {}", textbox->getBuff());
+		}, "Stampa nella console la stringa scritta in PIN", true
+	);
 }
 
 DemoState::~DemoState()
@@ -79,19 +86,12 @@ void DemoState::onEvent()
 	{
 		getWindow().handleEvent(event);
 		m_GuiManager.handleEvent(event);
+		m_Input.handleEvent(event);
+
 		switch (event.type)
 		{
 		case sf::Event::KeyPressed:
 			PEACH_TRACE("KeyPressedEvent: {}", sf::Keyboard::getDescription(event.key.scancode).toAnsiString());
-
-			switch (event.key.code)
-			{
-			case sf::Keyboard::B:
-				int x = getRenderer()->getSize().x;
-				int y = getRenderer()->getSize().y;
-				PEACH_TRACE("Window Size: {}, {}", x, y);
-				break;
-			}
 			break;
 		}
 	}
@@ -100,6 +100,7 @@ void DemoState::onEvent()
 void DemoState::onUpdate()
 {
 	m_GuiManager.update();
+	m_Input.update();
 }
 
 void DemoState::onRender()

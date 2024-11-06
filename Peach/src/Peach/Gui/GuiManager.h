@@ -2,13 +2,15 @@
 
 #include "GuiObject.h"
 
+#include "Peach/System/UUID.h"
+
 namespace Peach
 {
-	using GuiKey = uint32_t;
+	// TODO: Change from raw ptr to weak ptr
 	template<typename T>
-	using RawMap = std::unordered_map<uint32_t, T*>;
+	using RawMap = std::unordered_map<UUID, T*>;
 	template<typename T>
-	using RefMap = std::unordered_map<uint32_t, Ref<T>>;
+	using RefMap = std::unordered_map<UUID, Ref<T>>;
 
 	class PEACH_API GuiManager
 	{
@@ -16,16 +18,28 @@ namespace Peach
 		GuiManager();
 		~GuiManager();
 
-		Ref<GuiObject> operator[](GuiKey key);
+		UUID add(Ref<GuiObject> object);
+		UUID add(GuiObject* object);
 
-		void add(GuiKey key, Ref<GuiObject> object);
-		void add(GuiKey key, GuiObject* object);
-
-		void remove(GuiKey key);
+		void remove(UUID uuid);
 		void remove(Ref<GuiObject> object);
 		void remove(GuiObject* object);
 
 		const sf::Cursor& getCursor() const;
+
+		template<typename T = GuiObject>
+		T* getGuiObject(UUID uuid)
+		{
+			try
+			{
+				return static_cast<T*>(m_Objects.at(uuid).get());
+			}
+			catch (const std::exception& e)
+			{
+				PEACH_CORE_ERROR("GuiManager::getGuiObject(uuid: {}), Catturata eccezione: {}", uuid, e.what());
+				return nullptr;
+			}
+		}
 
 		template<typename T = GuiObject>
 		RawMap<T> getGuiObjects(GuiType type)

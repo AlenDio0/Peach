@@ -4,6 +4,7 @@
 
 #include <Peach/Gui/GuiManager.h>
 #include <Peach/Assets/AssetManager.h>
+#include <Peach/System/InputController.h>
 
 class DemoState : public Peach::State
 {
@@ -16,15 +17,9 @@ public:
 	virtual void onRender() override;
 private:
 	Peach::GuiManager m_GuiManager;
-	enum
-	{
-		RIMPIAZZA = 0,
-		GIOCA,
-		BOX,
-		TEXTBOX1,
-		TEXTBOX2,
-		TEXTBOX3
-	};
+	Peach::InputController m_Input;
 
 	sf::Sound m_Sound;
+
+	Peach::UUID m_InsertPin;
 };
