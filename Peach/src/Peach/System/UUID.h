@@ -1,5 +1,7 @@
 #pragma once
 
+#include <spdlog/fmt/ostr.h>
+
 namespace Peach
 {
 	class UUID
@@ -12,6 +14,13 @@ namespace Peach
 	private:
 		size_t m_UUID;
 	};
+
+	std::ostream& operator<<(std::ostream& os, const UUID& uuid)
+	{
+		return os << (size_t)uuid;
+	}
+
+	struct fmt::formatter<UUID> : fmt::ostream_formatter {};
 }
 
 namespace std 
