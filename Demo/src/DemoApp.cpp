@@ -3,9 +3,10 @@
 
 Peach::Application* Peach::CreateApplication()
 {
-	Peach::Log::initFile("logs/demoapp.log", 1, 2);
+	Peach::Log::initFile("logs/demoapp.log", 1, 256);
 
 	Peach::Application* app = new Peach::Application();
+	app->initAssetFile();
 
 	app->addState<DemoState>(false);
 

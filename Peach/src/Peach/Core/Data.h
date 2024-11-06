@@ -2,11 +2,10 @@
 
 #include "Core.h"
 
-#include "Peach/Log.h"
-
+#include "Log.h"
 #include "Window.h"
-#include "State/StateMachine.h"
-#include "Assets/AssetManager.h"
+#include "Peach/State/StateMachine.h"
+#include "Peach/Assets/AssetManager.h"
 
 namespace Peach
 {

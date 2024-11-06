@@ -1,6 +1,8 @@
 #pragma once
+
 #include <Peach/State/State.h>
-#include <Peach/GUI/GUIManager.h>
+
+#include <Peach/Gui/GuiManager.h>
 #include <Peach/Assets/AssetManager.h>
 
 class DemoState : public Peach::State
@@ -9,18 +11,19 @@ public:
 	DemoState(Peach::Ref<Peach::Data> data);
 	~DemoState();
 
-	void onEvent() override;
-	void onUpdate() override;
-	void onRender() override;
+	virtual void onEvent() override;
+	virtual void onUpdate() override;
+	virtual void onRender() override;
 private:
-	Peach::GUIManager m_GUIManager;
+	Peach::GuiManager m_GuiManager;
 	enum
 	{
 		RIMPIAZZA = 0,
 		GIOCA,
 		BOX,
 		TEXTBOX1,
-		TEXTBOX2
+		TEXTBOX2,
+		TEXTBOX3
 	};
 
 	sf::Sound m_Sound;

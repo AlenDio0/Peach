@@ -1,7 +1,7 @@
 #include "GameState.h"
 
 GameState::GameState(Peach::Ref<Peach::Data> data)
-	: Peach::State(data, "Game"), m_Level("level.txt", getAsset<Peach::Texture>("tiles"))
+	: Peach::State(data, "Game"), m_Level("level.txt", getTexture("tiles"))
 {
 	initBinds();
 }
@@ -12,9 +12,9 @@ GameState::~GameState()
 
 void GameState::onEvent()
 {
-	for (sf::Event event; m_Data->window.pollEvent(event);)
+	for (sf::Event event; pollEvent(event);)
 	{
-		m_Data->window.handleEvent(event);
+		getWindow().handleEvent(event);
 		m_Controller.handleEvent(event);
 	}
 }
@@ -26,13 +26,13 @@ void GameState::onUpdate()
 
 void GameState::onRender()
 {
-	m_Data->window.getRenderer()->setView(m_Data->window.getRenderer()->getView());
+	getRenderer()->setView(getRenderer()->getView());
 
-	m_Data->window.getRenderer()->clear();
+	getRenderer()->clear();
 
-	m_Level.render(m_Data->window.getRenderer());
+	m_Level.render(getRenderer());
 
-	m_Data->window.display();
+	getWindow().display();
 }
 
 void GameState::initBinds()

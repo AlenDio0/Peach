@@ -29,8 +29,49 @@ namespace Peach
 		return m_DebugName;
 	}
 
-	void State::removeState()
+	Peach::Window& State::getWindow() const
 	{
-		m_Data->machine.removeState();
+		if (auto data = m_Data.lock())
+		{
+			return data->window;
+		}
+
+		throw std::runtime_error("Data inaccessibile");
 	}
+
+	bool State::pollEvent(sf::Event& event) const
+	{
+		return getWindow().pollEvent(event);
+	}
+
+	sf::RenderTarget* State::getRenderer() const
+	{
+		return getWindow().getRenderer();
+	}
+
+	void State::removeState() const
+	{
+		if (auto data = m_Data.lock())
+		{
+			data->machine.removeState();
+		}
+
+		PEACH_CORE_ERROR("State::removeState(), Impossibile rimuovere State [Data inaccessibile]");
+	}
+
+	const Peach::Texture& State::getTexture(const AssetKey& key) const
+	{
+		return getAsset<Peach::Texture>(key);
+	}
+
+	const Peach::Font& State::getFont(const AssetKey& key) const
+	{
+		return getAsset<Peach::Font>(key);
+	}
+
+	const Peach::Sound& State::getSound(const AssetKey& key) const
+	{
+		return getAsset<Peach::Sound>(key);
+	}
+
 }

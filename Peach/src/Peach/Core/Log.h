@@ -4,14 +4,27 @@
 
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/ostr.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
 
 namespace Peach
 {
 	class PEACH_API Log
 	{
 	public:
-		static void init();
+		enum class Level
+		{
+			Trace = SPDLOG_LEVEL_TRACE,
+			Info = SPDLOG_LEVEL_INFO,
+			Warn = SPDLOG_LEVEL_WARN,
+			Error = SPDLOG_LEVEL_ERROR,
+			Fatal = SPDLOG_LEVEL_CRITICAL,
+			Off = SPDLOG_LEVEL_OFF
+		};
+	public:
+		static void init(const std::string& appname = "APP", Log::Level level = Level::Trace, Log::Level flushon = Level::Error, const std::string& pattern = "[%T] <%n> %^[%l] %v.%$");
 		static void initFile(const spdlog::filename_t& filename, size_t maxsizemb, size_t maxfiles);
+
+		static void setLevel(Log::Level level);
 
 		inline static Ref<spdlog::logger>& getCoreLogger() { return s_CoreLogger; }
 		inline static Ref<spdlog::logger>& getClientLogger() { return s_ClientLogger; }
@@ -19,6 +32,23 @@ namespace Peach
 		inline static Ref<spdlog::logger> s_CoreLogger;
 		inline static Ref<spdlog::logger> s_ClientLogger;
 	};
+
+	template<typename T>
+	std::ostream& operator<<(std::ostream& os, const Ref<T>& obj)
+	{
+		return os << "0x" << (void*)obj.get();
+	}
+	template<typename T>
+	struct fmt::formatter<Ref<T>> : fmt::ostream_formatter {};
+
+	template<typename T>
+	std::ostream& operator<<(std::ostream& os, const Scope<T>& obj)
+	{
+		return os << "0x" << (void*)obj.get();
+	}
+	template<typename T>
+	struct fmt::formatter<Scope<T>> : fmt::ostream_formatter {};
+
 }
 
 // Core log macros

@@ -1,11 +1,7 @@
 #pragma once
 
-#include "Peach/Core.h"
-
 #include "Asset.h"
 #include "Peach/Config/AssetConfig.h"
-
-#include <optional>
 
 namespace Peach
 {
@@ -16,10 +12,28 @@ namespace Peach
 	{
 	public:
 		AssetManager()
+			: m_Config(nullptr)
 		{
 			PEACH_CORE_TRACE("AssetManager costruito");
+		}
 
-			for (const auto& [section, map] : m_Config.getStructure())
+		~AssetManager()
+		{
+			PEACH_CORE_TRACE("AssetManager distrutto");
+
+			m_Assets.clear();
+			delete m_Config;
+		}
+
+		void initFile()
+		{
+			if (m_Config)
+			{
+				return;
+			}
+			m_Config = new AssetConfig();
+
+			for (const auto& [section, map] : m_Config->getStructure())
 			{
 				for (const auto& [key, path] : map)
 				{
@@ -42,11 +56,6 @@ namespace Peach
 					}
 				}
 			}
-		}
-
-		~AssetManager()
-		{
-			PEACH_CORE_TRACE("AssetManager distrutto");
 		}
 
 		template<typename T>
@@ -76,7 +85,7 @@ namespace Peach
 
 			if (T::getType() == Asset::Type::None)
 			{
-				throw "AssetType non definito";
+				throw std::exception("Asset non ha un AssetType definito");
 			}
 
 			m_Assets[key] = Ref<Asset>(new T());
@@ -92,7 +101,7 @@ namespace Peach
 		}
 
 		template<typename T>
-		T& getAsset(AssetKey key)
+		const T* getAsset(AssetKey key)
 		{
 			for (auto& c : key)
 			{
@@ -104,16 +113,16 @@ namespace Peach
 
 			try
 			{
-				return *static_cast<T*>(m_Assets.at(key).get());
+				return static_cast<T*>(m_Assets.at(key).get());
 			}
 			catch (const std::exception& e)
 			{
 				PEACH_CORE_ERROR("AssetManager::(key: {}), Catturata eccezione: {}", key, e.what());
-				return T();
+				return nullptr;
 			}
 		}
 	private:
 		AssetMap m_Assets;
-		AssetConfig m_Config;
+		AssetConfig* m_Config;
 	};
 }

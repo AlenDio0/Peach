@@ -3,29 +3,23 @@
 
 namespace Peach
 {
-	Tile::Tile(const Vec2f& size, const Vec2f& position)
-		: GameObject(size, position, { {}, size }), m_ID(0)
-	{
-		update();
-	}
-
-	Tile::Tile(const FloatRect& rect)
-		: Tile({ rect.width, rect.height }, { rect.x, rect.y })
+	Tile::Tile(const sf::Texture& texture, RigidBody body, std::function<void(Tile&)> changedid, bool debuglog)
+		: GameObject(texture, body, false, debuglog), m_ID(0), m_ChangedID(changedid)
 	{
 	}
 
-	void Tile::setID(TileID type)
+	void Tile::setID(TileID id)
 	{
-		m_ID = type;
+		m_ID = id;
+
+		if (m_ChangedID)
+		{
+			m_ChangedID(*this);
+		}
 	}
 
 	TileID Tile::getID() const
 	{
 		return m_ID;
-	}
-
-	void Tile::render(sf::RenderTarget* target)
-	{
-		target->draw(m_Shape);
 	}
 }

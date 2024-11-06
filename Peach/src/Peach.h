@@ -2,12 +2,12 @@
 
 // For use by Peach applications
 
-#include "Peach/Application.h"
+#include "Peach/Core/Application.h"
 #include "Peach/State/IState.h"
-#include "Peach/Log.h"
+#include "Peach/Core/Log.h"
 
 #include "Peach/System.h"
 
 /* ---------- Entry Point ---------- */
-#include "Peach/EntryPoint.h"
+#include "Peach/Core/EntryPoint.h"
 /* --------------------------------- */

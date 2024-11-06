@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Peach/Core.h"
-
 #include "Peach/Game/GameObject.h"
 
 namespace Peach
@@ -11,15 +9,15 @@ namespace Peach
 	class PEACH_API Tile : public GameObject
 	{
 	public:
-		Tile(const Vec2f& size, const Vec2f& position = {});
-		Tile(const FloatRect& rect);
+		Tile(const sf::Texture& texture, RigidBody body, std::function<void(Tile&)> changedid = nullptr, bool debuglog = false);
+		virtual ~Tile() = default;
 
 		void setID(TileID id);
 
 		TileID getID() const;
-
-		virtual void render(sf::RenderTarget* target);
 	private:
 		TileID m_ID;
+
+		std::function<void(Tile&)> m_ChangedID;
 	};
 }

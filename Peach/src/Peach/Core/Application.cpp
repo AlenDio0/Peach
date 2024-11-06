@@ -21,6 +21,26 @@ namespace Peach
 		m_Data->machine.removeState();
 	}
 
+	void Application::loadTexture(const AssetKey& key, const std::string& path, bool force) const
+	{
+		loadAsset<Peach::Texture>(key, path, force);
+	}
+
+	void Application::loadFont(const AssetKey& key, const std::string& path, bool force) const
+	{
+		loadAsset<Peach::Font>(key, path, force);
+	}
+
+	void Application::loadSound(const AssetKey& key, const std::string& path, bool force) const
+	{
+		loadAsset<Peach::Sound>(key, path, force);
+	}
+
+	void Application::initAssetFile()
+	{
+		m_Data->assets.initFile();
+	}
+
 	void Application::run()
 	{
 		const std::chrono::microseconds FRAME_DURATION(16667);

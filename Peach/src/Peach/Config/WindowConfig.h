@@ -1,4 +1,5 @@
 #pragma once
+
 #include "FileConfig.h"
 
 namespace Peach
@@ -24,7 +25,7 @@ namespace Peach
 			validateFile();
 		}
 
-		virtual void generate()
+		virtual void generate() override
 		{
 			setValue(TITLE, "PeachApp");
 			setValue(WIDTH, 500);
@@ -34,7 +35,7 @@ namespace Peach
 			setValue(FPSLIMIT, 120);
 		}
 
-		virtual std::string getKeyToString(const WKey& key) const
+		virtual std::string getKeyToString(const WKey& key) const override
 		{
 			switch (key)
 			{

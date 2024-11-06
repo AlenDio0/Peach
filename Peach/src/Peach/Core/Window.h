@@ -2,8 +2,7 @@
 
 #include "Core.h"
 
-#include "Config/WindowConfig.h"
-
+#include "Peach/Config/WindowConfig.h"
 #include <SFML/Graphics.hpp>
 
 namespace Peach
