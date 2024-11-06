@@ -1,31 +1,35 @@
 #pragma once
 
+#include "Peach/Core/Core.h"
+
 #include <spdlog/fmt/ostr.h>
 
 namespace Peach
 {
-	class UUID
+	class PEACH_API UUID
 	{
 	public:
 		UUID();
 		UUID(size_t uuid);
 
 		operator size_t() const { return m_UUID; }
+
+		friend std::ostream& operator<<(std::ostream& os, const UUID& uuid)
+		{
+			return os << std::hex << (size_t)uuid;
+		}
 	private:
 		size_t m_UUID;
 	};
-
-	std::ostream& operator<<(std::ostream& os, const UUID& uuid)
-	{
-		return os << (size_t)uuid;
-	}
-
-	struct fmt::formatter<UUID> : fmt::ostream_formatter {};
 }
 
-namespace std 
+template<>
+struct fmt::formatter<Peach::UUID> : fmt::ostream_formatter {};
+
+namespace std
 {
-	template <typename T> struct hash;
+	template<typename T>
+	struct hash;
 
 	template<>
 	struct hash<Peach::UUID>
@@ -35,5 +39,4 @@ namespace std
 			return (size_t)uuid;
 		}
 	};
-
 }
