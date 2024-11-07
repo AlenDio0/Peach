@@ -137,8 +137,23 @@ namespace Peach
 		{
 			for (size_t i = 0; i <= getBuffSize(); ++i)
 			{
-				int char_x = (int)m_TextLabel.findCharacterPos(i).x + (int)m_TextLabel.getGlobalBounds().width / (int)(getBuffSize() / 2);
-				if (x <= char_x)
+				const bool isFirst = i == 0;
+				const bool isLast = i == getBuffSize();
+				bool isOnMouse = false;
+
+				if (!isLast)
+				{
+					const int relative_mouse_x = x + (m_TextLabel.getGlobalBounds().width / (float)(getBuffSize() * 2));
+					const int char_x = (int)m_TextLabel.findCharacterPos(i).x;
+					const int next_char_x = (int)m_TextLabel.findCharacterPos(i + 1).x;
+
+					const bool isInbounds = relative_mouse_x >= char_x && relative_mouse_x <= next_char_x;
+					const bool isBefore = relative_mouse_x <= char_x && isFirst;
+
+					isOnMouse = isInbounds || isBefore;
+				}
+
+				if (isOnMouse || isLast)
 				{
 					setIndex(i);
 					break;
