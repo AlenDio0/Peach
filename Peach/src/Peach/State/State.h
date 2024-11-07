@@ -34,6 +34,7 @@ namespace Peach
 			if (auto data = m_Data.lock())
 			{
 				data->machine.addState(MakeRef<T>(data), replacing);
+				return;
 			}
 
 			PEACH_CORE_ERROR("State::addState(), Impossibile aggiungere State [Data inaccessibile]");

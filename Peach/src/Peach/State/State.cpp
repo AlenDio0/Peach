@@ -54,6 +54,7 @@ namespace Peach
 		if (auto data = m_Data.lock())
 		{
 			data->machine.removeState();
+			return;
 		}
 
 		PEACH_CORE_ERROR("State::removeState(), Impossibile rimuovere State [Data inaccessibile]");
