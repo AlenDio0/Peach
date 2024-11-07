@@ -6,9 +6,8 @@
 
 namespace Peach
 {
-	// TODO: Change from raw ptr to weak ptr
 	template<typename T>
-	using RawMap = std::unordered_map<UUID, T*>;
+	using WeakMap = std::unordered_map<UUID, std::weak_ptr<T>>;
 	template<typename T>
 	using RefMap = std::unordered_map<UUID, Ref<T>>;
 
@@ -28,34 +27,34 @@ namespace Peach
 		const sf::Cursor& getCursor() const;
 
 		template<typename T = GuiObject>
-		T* getGuiObject(UUID uuid)
+		std::weak_ptr<T> getGuiObject(UUID uuid)
 		{
 			try
 			{
-				return static_cast<T*>(m_Objects.at(uuid).get());
+				return std::dynamic_pointer_cast<T>(m_Objects.at(uuid));
 			}
 			catch (const std::exception& e)
 			{
 				PEACH_CORE_ERROR("GuiManager::getGuiObject(uuid: {}), Catturata eccezione: {}", uuid, e.what());
-				return nullptr;
+				return Ref<T>(nullptr);
 			}
 		}
 
 		template<typename T = GuiObject>
-		RawMap<T> getGuiObjects(GuiType type)
+		WeakMap<T> getGuiObjects(GuiType type)
 		{
-			RawMap<T> objects;
+			WeakMap<T> objects;
 			for (auto& [key, object] : m_Objects)
 			{
 				if (object->getType() == type)
 				{
-					objects[key] = static_cast<T*>(object.get());
+					objects[key] = std::static_pointer_cast<T>(object);
 				}
 			}
 
 			return objects;
 		}
-		RawMap<GuiObject> getGuiObjects(const std::vector<GuiType>& types = {});
+		WeakMap<GuiObject> getGuiObjects(const std::vector<GuiType>& types = {});
 
 		void handleEvent(const sf::Event& event);
 

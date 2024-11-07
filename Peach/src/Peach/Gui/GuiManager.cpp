@@ -78,15 +78,15 @@ namespace Peach
 		return cursor;
 	}
 
-	RawMap<GuiObject> GuiManager::getGuiObjects(const std::vector<GuiType>& types)
+	WeakMap<GuiObject> GuiManager::getGuiObjects(const std::vector<GuiType>& types)
 	{
-		RawMap<GuiObject> objects;
+		WeakMap<GuiObject> objects;
 
 		if (types.empty())
 		{
 			for (auto& [uuid, object] : m_Objects)
 			{
-				objects[uuid] = object.get();
+				objects[uuid] = object;
 			}
 
 			return objects;
@@ -98,7 +98,7 @@ namespace Peach
 			{
 				if (object->getType() == type)
 				{
-					objects[uuid] = object.get();
+					objects[uuid] = object;
 				}
 			}
 		}
