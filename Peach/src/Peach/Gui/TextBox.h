@@ -2,6 +2,8 @@
 
 #include "GuiObject.h"
 
+#include <sstream>
+
 namespace Peach
 {
 	class PEACH_API TextBox : public GuiObject
@@ -31,8 +33,6 @@ namespace Peach
 		void onMousePressedEvent(sf::Event::MouseButtonEvent event);
 		void onTextEnteredEvent(sf::Event::TextEvent event);
 		void onKeyPressedEvent(sf::Event::KeyEvent event);
-
-		virtual GuiType getType() const override;
 
 		virtual void update() override;
 		virtual void render(sf::RenderTarget* target) const override;

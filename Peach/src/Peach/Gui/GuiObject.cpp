@@ -77,11 +77,6 @@ namespace Peach
 		return m_Appearance;
 	}
 
-	GuiType GuiObject::getType() const
-	{
-		return GuiType::None;
-	}
-
 	void GuiObject::callback() const
 	{
 		for (auto& cback : m_CallbackSink)

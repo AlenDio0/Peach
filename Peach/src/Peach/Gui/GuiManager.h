@@ -6,11 +6,6 @@
 
 namespace Peach
 {
-	template<typename T>
-	using WeakMap = std::unordered_map<UUID, std::weak_ptr<T>>;
-	template<typename T>
-	using RefMap = std::unordered_map<UUID, Ref<T>>;
-
 	class PEACH_API GuiManager
 	{
 	public:
@@ -23,6 +18,14 @@ namespace Peach
 		void remove(UUID uuid);
 		void remove(Ref<GuiObject> object);
 		void remove(GuiObject* object);
+		template<typename T>
+		void remove()
+		{
+			for (const auto& [uuid, obj] : getGuiObjects<T>())
+			{
+				remove(uuid);
+			}
+		}
 
 		const sf::Cursor& getCursor() const;
 
@@ -31,37 +34,40 @@ namespace Peach
 		{
 			try
 			{
-				return std::dynamic_pointer_cast<T>(m_Objects.at(uuid));
+				auto object = std::dynamic_pointer_cast<T>(m_Objects.at(uuid));
+				PEACH_ASSERT(object, "GuiManager::getGuiObject(...), Ritornato valore nullo, std::dynamic_pointer_cast fallito");
+
+				return object;
 			}
 			catch (const std::exception& e)
 			{
-				PEACH_CORE_ERROR("GuiManager::getGuiObject(uuid: {}), Catturata eccezione: {}", uuid, e.what());
+				PEACH_CORE_ERROR("GuiManager::getGuiObject(uuid: {}), Ritornato valore nullo. Catturata eccezione: {}", uuid, e.what());
 				return Ref<T>(nullptr);
 			}
 		}
 
 		template<typename T = GuiObject>
-		WeakMap<T> getGuiObjects(GuiType type)
+		std::unordered_map<UUID, std::weak_ptr<T>> getGuiObjects()
 		{
-			WeakMap<T> objects;
+			std::unordered_map<UUID, std::weak_ptr<T>> objects;
 			for (auto& [key, object] : m_Objects)
 			{
-				if (object->getType() == type)
+				auto obj = std::dynamic_pointer_cast<T>(object);
+				if (obj)
 				{
-					objects[key] = std::static_pointer_cast<T>(object);
+					objects[key] = obj;
 				}
 			}
 
 			return objects;
 		}
-		WeakMap<GuiObject> getGuiObjects(const std::vector<GuiType>& types = {});
 
 		void handleEvent(const sf::Event& event);
 
 		void update();
 		void render(sf::RenderTarget* target) const;
 	private:
-		RefMap<GuiObject> m_Objects;
+		std::unordered_map<UUID, Ref<GuiObject>> m_Objects;
 
 		static sf::Vector2i m_MousePosition;
 	};

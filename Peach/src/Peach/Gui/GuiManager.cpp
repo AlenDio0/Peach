@@ -22,7 +22,7 @@ namespace Peach
 	{
 		UUID uuid;
 
-		PEACH_CORE_TRACE("GuiManager::add(object: {}), [uuid: {}]", uuid, object);
+		PEACH_CORE_TRACE("GuiManager::add(object: {}), [uuid: {}]", object, uuid);
 		if (!object)
 		{
 			PEACH_CORE_ERROR("GuiManager::add(...), Impossibile aggiungere un GuiObject nullo");
@@ -76,34 +76,6 @@ namespace Peach
 		}
 
 		return cursor;
-	}
-
-	WeakMap<GuiObject> GuiManager::getGuiObjects(const std::vector<GuiType>& types)
-	{
-		WeakMap<GuiObject> objects;
-
-		if (types.empty())
-		{
-			for (auto& [uuid, object] : m_Objects)
-			{
-				objects[uuid] = object;
-			}
-
-			return objects;
-		}
-
-		for (const auto& type : types)
-		{
-			for (auto& [uuid, object] : m_Objects)
-			{
-				if (object->getType() == type)
-				{
-					objects[uuid] = object;
-				}
-			}
-		}
-
-		return objects;
 	}
 
 	void GuiManager::handleEvent(const sf::Event& event)
