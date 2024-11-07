@@ -9,14 +9,6 @@
 
 namespace Peach
 {
-	enum class GuiType
-	{
-		None = 0,
-		Button,
-		Checkbox,
-		TextBox
-	};
-
 	class PEACH_API GuiObject
 	{
 	public:
@@ -60,8 +52,6 @@ namespace Peach
 		bool isCursorOn(Vec2i mouseposition) const;
 
 		Appearance getAppearance() const;
-
-		virtual GuiType getType() const;
 
 		void callback() const;
 		virtual void handleEvent(sf::Event event);

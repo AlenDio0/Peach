@@ -72,11 +72,6 @@ namespace Peach
 		}
 	}
 
-	GuiType Checkbox::getType() const
-	{
-		return GuiType::Checkbox;
-	}
-
 	void Checkbox::update()
 	{
 		const auto [_, primary, secondary, background] = getAppearance();

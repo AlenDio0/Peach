@@ -30,8 +30,6 @@ namespace Peach
 		void onMouseMovedEvent(sf::Event::MouseMoveEvent event);
 		void onMousePressedEvent(sf::Event::MouseButtonEvent event);
 
-		virtual GuiType getType() const override;
-
 		virtual void update() override;
 		virtual void render(sf::RenderTarget* target) const override;
 	private:

@@ -284,11 +284,6 @@ namespace Peach
 		return getBuffSize() >= m_Length;
 	}
 
-	GuiType TextBox::getType() const
-	{
-		return GuiType::TextBox;
-	}
-
 	void TextBox::update()
 	{
 		const auto [_, primary, secondary, background] = getAppearance();

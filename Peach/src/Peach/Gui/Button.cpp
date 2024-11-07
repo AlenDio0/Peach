@@ -107,11 +107,6 @@ namespace Peach
 		}
 	}
 
-	GuiType Button::getType() const
-	{
-		return GuiType::Button;
-	}
-
 	void Button::update()
 	{
 		const auto [_, primary, secondary, background] = getAppearance();

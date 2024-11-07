@@ -68,10 +68,14 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 
 	m_Input.bind(sf::Keyboard::A,
 		[&]() {
-			auto textbox = m_GuiManager.getGuiObject<Peach::TextBox>(m_InsertPin);
-			PEACH_INFO("PIN: {}", textbox->getBuff());
+			if (auto textbox = m_GuiManager.getGuiObject<Peach::TextBox>(m_InsertPin).lock())
+			{
+				PEACH_INFO("PIN: {}", textbox->getBuff());
+			}
 		}, "Stampa nella console la stringa scritta in PIN", true
 	);
+
+	m_GuiManager.remove<Peach::Checkbox>();
 }
 
 DemoState::~DemoState()
