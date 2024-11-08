@@ -21,8 +21,8 @@ namespace Peach
 		{
 			PEACH_CORE_TRACE("AssetManager distrutto");
 
+			PEACH_CORE_TRACE("[AssetManager] {} Assets distrutti", m_Assets.size());
 			m_Assets.clear();
-			delete m_Config;
 		}
 
 		void initFile()
@@ -56,6 +56,8 @@ namespace Peach
 					}
 				}
 			}
+
+			delete m_Config;
 		}
 
 		template<typename T>
