@@ -7,7 +7,6 @@
 namespace Peach
 {
 	using MapKey = Vec2u;
-	using Map = std::map<MapKey, Ref<Tile>>;
 
 	class PEACH_API TileMap
 	{
@@ -25,12 +24,12 @@ namespace Peach
 		const Vec2u& getSize() const;
 		const Vec2f& getTileSize() const;
 		std::weak_ptr<Tile> getTile(const MapKey& key);
-		std::vector<std::weak_ptr<Tile>> getTiles(const UIntRect& rect = {});
+		std::map<MapKey, std::weak_ptr<Tile>> getTiles(const UIntRect& rect = {});
 
 		void render(sf::RenderTarget* target, const IntRect& view, bool convertrect = false) const;
 		void render(sf::RenderTarget* target) const;
 	private:
-		Map m_TileMap;
+		std::map<MapKey, Ref<Tile>> m_Map;
 
 		Vec2u m_Size;
 		Vec2f m_TileSize;
