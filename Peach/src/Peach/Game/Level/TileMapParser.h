@@ -7,19 +7,13 @@
 
 namespace Peach
 {
-	class PEACH_API Level
+	class PEACH_API TileMapParser : public TileMap
 	{
 	public:
-		Level() = default;
-		Level(const std::filesystem::path& filepath, const sf::Texture& texture);
+		TileMapParser() = delete;
+		TileMapParser(const std::filesystem::path& filepath, const sf::Texture& texture);
 
 		void convertFile(const std::filesystem::path& filepath);
-
-		void setTileTexture(const sf::Texture& texture, bool resetrect = false);
-
-		void render(sf::RenderTarget* target) const;
-	private:
-		TileMap m_TileMap;
 	private:
 		void fileToTileMap(std::fstream& file);
 		void fileToMap(std::fstream& file);

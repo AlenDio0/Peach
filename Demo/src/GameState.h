@@ -2,7 +2,7 @@
 
 #include <Peach/State/State.h>
 
-#include <Peach\Game.h>
+#include <Peach/Game.h>
 
 class GameState : public Peach::State
 {
@@ -14,7 +14,7 @@ public:
 	virtual void onUpdate() override;
 	virtual void onRender() override;
 private:
-	Peach::Level m_Level;
+	Peach::TileMap m_TileMap;
 	Peach::InputController m_Controller;
 	// TODO: Add a player and boxes to collide
 private:
