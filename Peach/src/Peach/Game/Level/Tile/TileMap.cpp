@@ -172,14 +172,14 @@ namespace Peach
 				}
 			}
 
-			tile->render(target);
+			target->draw(*tile);
 		}
 	}
 	void TileMap::render(sf::RenderTarget* target) const
 	{
 		for (const auto& [position, tile] : m_Map)
 		{
-			tile->render(target);
+			target->draw(*tile);
 		}
 	}
 
@@ -188,10 +188,8 @@ namespace Peach
 		setTexture(m_SpriteSheet.getTexture());
 		for (auto& [position, tile] : m_Map)
 		{
-			Transform& transform = tile->has<RigidBody>().lock()->transform;
-
-			transform.scale = m_TileSize / m_SpriteSheet.getSpriteSize();
-			transform.position = m_TileSize * position;
+			tile->setPosition(m_TileSize * position);
+			tile->setScale(m_TileSize / m_SpriteSheet.getSpriteSize());
 		}
 	}
 
@@ -256,6 +254,6 @@ namespace Peach
 				tile.setTextureRect(m_SpriteSheet.getRect(tile.getID()));
 			};
 
-		return MakeRef<Tile>(m_SpriteSheet.getTexture(), RigidBody(), changed_id, false);
+		return MakeRef<Tile>(m_SpriteSheet.getTexture(), changed_id);
 	}
 }

@@ -56,8 +56,7 @@ namespace Peach
 			m_Components.push_back(MakeRef<T>(std::forward<Args>(args)...));
 		}
 
-		virtual void update() {}
-		virtual void render(sf::RenderTarget* target) const {}
+		virtual void update() = 0;
 	private:
 		bool m_DebugLog;
 

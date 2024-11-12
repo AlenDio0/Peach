@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Tile/TileMap.h"
+#include "TileMap.h"
 
 #include <filesystem>
 #include <fstream>

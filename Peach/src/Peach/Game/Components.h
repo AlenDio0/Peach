@@ -56,12 +56,12 @@ namespace Peach
 	struct RigidBody : public Component
 	{
 		RigidBody() = default;
-		RigidBody(Transform transform, FloatRect hitbox)
-			: transform(transform), hitbox(hitbox)
+		RigidBody(FloatRect hitbox, bool collide)
+			: hitbox(hitbox), collide(collide)
 		{
 		}
 
-		Transform transform;
 		FloatRect hitbox;
+		bool collide = false;
 	};
 }
