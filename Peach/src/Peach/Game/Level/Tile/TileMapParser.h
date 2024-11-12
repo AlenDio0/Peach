@@ -7,24 +7,24 @@
 
 namespace Peach
 {
-	class PEACH_API TileMapParser : public TileMap
+	class PEACH_API TileMapParser
 	{
 	public:
 		TileMapParser() = delete;
-		TileMapParser(const std::filesystem::path& filepath, const sf::Texture& texture);
+		~TileMapParser() = delete;
 
-		void convertFile(const std::filesystem::path& filepath);
+		static TileMap&& parse(const std::filesystem::path& filepath, const sf::Texture& texture);
 	private:
-		void fileToTileMap(std::fstream& file);
-		void fileToMap(std::fstream& file);
+		static void fileToMap(std::fstream& file, TileMap& tilemap);
+		static void fileToTileMap(std::fstream& file, TileMap& tilemap);
 
-		bool isEnd(const std::string& buff) const;
+		static bool isEnd(const std::string& buff);
 
-		bool find(const std::string& buff, const std::string& find) const;
+		static bool find(const std::string& buff, const std::string& find);
 
-		uint32_t nextUInt(const std::string& buff) const;
+		static uint32_t nextUInt(const std::string& buff);
 
-		Vec2u stringToVec2u(const std::string& str) const;
-		Vec2f stringToVec2f(const std::string& str) const;
+		static Vec2u stringToVec2u(const std::string& str);
+		static Vec2f stringToVec2f(const std::string& str);
 	};
 }

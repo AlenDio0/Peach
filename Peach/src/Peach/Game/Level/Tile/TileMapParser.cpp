@@ -3,14 +3,10 @@
 
 namespace Peach
 {
-	TileMapParser::TileMapParser(const std::filesystem::path& filepath, const sf::Texture& texture)
-		: TileMap(texture)
+	TileMap&& TileMapParser::parse(const std::filesystem::path& filepath, const sf::Texture& texture)
 	{
-		convertFile(filepath);
-	}
+		TileMap* tilemap = new TileMap(texture);
 
-	void TileMapParser::convertFile(const std::filesystem::path& filepath)
-	{
 		std::fstream file(filepath, std::ios::in);
 		while (!file.eof())
 		{
@@ -26,16 +22,18 @@ namespace Peach
 
 			if (token_str == "TileMap")
 			{
-				fileToTileMap(file);
+				fileToTileMap(file, *tilemap);
 			}
 			else if (token_str == "Map")
 			{
-				fileToMap(file);
+				fileToMap(file, *tilemap);
 			}
 		}
+
+		return std::move(*tilemap);
 	}
 
-	void TileMapParser::fileToTileMap(std::fstream& file)
+	void TileMapParser::fileToTileMap(std::fstream& file, TileMap& tilemap)
 	{
 		const char* token_mapsize = "MapSize";
 		const char* token_tilesize = "TileSize";
@@ -53,22 +51,22 @@ namespace Peach
 			if (find(buff, token_mapsize))
 			{
 				const std::string str_mapsize = buff.substr(strlen(token_mapsize));
-				setSize(stringToVec2u(str_mapsize));
+				tilemap.setSize(stringToVec2u(str_mapsize));
 			}
 			else if (find(buff, token_tilesize))
 			{
 				const std::string str_tilesize = buff.substr(strlen(token_tilesize));
-				setTileSize(stringToVec2f(str_tilesize));
+				tilemap.setTileSize(stringToVec2f(str_tilesize));
 			}
 			else if (find(buff, token_spritesize))
 			{
 				const std::string str_spritesize = buff.substr(strlen(token_spritesize));
-				setSpriteSize(stringToVec2u(str_spritesize));
+				tilemap.setSpriteSize(stringToVec2u(str_spritesize));
 			}
 		}
 	}
 
-	void TileMapParser::fileToMap(std::fstream& file)
+	void TileMapParser::fileToMap(std::fstream& file, TileMap& tilemap)
 	{
 		const char* token_pos = "Pos";
 		const char* token_id = "ID";
@@ -98,13 +96,13 @@ namespace Peach
 				buff = buff.substr(found + strlen(token_id));
 
 				uint32_t id = nextUInt(buff);
-				if (auto tile = getTile(tile_pos).lock())
+				if (auto tile = tilemap.getTile(tile_pos).lock())
 				{
 					tile->setID(id);
 				}
 				else
 				{
-					PEACH_CORE_WARN("Level::convertFile(...), La posizione del Tile {} va oltre la grandezza di TileMap {}", tile_pos, getSize());
+					PEACH_CORE_WARN("Level::convertFile(...), La posizione del Tile {} va oltre la grandezza di TileMap {}", tile_pos, tilemap.getSize());
 					continue;
 				}
 			}
@@ -116,17 +114,17 @@ namespace Peach
 		}
 	}
 
-	bool TileMapParser::isEnd(const std::string& buff) const
+	bool TileMapParser::isEnd(const std::string& buff)
 	{
 		return buff == "END";
 	}
 
-	bool TileMapParser::find(const std::string& buff, const std::string& find) const
+	bool TileMapParser::find(const std::string& buff, const std::string& find)
 	{
 		return buff.find(find + ' ') != std::string::npos;
 	}
 
-	uint32_t TileMapParser::nextUInt(const std::string& buff) const
+	uint32_t TileMapParser::nextUInt(const std::string& buff)
 	{
 		bool in = false;
 		std::string id;
@@ -147,7 +145,7 @@ namespace Peach
 		return stoi(id);
 	}
 
-	Vec2u TileMapParser::stringToVec2u(const std::string& str) const
+	Vec2u TileMapParser::stringToVec2u(const std::string& str)
 	{
 		bool in_x = false, in_y = false;
 		std::string x, y;
@@ -194,7 +192,7 @@ namespace Peach
 		return out;
 	}
 
-	Vec2f TileMapParser::stringToVec2f(const std::string& str) const
+	Vec2f TileMapParser::stringToVec2f(const std::string& str)
 	{
 		bool in_x = false, in_y = false;
 		std::string x, y;

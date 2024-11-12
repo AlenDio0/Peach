@@ -1,7 +1,7 @@
 #include "GameState.h"
 
 GameState::GameState(Peach::Ref<Peach::Data> data)
-	: Peach::State(data, "Game"), m_TileMap(Peach::TileMapParser("level.txt", getTexture("tiles")))
+	: Peach::State(data, "Game"), m_TileMap(Peach::TileMapParser::parse("level.txt", getTexture("tiles")))
 {
 	initBinds();
 }
