@@ -7,9 +7,13 @@
 
 namespace Peach
 {
-	struct Component {};
+	struct Component
+	{
+		Component() = default;
+		virtual ~Component() = default;
+	};
 
-	struct ID
+	struct ID : public Component
 	{
 		ID() = default;
 		ID(size_t id)

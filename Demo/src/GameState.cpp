@@ -22,6 +22,8 @@ void GameState::onEvent()
 void GameState::onUpdate()
 {
 	m_Controller.update();
+
+	m_TileMap.update();
 }
 
 void GameState::onRender()

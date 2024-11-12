@@ -2,21 +2,27 @@
 
 #include "Peach/Game/GameObject.h"
 
+#include <SFML/Graphics.hpp>
+
 namespace Peach
 {
-	using TileID = uint32_t;
-
 	class PEACH_API Tile : public GameObject
 	{
 	public:
 		Tile(const sf::Texture& texture, RigidBody body, std::function<void(Tile&)> changedid = nullptr, bool debuglog = false);
 		virtual ~Tile() = default;
 
-		void setID(TileID id);
+		void setTexture(const sf::Texture& texture, bool resetrect = false);
+		void setTextureRect(IntRect rect);
 
-		TileID getID() const;
+		void setID(size_t id);
+
+		size_t getID() const;
+
+		virtual void update() override;
+		virtual void render(sf::RenderTarget* target) const override;
 	private:
-		TileID m_ID;
+		sf::Sprite m_Sprite;
 
 		std::function<void(Tile&)> m_ChangedID;
 	};

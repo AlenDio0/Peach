@@ -14,6 +14,7 @@ namespace Peach
 		TileMap();
 		TileMap(const sf::Texture& texture);
 		TileMap(const sf::Texture& texture, const Vec2u& mapsize, const Vec2f& tilesize, const Vec2u& spritesize);
+		TileMap(TileMap&&) = default;
 		~TileMap();
 
 		void setTexture(const sf::Texture& texture, bool resetrect = false);
@@ -25,6 +26,8 @@ namespace Peach
 		const Vec2f& getTileSize() const;
 		std::weak_ptr<Tile> getTile(const MapKey& key);
 		std::map<MapKey, std::weak_ptr<Tile>> getTiles(const UIntRect& rect = {});
+
+		void update();
 
 		void render(sf::RenderTarget* target, const IntRect& view, bool convertrect = false) const;
 		void render(sf::RenderTarget* target) const;

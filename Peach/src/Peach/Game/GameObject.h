@@ -3,7 +3,6 @@
 #include "Peach/Core/Core.h"
 
 #include "Components.h"
-#include <SFML/Graphics.hpp>
 #include "Peach/Core/Log.h"
 
 namespace Peach
@@ -12,25 +11,56 @@ namespace Peach
 	{
 	public:
 		GameObject();
-		GameObject(const sf::Texture& texture, RigidBody body, bool dynamic = false, bool debuglog = true);
+		GameObject(bool debuglog);
 		virtual ~GameObject();
 
-		void setTexture(const sf::Texture& texture, bool resetrect = false);
-		void setTextureRect(IntRect rect);
+		template<typename T>
+		std::weak_ptr<T> has() const
+		{
+			for (const auto& comp : m_Components)
+			{
+				auto component = std::dynamic_pointer_cast<T>(comp);
+				if (component)
+				{
+					return component;
+				}
+			}
 
-		void setPosition(Vec2f position);
-		void setScale(Vec2f scale);
-		void setHitBox(FloatRect hitbox);
+			return Ref<T>(nullptr);
+		}
+
+		template<typename T>
+		std::weak_ptr<T> has()
+		{
+			for (auto& comp : m_Components)
+			{
+				auto component = std::dynamic_pointer_cast<T>(comp);
+				if (component)
+				{
+					return component;
+				}
+			}
+
+			return Ref<T>(nullptr);
+		}
+
+		template<typename T, typename... Args>
+		void addComponent(Args&& ... args)
+		{
+			if (!has<T>().expired())
+			{
+				PEACH_CORE_WARN("GameObject::addComponent(), Componente gia' aggiunto");
+				return;
+			}
+
+			m_Components.push_back(MakeRef<T>(std::forward<Args>(args)...));
+		}
 
 		virtual void update() {}
-		virtual void render(sf::RenderTarget* target) const;
-	protected:
-		void renderSprite(sf::RenderTarget* target) const;
+		virtual void render(sf::RenderTarget* target) const {}
 	private:
-		RigidBody m_Body;
-		sf::Sprite m_Sprite;
 		bool m_DebugLog;
 
-		bool m_Dynamic;
+		std::vector<Ref<Component>> m_Components;
 	};
 }
