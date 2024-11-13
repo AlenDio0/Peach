@@ -7,11 +7,10 @@ namespace Peach
 	{
 		TileMap* tilemap = new TileMap(texture);
 
-		std::fstream file(filepath, std::ios::in);
-		while (!file.eof())
+		open(filepath);
+		while (!isEOF())
 		{
-			std::string buff;
-			std::getline(file, buff);
+			std::string buff = consumeLine();
 
 			if (!find(buff, "START"))
 			{
@@ -22,27 +21,27 @@ namespace Peach
 
 			if (token_str == "TileMap")
 			{
-				fileToTileMap(file, *tilemap);
+				fileToTileMap(*tilemap);
 			}
 			else if (token_str == "Map")
 			{
-				fileToMap(file, *tilemap);
+				fileToMap(*tilemap);
 			}
 		}
 
 		return std::move(*tilemap);
 	}
 
-	void TileMapParser::fileToTileMap(std::fstream& file, TileMap& tilemap)
+	void TileMapParser::fileToTileMap(TileMap& tilemap)
 	{
 		const char* token_mapsize = "MapSize";
 		const char* token_tilesize = "TileSize";
 		const char* token_spritesize = "SpriteSize";
 
-		while (!file.eof())
+		while (!isEOF())
 		{
-			std::string buff;
-			std::getline(file, buff);
+			std::string buff = consumeLine();
+
 			if (isEnd(buff))
 			{
 				break;
@@ -66,7 +65,7 @@ namespace Peach
 		}
 	}
 
-	void TileMapParser::fileToMap(std::fstream& file, TileMap& tilemap)
+	void TileMapParser::fileToMap(TileMap& tilemap)
 	{
 		const char* token_pos = "Pos";
 		const char* token_id = "ID";
@@ -75,7 +74,7 @@ namespace Peach
 
 		Vec2u tile_pos;
 		std::string buff;
-		while (!file.eof())
+		while (!isEOF())
 		{
 			if (isEnd(buff))
 			{
@@ -109,133 +108,8 @@ namespace Peach
 
 			if (found == npos)
 			{
-				std::getline(file, buff);
+				buff = consumeLine();
 			}
 		}
-	}
-
-	bool TileMapParser::isEnd(const std::string& buff)
-	{
-		return buff == "END";
-	}
-
-	bool TileMapParser::find(const std::string& buff, const std::string& find)
-	{
-		return buff.find(find + ' ') != std::string::npos;
-	}
-
-	uint32_t TileMapParser::nextUInt(const std::string& buff)
-	{
-		bool in = false;
-		std::string id;
-
-		for (const char& c : buff)
-		{
-			if (isdigit(c))
-			{
-				in = true;
-				id += c;
-			}
-			else if (in)
-			{
-				break;
-			}
-		}
-
-		return stoi(id);
-	}
-
-	Vec2u TileMapParser::stringToVec2u(const std::string& str)
-	{
-		bool in_x = false, in_y = false;
-		std::string x, y;
-
-		for (const char& c : str)
-		{
-			if (c == '[')
-			{
-				if (in_x || in_y)
-				{
-					break;
-				}
-
-				in_x = true;
-				continue;
-			}
-			else if (c == ']')
-			{
-				break;
-			}
-
-			if (!in_x && !in_y)
-			{
-				continue;
-			}
-
-			if (isdigit(c))
-			{
-				std::string& append = in_x ? x : y;
-
-				append += c;
-			}
-			else if (c == ',')
-			{
-				in_x = false;
-				in_y = true;
-			}
-		}
-
-		Vec2u out;
-		out.x = x.empty() ? 0 : stoi(x);
-		out.y = y.empty() ? 0 : stoi(y);
-
-		return out;
-	}
-
-	Vec2f TileMapParser::stringToVec2f(const std::string& str)
-	{
-		bool in_x = false, in_y = false;
-		std::string x, y;
-
-		for (const char& c : str)
-		{
-			if (c == '[')
-			{
-				if (in_x || in_y)
-				{
-					break;
-				}
-
-				in_x = true;
-				continue;
-			}
-			else if (c == ']')
-			{
-				break;
-			}
-
-			if (!in_x && !in_y)
-			{
-				continue;
-			}
-
-			if (isdigit(c) || c == '.' || c == '-')
-			{
-				std::string& append = in_x ? x : y;
-
-				append += c;
-			}
-			else if (c == ',')
-			{
-				in_x = false;
-				in_y = true;
-			}
-		}
-
-		Vec2f out;
-		out.x = x.empty() ? 0 : stof(x);
-		out.y = y.empty() ? 0 : stof(y);
-
-		return out;
 	}
 }
