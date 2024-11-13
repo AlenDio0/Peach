@@ -18,83 +18,106 @@ namespace Peach
 			: x(x), y(y)
 		{
 		}
-		template<typename U>
+		template<typename U = T>
 		Vec2(const Vec2<U>& vec)
-			: x(vec.x), y(vec.y)
+			: x((T)vec.x), y((T)vec.y)
 		{
 		}
-		template<typename U>
+		template<typename U = T>
 		Vec2(const sf::Vector2<U>& vec)
-			: x(vec.x), y(vec.y)
+			: x((T)vec.x), y((T)vec.y)
 		{
 		}
 
-		operator sf::Vector2<T>() const
-		{
-			return sf::Vector2<T>(x, y);
-		}
+		template<typename U = T>
+		operator sf::Vector2<U>() const { return sf::Vector2<U>(x, y); }
 
-		Vec2<T>& operator=(const sf::Vector2<T>& r)
-		{
-			x = r.x;
-			y = r.y;
+		// FUNCTIONS
 
+		T square() { return x * y; }
+
+		// OPERATIONS
+
+		// vec1 + vec2
+		Vec2 operator+(const Vec2& r) const { return Vec2(x + r.x, y + r.y); }
+		Vec2 operator+=(const Vec2& r)
+		{
+			*this = *this + r;
 			return *this;
 		}
 
-		Vec2 operator+(const Vec2& r) const
+		// vec1 - vec2
+		Vec2 operator-(const Vec2& r) const { return Vec2(x - r.x, y - r.y); }
+		Vec2 operator-=(const Vec2& r)
 		{
-			return Vec2(x + r.x, y + r.y);
-		}
-		Vec2 operator+(const T& r) const
-		{
-			return Vec2(x + r, y + r);
-		}
-
-		Vec2 operator-(const Vec2& r) const
-		{
-			return Vec2(x - r.x, y - r.y);
-		}
-		Vec2 operator-(const T& r) const
-		{
-			return Vec2(x - r, y - r);
+			*this = *this - r;
+			return *this;
 		}
 
-		Vec2 operator*(const Vec2& r) const
+		// vec1 * vec2
+		Vec2 operator*(const Vec2& r) const { return Vec2(x * r.x, y * r.y); }
+		Vec2 operator*=(const Vec2& r)
 		{
-			return Vec2(x * r.x, y * r.y);
-		}
-		Vec2 operator*(const T& r) const
-		{
-			return Vec2(x * r, y * r);
-		}
-
-		Vec2 operator/(const Vec2& r) const
-		{
-			return Vec2(x / r.x, y / r.y);
-		}
-		Vec2 operator/(const T& r) const
-		{
-			return Vec2(x / r, y / r);
+			*this = *this * r;
+			return *this;
 		}
 
-		bool operator==(const Vec2& r) const
+		// vec1 / vec2
+		Vec2 operator/(const Vec2& r) const { return Vec2(x / r.x, y / r.y); }
+		Vec2 operator/=(const Vec2& r)
 		{
-			return x == r.x && y == r.y;
-		}
-		bool operator!=(const Vec2& r) const
-		{
-			return !(*this == r);
+			*this = *this / r;
+			return *this;
 		}
 
-		bool operator>(const Vec2& r) const
+		// vec + k
+		Vec2 operator+(const T& r) const { return Vec2(x + r, y + r); }
+		Vec2 operator+=(const T& r)
 		{
-			return x == r.x ? y > r.y : x > r.x;
+			*this = *this + r;
+			return *this;
 		}
-		bool operator<(const Vec2& r) const
+
+		// vec - k
+		Vec2 operator-(const T& r) const { return Vec2(x - r, y - r); }
+		Vec2 operator-=(const T& r)
 		{
-			return x == r.x ? y < r.y : x < r.x;
+			*this = *this - r;
+			return *this;
 		}
+
+		// vec * k
+		Vec2 operator*(const T& r) const { return Vec2(x * r, y * r); }
+		Vec2 operator*=(const T& r)
+		{
+			*this = *this * r;
+			return *this;
+		}
+
+		// vec / k
+		Vec2 operator/(const T& r) const { return Vec2(x / r, y / r); }
+		Vec2 operator/=(const T& r)
+		{
+			*this = *this / r;
+			return *this;
+		}
+
+		// COMPARATIONS
+
+		// vec1 == vec2
+		bool operator==(const Vec2& r) const { return x == r.x && y == r.y; }
+		// vec1 != vec2
+		bool operator!=(const Vec2& r) const { return !(*this == r); }
+
+		// vec1 > vec2
+		bool operator>(const Vec2& r) const { return x == r.x ? y > r.y : x > r.x; }
+		// vec1 >= vec2
+		bool operator>=(const Vec2& r) const { return *this > r && *this == r; }
+
+		// vec1 < vec2
+		bool operator<(const Vec2& r) const { return x == r.x ? y < r.y : x < r.x; }
+		// vec1 <= vec2
+		bool operator<=(const Vec2& r) const { return *this < r && *this == r; }
 	};
 
 	template<typename T>

@@ -18,81 +18,70 @@ namespace Peach
 			: x(x), y(y), width(width), height(height)
 		{
 		}
-		template<typename U>
+		template<typename U = T>
 		Rect(const Rect<U>& rect)
-			: x(rect.x), y(rect.y), width(rect.width), height(rect.height)
+			: x((T)rect.x), y((T)rect.y), width((T)rect.width), height((T)rect.height)
 		{
 		}
-		template<typename U>
+		template<typename U = T>
 		Rect(const Vec2<U>& position, const Vec2<U>& size)
-			: x(position.x), y(position.y), width(size.x), height(size.y)
+			: x((T)position.x), y((T)position.y), width((T)size.x), height((T)size.y)
 		{
 		}
-		template<typename U>
+		template<typename U = T>
 		Rect(const sf::Rect<U>& rect)
-			: x(rect.x), y(rect.y), width(rect.width), height(rect.width)
+			: x((T)rect.left), y((T)rect.top), width((T)rect.width), height((T)rect.height)
 		{
 		}
 
-		operator sf::Rect<T>() const
-		{
-			return sf::Rect<T>(x, y, width, height);
-		}
+		template<typename U = T>
+		operator sf::Rect<U>() const { return sf::Rect<U>(x, y, width, height); }
 
-		Rect& operator=(const sf::Rect<T>& r)
-		{
-			x = r.x;
-			y = r.y;
-			width = r.width;
-			height = r.height;
+		// FUNCTIONS
 
+		Vec2<T> getPosition() const { return Vec2<T>(x, y); }
+		Vec2<T> getSize() const { return Vec2<T>(width, height); }
+
+		// OPERATIONS
+
+		// rect + k
+		Rect operator+(const T& r) const { return Rect(x + r, y + r, width + r, height + r); }
+		Rect operator+=(const T& r)
+		{
+			*this = *this + r;
 			return *this;
 		}
 
-		Rect operator+(const Rect& r) const
+		// rect - k
+		Rect operator-(const T& r) const { return Rect(x - r, y - r, width - r, height - r); }
+		Rect operator-=(const T& r)
 		{
-			return Rect(x + r.x, y + r.y, width + r.width, height + r.height);
-		}
-		Rect operator+(const T& r) const
-		{
-			return Rect(x + r, y + r, width + r, height + r);
-		}
-
-		Rect operator-(const Rect& r) const
-		{
-			return Rect(x - r.x, y - r.y, width - r.width, height - r.height);
-		}
-		Rect operator-(const T& r) const
-		{
-			return Rect(x - r, y - r, width - r, height - r);
+			*this = *this - r;
+			return *this;
 		}
 
-		Rect operator*(const Rect& r) const
+		// rect * k
+		Rect operator*(const T& r) const { return Rect(x * r, y * r, width * r, height * r); }
+		Rect operator*=(const T& r)
 		{
-			return Rect(x * r.x, y * r.y, width * r.width, height * r.height);
-		}
-		Rect operator*(const T& r) const
-		{
-			return Rect(x * r, y * r, width * r, height * r);
-		}
-
-		Rect operator/(const Rect& r) const
-		{
-			return Rect(x / r.x, y / r.y, width / r.width, height / r.height);
-		}
-		Rect operator/(const T& r) const
-		{
-			return Rect(x / r, y / r, width / r, height / r);
+			*this = *this * r;
+			return *this * r;
 		}
 
-		bool operator==(const Rect& r) const
+		// rect / k
+		Rect operator/(const T& r) const { return Rect(x / r, y / r, width / r, height / r); }
+		Rect operator/=(const T& r)
 		{
-			return x == r.x && y == r.y && width == r.width && height == r.height;
+			*this = *this / r;
+			return *this;
 		}
-		bool operator!=(const Rect& r) const
-		{
-			return !(*this == r);
-		}
+
+		// COMPARATIONS
+
+		// rect == rect2
+		bool operator==(const Rect& r) const { return x == r.x && y == r.y && width == r.width && height == r.height; }
+		// rect1 != rect2
+		bool operator!=(const Rect& r) const { return !(*this == r); }
 	};
 
 	template<typename T>
