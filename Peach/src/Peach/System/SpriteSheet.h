@@ -7,8 +7,6 @@
 
 namespace Peach
 {
-	using SpriteID = uint32_t;
-
 	class PEACH_API SpriteSheet
 	{
 	public:
@@ -21,8 +19,8 @@ namespace Peach
 		const Vec2u& getSpriteSize() const;
 		const Vec2u& getSize() const;
 
-		SpriteID getMaxID() const;
-		IntRect getRect(SpriteID id) const;
+		size_t getMaxID() const;
+		IntRect getRect(size_t id) const;
 	private:
 		const sf::Texture* m_Texture;
 		Vec2u m_SpriteSize;
