@@ -36,22 +36,22 @@ namespace Peach
 		return m_Size;
 	}
 
-	SpriteID SpriteSheet::getMaxID() const
+	size_t SpriteSheet::getMaxID() const
 	{
-		return m_Size.x * m_Size.y;
+		return Vec2<size_t>(m_Size).square();
 	}
 
-	IntRect SpriteSheet::getRect(SpriteID id) const
+	IntRect SpriteSheet::getRect(size_t id) const
 	{
-		const int& max = getMaxID();
+		int64_t max = getMaxID();
 
-		if ((int)id >= max)
+		if ((int64_t)id >= max)
 		{
 			PEACH_CORE_WARN("SpriteSheet::getRect(id: {}), ID fuori dal range [maxid: {}], ritornato l'ultimo ID", id, max);
 			return getRect(max - 1);
 		}
 
-		const Vec2u& position = { id % m_Size.x, id / m_Size.x };
+		Vec2u position = Vec2u((uint32_t)id % m_Size.x, (uint32_t)id / m_Size.x);
 
 		return IntRect(position * m_SpriteSize, m_SpriteSize);
 	}
