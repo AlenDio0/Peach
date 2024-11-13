@@ -1,30 +1,65 @@
 #pragma once
 
-#include "GameObject.h"
+#include "Peach/Core/Core.h"
 
-#include <SFML/Graphics.hpp>
+#include "Components.h"
+#include "Peach/Core/Log.h"
 
 namespace Peach
 {
-	class Entity : public GameObject, public sf::Drawable
+	class PEACH_API Entity
 	{
 	public:
 		Entity();
-		Entity(const sf::Texture& texture);
+		Entity(bool debuglog);
+		virtual ~Entity();
 
-		virtual void setTexture(const sf::Texture& texture, bool resetrect = false);
-		virtual void setTextureRect(IntRect rect);
+		template<typename T>
+		std::weak_ptr<T> has() const
+		{
+			for (const auto& comp : m_Components)
+			{
+				auto component = std::dynamic_pointer_cast<T>(comp);
+				if (component)
+				{
+					return component;
+				}
+			}
 
-		virtual void setPosition(Vec2f position);
-		virtual void setScale(Vec2f scale);
+			return Ref<T>(nullptr);
+		}
 
-		Transform& getTransform();
-		Transform getTransform() const;
+		template<typename T>
+		std::weak_ptr<T> has()
+		{
+			for (auto& comp : m_Components)
+			{
+				auto component = std::dynamic_pointer_cast<T>(comp);
+				if (component)
+				{
+					return component;
+				}
+			}
 
-		virtual void update() override = 0;
+			return Ref<T>(nullptr);
+		}
+
+		template<typename T, typename... Args>
+		void addComponent(Args&& ... args)
+		{
+			if (!has<T>().expired())
+			{
+				PEACH_CORE_WARN("Entity::addComponent(), Componente gia' aggiunto");
+				return;
+			}
+
+			m_Components.push_back(MakeRef<T>(std::forward<Args>(args)...));
+		}
+
+		virtual void update() = 0;
 	private:
-		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-	private:
-		sf::Sprite m_Sprite;
+		bool m_DebugLog;
+
+		std::vector<Ref<Component>> m_Components;
 	};
 }

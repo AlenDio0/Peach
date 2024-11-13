@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Peach/Game/Entity.h"
+#include "Peach/Game/GameObject.h"
 
 #include <SFML/Graphics.hpp>
 
 namespace Peach
 {
-	class PEACH_API Tile : public Entity
+	class PEACH_API Tile : public GameObject
 	{
 	public:
 		Tile(const sf::Texture& texture, const std::function<void(Tile&)>& changedid = nullptr);
