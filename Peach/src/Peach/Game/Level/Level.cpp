@@ -11,6 +11,7 @@ namespace Peach
     Level::Level(TileMap&& tilemap)
         : m_TileMap(tilemap)
     {
+		PEACH_CORE_TRACE("Level costruito");
     }
 
     Level::~Level()
@@ -18,7 +19,7 @@ namespace Peach
 		PEACH_CORE_TRACE("Level distrutto");
 
 		PEACH_CORE_TRACE("[Level] {} Entity distrutti", m_Entities.size());
-		m_Objects.clear();
+		m_Entities.clear();
     }
 
     UUID Level::addEntity(Ref<Entity> entity)
@@ -51,7 +52,7 @@ namespace Peach
     void Level::removeEntity(Ref<Entity> entity)
     {
 		PEACH_CORE_TRACE("Level::removeEntity(entity: {})", entity);
-		for (auto& [uuid, ent] : m_Objects)
+		for (auto& [uuid, ent] : m_Entities)
 		{
 			if (ent == entity)
 			{
