@@ -1,7 +1,7 @@
 #include "GameState.h"
 
 GameState::GameState(Peach::Ref<Peach::Data> data)
-	: Peach::State(data, "Game"), m_TileMap(Peach::TileMapParser::parse("level.txt", getTexture("tiles")))
+	: Peach::State(data, "Game"), m_Level(Peach::TileMapParser::parse("level.txt", getTexture("tiles")))
 {
 	initBinds();
 }
@@ -23,16 +23,16 @@ void GameState::onUpdate()
 {
 	m_Controller.update();
 
-	m_TileMap.update();
+	m_Level.update();
 }
 
 void GameState::onRender()
 {
-	getRenderer()->setView(getRenderer()->getView());
+	getRenderer()->setView(getRenderer()->getDefaultView());
 
 	getRenderer()->clear();
 
-	m_TileMap.render(getRenderer());
+	m_Level.render(getRenderer());
 
 	getWindow().display();
 }
