@@ -37,7 +37,7 @@ namespace Peach
 		GuiObject(sf::Shape& container, bool debuglog = true);
 		virtual ~GuiObject();
 
-		void addCallback(const std::function<void()>& callback);
+		void addCallback(sf::Event::EventType type, const std::function<void(GuiObject&, sf::Event)>& callback);
 		virtual void setSize(Vec2f size) = 0;
 		virtual void setPosition(Vec2f position);
 
@@ -50,19 +50,29 @@ namespace Peach
 		Vec2f getSize() const;
 		Vec2f getPosition() const;
 		bool isCursorOn(Vec2i mouseposition) const;
+		bool isCursorOn(sf::Event::MouseMoveEvent event) const;
+		bool isCursorOn(sf::Event::MouseButtonEvent event) const;
 
 		Appearance getAppearance() const;
 
-		void callback() const;
-		virtual void handleEvent(sf::Event event);
+		void callback(sf::Event event);
+		void handleEvent(sf::Event event);
 
 		virtual void update() = 0;
 		virtual void render(sf::RenderTarget* target) const = 0;
+	protected:
+		virtual void handleSpecEvent(sf::Event event);
+	private:
+		struct EventCallback
+		{
+			sf::Event::EventType type;
+			std::function<void(GuiObject&, sf::Event)> callback;
+		};
 	private:
 		sf::Shape* m_Shape;
 		Appearance m_Appearance;
 
-		std::vector<std::function<void()>> m_CallbackSink;
+		std::vector<EventCallback> m_Callbacks;
 
 		bool m_DebugLog;
 	};

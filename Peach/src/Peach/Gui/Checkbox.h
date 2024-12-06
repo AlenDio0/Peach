@@ -17,7 +17,7 @@ namespace Peach
 		const sf::Vector2f& getSize() const;
 		bool isActive() const;
 
-		virtual void handleEvent(sf::Event event) override;
+		virtual void handleSpecEvent(sf::Event event) override;
 		void onMousePressedEvent(sf::Event::MouseButtonEvent event);
 
 		virtual void update() override;

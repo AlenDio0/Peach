@@ -32,22 +32,38 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	button1->setOutlineThickness(3.f);
 	button1->setLabelStyle(sf::Text::Bold);
 	button1->setPosition({ (getRenderer()->getSize().x - button1->getSize().x) / 2.f, 100 });
-	button1->addCallback
-	(
-		[&]() {
-			PEACH_INFO("RIMPIAZZA");
-			addState<DemoState>(true);
+	button1->addCallback(sf::Event::MouseButtonPressed,
+		[&](Peach::GuiObject& obj, sf::Event event) {
+			auto& buttonEvent = event.mouseButton;
+			if (buttonEvent.button != sf::Mouse::Button::Left)
+			{
+				return;
+			}
+
+			if (obj.isCursorOn(buttonEvent))
+			{
+				PEACH_INFO("RIMPIAZZA");
+				addState<DemoState>(true);
+			}
 		}
 	);
 
 	button2->setOutlineThickness(3.f);
 	button2->setLabelStyle(sf::Text::Italic);
 	button2->setPosition({ (getRenderer()->getSize().x - button2->getSize().x) / 2.f, 165 });
-	button2->addCallback
-	(
-		[&]() {
-			PEACH_INFO("GIOCA");
-			addState<GameState>(false);
+	button2->addCallback(sf::Event::MouseButtonPressed,
+		[&](Peach::GuiObject& obj, sf::Event event) {
+			auto& buttonEvent = event.mouseButton;
+			if (buttonEvent.button != sf::Mouse::Button::Left)
+			{
+				return;
+			}
+
+			if (obj.isCursorOn(buttonEvent))
+			{
+				PEACH_INFO("GIOCA");
+				addState<GameState>(false);
+			}
 		}
 	);
 
@@ -62,7 +78,7 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	textbox2->setAppearance({ 2.f, sf::Color::Magenta, sf::Color::Green, sf::Color::White });
 	textbox2->setPosition({ (getRenderer()->getSize().x - textbox2->getSize().x) / 2.f, 325 });
 
-	textbox3->setRestriction([](char c) { return c > ' ' && c <= '~'; });
+	textbox3->setRestriction([](int c) { return c > ' ' && c <= '~'; });
 	textbox3->setAppearance({ 2.f, sf::Color::Red, sf::Color::Cyan, sf::Color::White });
 	textbox3->setPosition({ (getRenderer()->getSize().x - textbox3->getSize().x) / 2.f, 400 });
 
@@ -72,10 +88,8 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 			{
 				PEACH_INFO("PIN: {}", textbox->getBuff());
 			}
-		}, "Stampa nella console la stringa scritta in PIN", true
+		}, "Stampa il PIN", true
 	);
-
-	m_GuiManager.remove<Peach::Checkbox>();
 }
 
 DemoState::~DemoState()
