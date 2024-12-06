@@ -193,6 +193,8 @@ namespace Peach
 		{
 			tile->setPosition(m_TileSize * position);
 			tile->setScale(m_TileSize / m_SpriteSheet.getSpriteSize());
+
+			tile->setID(tile->getID());
 		}
 	}
 
