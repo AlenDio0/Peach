@@ -15,7 +15,7 @@ public:
 	virtual void onRender() override;
 private:
 	Peach::TileMap m_TileMap;
-	Peach::InputController m_Controller;
+	Peach::InputController m_Input;
 	// TODO: Add a player and boxes to collide
 private:
 	void initBinds();

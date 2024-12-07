@@ -15,14 +15,12 @@ void GameState::onEvent()
 	for (sf::Event event; pollEvent(event);)
 	{
 		getWindow().handleEvent(event);
-		m_Controller.handleEvent(event);
+		m_Input.handleEvent(event);
 	}
 }
 
 void GameState::onUpdate()
 {
-	m_Controller.update();
-
 	m_TileMap.update();
 }
 
@@ -43,10 +41,10 @@ void GameState::initBinds()
 	const auto& tilesize = m_Map.getTileSize();
 	const auto& mapsize = m_Map.getSize();
 	*/
-	m_Controller.bind(sf::Keyboard::Escape,
+	m_Input.bind(sf::Keyboard::Escape,
 		[&]() {
 			removeState();
-		}, "Rimuove lo Stato attuale", true);
+		}, "Rimuove lo Stato attuale");
 	/*
 	m_Controller.bind(sf::Keyboard::Num1,
 		[&]() {

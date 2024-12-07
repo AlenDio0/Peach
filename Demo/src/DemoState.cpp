@@ -88,8 +88,7 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 			{
 				PEACH_INFO("PIN: {}", textbox->getBuff());
 			}
-		}, "Stampa il PIN", true
-	);
+		}, "Stampa il PIN");
 }
 
 DemoState::~DemoState()
@@ -118,7 +117,6 @@ void DemoState::onEvent()
 void DemoState::onUpdate()
 {
 	m_GuiManager.update();
-	m_Input.update();
 }
 
 void DemoState::onRender()
