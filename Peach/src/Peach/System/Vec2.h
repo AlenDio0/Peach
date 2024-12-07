@@ -14,18 +14,18 @@ namespace Peach
 			: Vec2(0, 0)
 		{
 		}
+		Vec2(const T& x, const T& y)
+			: x(x), y(y)
+		{
+		}
 		template<typename U = T>
 		Vec2(const Vec2<U>& vec)
-			: Vec((T)vec.x, (T)vec.y)
+			: x((T)vec.x), y((T)vec.y)
 		{
 		}
 		template<typename U = T>
 		Vec2(const sf::Vector2<U>& vec)
-			: Vec((T)vec.x, (T)vec.y)
-		{
-		}
-		Vec2(const T& x, const T& y)
-			: x(x), y(y)
+			: x((T)vec.x), y((T)vec.y)
 		{
 		}
 

@@ -14,23 +14,23 @@ namespace Peach
 			: Rect(0, 0, 0, 0)
 		{
 		}
+		Rect(const T& x, const T& y, const T& width, const T& height)
+			: x(x), y(y), width(width), height(height)
+		{
+		}
 		template<typename U = T>
 		Rect(const Rect<U>& rect)
-			: Rect((T)rect.x, (T)rect.y, (T)rect.width, (T)rect.height)
+			: x((T)rect.x), y((T)rect.y), width((T)rect.width), height((T)rect.height)
 		{
 		}
 		template<typename U = T>
 		Rect(const Vec2<U>& position, const Vec2<U>& size)
-			: Rect((T)position.x, (T)position.y, (T)size.x, (T)size.y)
+			: x((T)position.x), y((T)position.y), width((T)size.x), height((T)size.y)
 		{
 		}
 		template<typename U = T>
 		Rect(const sf::Rect<U>& rect)
-			: Rect((T)rect.left, (T)rect.top, (T)rect.width, (T)rect.height)
-		{
-		}
-		Rect(const T& x, const T& y, const T& width, const T& height)
-			: x(x), y(y), width(width), height(height)
+			: x((T)rect.left), y((T)rect.top), width((T)rect.width), height((T)rect.height)
 		{
 		}
 
