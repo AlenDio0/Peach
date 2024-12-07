@@ -4,7 +4,7 @@
 namespace Peach
 {
 	Button::Button(Vec2f size, const sf::String& label, const sf::Font& font)
-		: GuiObject(m_Container, false), m_TextLabel(label, font), m_State(State::IDLE)
+		: GuiObject(m_Container, false), m_TextLabel(label, font), m_Hover(false)
 	{
 		PEACH_CORE_TRACE("Button costruito");
 
@@ -67,7 +67,7 @@ namespace Peach
 		return m_TextLabel.getString();
 	}
 
-	void Button::handleEvent(sf::Event event)
+	void Button::handleSpecEvent(sf::Event event)
 	{
 		switch (event.type)
 		{
@@ -82,28 +82,21 @@ namespace Peach
 
 	void Button::onMouseMovedEvent(sf::Event::MouseMoveEvent event)
 	{
-		if (isCursorOn({ event.x, event.y }))
+		if (isCursorOn(event))
 		{
-			m_State = State::HOVER;
+			m_Hover = true;
 		}
 		else
 		{
-			m_State = State::IDLE;
+			m_Hover = false;
 		}
 	}
 
 	void Button::onMousePressedEvent(sf::Event::MouseButtonEvent event)
 	{
-		if (event.button != sf::Mouse::Button::Left)
+		if (isCursorOn(event))
 		{
-			return;
-		}
-
-		if (isCursorOn({ event.x, event.y }))
-		{
-			m_State = State::PRESSED;
-
-			callback();
+			m_Hover = false;
 		}
 	}
 
@@ -112,26 +105,18 @@ namespace Peach
 		const auto [_, primary, secondary, background] = getAppearance();
 		sf::Color inverted_background = sf::Color(primary.r, primary.g, primary.b, 200u);
 
-		switch (m_State)
+		m_Container.setOutlineColor(secondary);
+
+		if (m_Hover)
 		{
-		case State::IDLE:
-			m_TextLabel.setFillColor(primary);
-			m_Container.setOutlineColor(secondary);
-			m_Container.setFillColor(background);
-			break;
-		case State::HOVER:
 			m_TextLabel.setFillColor(background);
-			m_Container.setOutlineColor(secondary);
-			m_Container.setFillColor(inverted_background);
-			break;
-		case State::PRESSED:
-			m_TextLabel.setFillColor(background);
-			m_Container.setOutlineColor(secondary);
 			m_Container.setFillColor(inverted_background);
 
-			m_State = State::HOVER;
-			break;
+			return;
 		}
+
+		m_TextLabel.setFillColor(primary);
+		m_Container.setFillColor(background);
 	}
 
 	void Button::render(sf::RenderTarget* target) const

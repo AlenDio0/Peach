@@ -127,7 +127,10 @@ namespace Peach
 				{
 					tiles[key] = m_Map.at(key);
 				}
-				catch (const std::exception& e) {}
+				catch (const std::exception& e)
+				{
+					PEACH_CORE_ERROR("TileMap::getTiles(rect: {}), [key: {}] Eccezione catturata: {}", rect, key, e.what());
+				}
 			}
 		}
 

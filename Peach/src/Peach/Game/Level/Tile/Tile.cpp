@@ -4,7 +4,7 @@
 namespace Peach
 {
 	Tile::Tile(const sf::Texture& texture, const std::function<void(Tile&)>& changedid)
-		: Entity(texture), m_ChangedID(changedid)
+		: GameObject(texture), m_ChangedID(changedid)
 	{
 		setTexture(texture);
 

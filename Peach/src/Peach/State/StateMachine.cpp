@@ -88,21 +88,17 @@ namespace Peach
 			return;
 		}
 
-		if (m_IsReplacing && !m_States.empty())
+		if (m_IsReplacing)
 		{
-			PEACH_CORE_INFO("StateMachine::onAdding(), Tentativo di rimpiazzo dello State \"{}\" riuscito", getCurrentState()->getName());
+			PEACH_CORE_INFO("StateMachine::onAdding(), Tentativo di rimpiazzo dello State \"{}\" in corso", getCurrentState()->getName());
 
-			m_States.pop();
-		}
-		else if (m_IsReplacing)
-		{
-			PEACH_CORE_WARN("StateMachine::onAdding(), Impossibile rimpiazzare, StateStack vuoto");
+			onRemoving();
 		}
 
-		PEACH_CORE_INFO("StateMachine::onAdding(), Aggiungendo State \"{}\"", m_NewState->getName());
+		PEACH_CORE_TRACE("StateMachine::onAdding(), Aggiungendo State \"{}\"", m_NewState->getName());
 
+		m_NewState->onAdd();
 		m_States.push(std::move(m_NewState));
-		getCurrentState()->onAdd();
 
 		PEACH_CORE_INFO("StateMachine::onAdding(), Aggiunto State \"{}\" con successo", getCurrentState()->getName());
 	}
