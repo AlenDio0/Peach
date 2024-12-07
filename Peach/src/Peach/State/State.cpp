@@ -14,16 +14,6 @@ namespace Peach
 		PEACH_CORE_TRACE("State \"{}\" distrutto", m_DebugName);
 	}
 
-	void State::onAdd()
-	{
-		PEACH_CORE_TRACE("State \"{}\" in aggiunta", m_DebugName);
-	}
-
-	void State::onRemove()
-	{
-		PEACH_CORE_TRACE("State \"{}\" in rimozione", m_DebugName);
-	}
-
 	const std::string& State::getName() const
 	{
 		return m_DebugName;
