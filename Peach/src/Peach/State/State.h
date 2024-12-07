@@ -14,8 +14,8 @@ namespace Peach
 		State(Ref<Data> data, const std::string& name = "State");
 		virtual ~State() override;
 
-		virtual void onAdd() override;
-		virtual void onRemove() override;
+		virtual void onAdd() override {}
+		virtual void onRemove() override {}
 		virtual void onEvent() override {}
 		virtual void onUpdate() override {}
 		virtual void onRender() override {}

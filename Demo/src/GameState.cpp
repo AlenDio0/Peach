@@ -15,14 +15,12 @@ void GameState::onEvent()
 	for (sf::Event event; pollEvent(event);)
 	{
 		getWindow().handleEvent(event);
-		m_Controller.handleEvent(event);
+		m_Input.handleEvent(event);
 	}
 }
 
 void GameState::onUpdate()
 {
-	m_Controller.update();
-
 	m_Level.update();
 }
 
@@ -39,11 +37,11 @@ void GameState::onRender()
 
 void GameState::initBinds()
 {
-	m_Controller.bind(sf::Keyboard::Escape,
+	m_Input.addBind(sf::Keyboard::Escape,
 		[&]() {
 			removeState();
-		}, "Rimuove lo Stato attuale", true);
-	m_Controller.bind(sf::Keyboard::A,
+		}, "Rimuove lo Stato attuale");
+	m_Input.addBind(sf::Keyboard::A,
 		[&]() {
 			for (size_t i = 0; i < 1000; i++)
 			{
@@ -51,10 +49,10 @@ void GameState::initBinds()
 				tile->setID(10);
 				m_Level.getEntityManager().addEntity(tile);
 			}
-		}, "Test Memory leak - EntityManager", true);
-	m_Controller.bind(sf::Keyboard::B,
+		}, "Test Memory leak - EntityManager");
+	m_Input.addBind(sf::Keyboard::B,
 		[&]() {
 			auto& tilemap = m_Level.getTileMap();
-			tilemap.setSize(tilemap.getSize() * 10);
-		}, "Test Memory leak - TileMap", true);
+			tilemap.setSize(tilemap.getSize() * 2);
+		}, "Test Memory leak - TileMap");
 }

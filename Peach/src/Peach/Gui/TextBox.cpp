@@ -64,7 +64,7 @@ namespace Peach
 		setPosition(getPosition());
 	}
 
-	void TextBox::setRestriction(const std::function<bool(char)> restriciton, bool space)
+	void TextBox::setRestriction(const std::function<bool(int)> restriciton, bool space)
 	{
 		m_Restriction = restriciton;
 		m_Space = space;
@@ -108,7 +108,7 @@ namespace Peach
 		m_TextLabel.setFont(font);
 	}
 
-	void TextBox::handleEvent(sf::Event event)
+	void TextBox::handleSpecEvent(sf::Event event)
 	{
 		switch (event.type)
 		{
@@ -127,7 +127,7 @@ namespace Peach
 	void TextBox::onMousePressedEvent(sf::Event::MouseButtonEvent event)
 	{
 		const auto& [button, x, y] = event;
-		if (!isCursorOn({ x, y }) || button != sf::Mouse::Button::Left)
+		if (!isCursorOn(event) || button != sf::Mouse::Button::Left)
 		{
 			setSelected(false);
 			return;
@@ -143,9 +143,9 @@ namespace Peach
 
 				if (!isLast)
 				{
-					const int relative_mouse_x = x + (m_TextLabel.getGlobalBounds().width / (float)(getBuffSize() * 2));
-					const int char_x = (int)m_TextLabel.findCharacterPos(i).x;
-					const int next_char_x = (int)m_TextLabel.findCharacterPos(i + 1).x;
+					const float relative_mouse_x = x + (m_TextLabel.getGlobalBounds().width / (float)(getBuffSize() * 2));
+					const float char_x = m_TextLabel.findCharacterPos(i).x;
+					const float next_char_x = m_TextLabel.findCharacterPos(i + 1).x;
 
 					const bool isInbounds = relative_mouse_x >= char_x && relative_mouse_x <= next_char_x;
 					const bool isBefore = relative_mouse_x <= char_x && isFirst;
@@ -164,8 +164,6 @@ namespace Peach
 		if (!m_Selected)
 		{
 			setSelected(true);
-
-			callback();
 		}
 	}
 

@@ -20,9 +20,9 @@ namespace Peach
 		}
 	}
 
-	void GuiObject::addCallback(const std::function<void()>& callback)
+	void GuiObject::addCallback(sf::Event::EventType type, const std::function<void(GuiObject&, sf::Event)>& callback)
 	{
-		m_CallbackSink.push_back(callback);
+		m_Callbacks.push_back({ type, callback });
 	}
 
 	void GuiObject::setPosition(Vec2f position)
@@ -72,25 +72,45 @@ namespace Peach
 		return m_Shape->getGlobalBounds().contains((Vec2f)mouseposition);
 	}
 
+	bool GuiObject::isCursorOn(sf::Event::MouseMoveEvent event) const
+	{
+		return isCursorOn(Vec2i(event.x, event.y));
+	}
+
+	bool GuiObject::isCursorOn(sf::Event::MouseButtonEvent event) const
+	{
+		return isCursorOn(Vec2i(event.x, event.y));
+	}
+
 	GuiObject::Appearance GuiObject::getAppearance() const
 	{
 		return m_Appearance;
 	}
 
-	void GuiObject::callback() const
+	void GuiObject::callback(sf::Event event)
 	{
-		for (auto& cback : m_CallbackSink)
+		for (const auto& [type, cback] : m_Callbacks)
 		{
-			if (!cback)
+			if (event.type != type)
 			{
 				continue;
 			}
 
-			cback();
+			if (cback)
+			{
+				cback(*this, event);
+			}
 		}
 	}
 
 	void GuiObject::handleEvent(sf::Event event)
+	{
+		callback(event);
+
+		handleSpecEvent(event);
+	}
+
+	void GuiObject::handleSpecEvent(sf::Event event)
 	{
 	}
 }
