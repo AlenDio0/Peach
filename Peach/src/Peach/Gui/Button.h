@@ -7,13 +7,6 @@ namespace Peach
 	class PEACH_API Button : public GuiObject
 	{
 	public:
-		enum class State
-		{
-			IDLE = 0,
-			HOVER,
-			PRESSED
-		};
-	public:
 		Button(Vec2f size, const sf::String& label, const sf::Font& font);
 		~Button();
 
@@ -26,7 +19,7 @@ namespace Peach
 
 		const sf::String& getLabel() const;
 
-		virtual void handleEvent(sf::Event event) override;
+		virtual void handleSpecEvent(sf::Event event) override;
 		void onMouseMovedEvent(sf::Event::MouseMoveEvent event);
 		void onMousePressedEvent(sf::Event::MouseButtonEvent event);
 
@@ -36,6 +29,6 @@ namespace Peach
 		sf::RectangleShape m_Container;
 		sf::Text m_TextLabel;
 
-		State m_State;
+		bool m_Hover;
 	};
 }

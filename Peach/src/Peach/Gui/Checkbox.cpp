@@ -47,7 +47,7 @@ namespace Peach
 		return m_Active;
 	}
 
-	void Checkbox::handleEvent(sf::Event event)
+	void Checkbox::handleSpecEvent(sf::Event event)
 	{
 		switch (event.type)
 		{
@@ -64,11 +64,9 @@ namespace Peach
 			return;
 		}
 
-		if (isCursorOn({ event.x, event.y }))
+		if (isCursorOn(event))
 		{
 			m_Active = !m_Active;
-
-			callback();
 		}
 	}
 
