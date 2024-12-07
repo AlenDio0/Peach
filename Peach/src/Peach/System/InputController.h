@@ -13,28 +13,27 @@ namespace Peach
 	class PEACH_API InputController
 	{
 	public:
-		void addBind(sf::Keyboard::Key key, const std::function<void()>& callback);
-		void addBind(sf::Keyboard::Key key, const std::function<void()>& callback, const std::string& description);
-
-		void addBind(sf::Mouse::Button button, const std::function<void()>& callback);
-		void addBind(sf::Mouse::Button button, const std::function<void()>& callback, const std::string& description);
+		void addBind(sf::Keyboard::Key key, const std::function<void()>& callback, const std::string& description = "Unknown");
+		void addBind(sf::Mouse::Button button, const std::function<void()>& callback, const std::string& description = "Unknown");
 
 		void handleEvent(sf::Event event);
 		void onKeyPressedEvent(sf::Event::KeyEvent event);
 		void onMousePressedEvent(sf::Event::MouseButtonEvent event);
 	private:
-		struct KeyBind
+		template<typename T>
+		struct Bind
 		{
-			sf::Keyboard::Key key;
+			Bind(T key, const std::function<void()>& callback, const std::string& description)
+				: key(key), callback(callback), description(description)
+			{
+			}
+			T key;
 			std::function<void()> callback;
 			std::string description;
 		};
-		struct MouseBind
-		{
-			sf::Mouse::Button button;
-			std::function<void()> callback;
-			std::string description;
-		};
+
+		using KeyBind = Bind<sf::Keyboard::Key>;
+		using MouseBind = Bind<sf::Mouse::Button>;
 	private:
 		std::string keyToString(sf::Keyboard::Key key) const;
 		std::string buttonToString(sf::Mouse::Button button) const;

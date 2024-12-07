@@ -3,21 +3,11 @@
 
 namespace Peach
 {
-	void InputController::addBind(sf::Keyboard::Key key, const std::function<void()>& callback)
-	{
-		bind(key, callback, "Unknown");
-	}
-
 	void InputController::addBind(sf::Keyboard::Key key, const std::function<void()>& callback, const std::string& description)
 	{
 		PEACH_CORE_TRACE("InputController::bind(key: {}, description: {})", keyToString(key), description);
 
 		m_KeyBinds.emplace_back(key, callback, description);
-	}
-
-	void InputController::addBind(sf::Mouse::Button button, const std::function<void()>& callback)
-	{
-		bind(button, callback, "Unknown");
 	}
 
 	void InputController::addBind(sf::Mouse::Button button, const std::function<void()>& callback, const std::string& description)
@@ -44,13 +34,15 @@ namespace Peach
 	{
 		for (const auto& [key, callback, description] : m_KeyBinds)
 		{
-			if (key == event.code)
+			if (key != event.code)
 			{
-				PEACH_CORE_INFO("InputController::onKeyPressed(), Chiamato bind: {}, Descrizione: {}", keyToString(key), description);
-				if (callback)
-				{
-					callback();
-				}
+				continue;
+			}
+
+			PEACH_CORE_INFO("InputController::onKeyPressed(), Chiamato bind: {}, Descrizione: {}", keyToString(key), description);
+			if (callback)
+			{
+				callback();
 			}
 		}
 	}
@@ -59,13 +51,15 @@ namespace Peach
 	{
 		for (const auto& [button, callback, description] : m_MouseBinds)
 		{
-			if (button == event.button)
+			if (button != event.button)
 			{
-				PEACH_CORE_INFO("InputController::onMousePressed(), Chiamato bind: {}, Descrizione: {}", buttonToString(button), description);
-				if (callback)
-				{
-					callback();
-				}
+				continue;
+			}
+
+			PEACH_CORE_INFO("InputController::onMousePressed(), Chiamato bind: {}, Descrizione: {}", buttonToString(button), description);
+			if (callback)
+			{
+				callback();
 			}
 		}
 	}

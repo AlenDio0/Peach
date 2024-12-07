@@ -82,7 +82,7 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	textbox3->setAppearance({ 2.f, sf::Color::Red, sf::Color::Cyan, sf::Color::White });
 	textbox3->setPosition({ (getRenderer()->getSize().x - textbox3->getSize().x) / 2.f, 400 });
 
-	m_Input.bind(sf::Keyboard::A,
+	m_Input.addBind(sf::Keyboard::A,
 		[&]() {
 			if (auto textbox = m_GuiManager.getGuiObject<Peach::TextBox>(m_InsertPin).lock())
 			{
