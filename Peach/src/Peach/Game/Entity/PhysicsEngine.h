@@ -1,0 +1,86 @@
+#pragma once
+
+#include "Peach/Game/Level/Tile/TileMap.h"
+#include "EntityManager.h"
+
+namespace Peach
+{
+	class PEACH_API PhysicsEngine
+	{
+	public:
+		PhysicsEngine();
+		PhysicsEngine(TileMap& tilemap);
+		PhysicsEngine(EntityManager& entitymanager);
+		PhysicsEngine(TileMap& tilemap, EntityManager& entitymanager);
+		~PhysicsEngine() = default;
+
+
+		void setMapCollision(bool collide);
+		void setEntitiesCollision(bool collide);
+		void setGravity(float gravity);
+		void setDrag(float drag);
+
+		bool getMapCollisions() const;
+		bool getEntitiesCollisions() const;
+		float getDrag() const;
+		float getGravity() const;
+
+		void update();
+		void renderBoxes(sf::RenderTarget* target) const;
+	private:
+		struct Box
+		{
+			Box(Vec2f& position, const FloatRect& hitbox)
+				: position(position), hitbox(hitbox)
+			{
+			}
+
+			bool isColliding(const Box& r) const
+			{
+				return position.x + hitbox.x < r.position.x + r.hitbox.width &&			// LEFT
+					position.x + hitbox.width > r.position.x + r.hitbox.x - hitbox.x &&	// RIGHT
+					position.y + hitbox.y < r.position.y + r.hitbox.height &&			// TOP
+					position.y + hitbox.height > r.position.y + r.hitbox.y - hitbox.y;	// BOTTOM
+			}
+
+			void operator=(const Box& r)
+			{
+			}
+
+			Vec2f& position;
+			FloatRect hitbox;
+		};
+		struct PhysicsBox
+		{
+			PhysicsBox(Box& box, Physics& physics)
+				: box(box), physics(physics)
+			{
+			}
+
+			void operator=(const PhysicsBox& r)
+			{
+			}
+
+			Box box;
+			Physics& physics;
+		};
+	private:
+		void addNearTiles(const PhysicsBox& prime, std::vector<Box>& boxes) const;
+		void addNearBoxes(const PhysicsBox& prime, const std::vector<PhysicsBox>& physicsboxes, std::vector<Box>& boxes) const;
+
+		void updateCollisions(PhysicsBox& prime, const std::vector<Box>& boxes);
+	private:
+		TileMap* m_TileMap;
+		EntityManager* m_EntityManager;
+
+		float m_Gravity;
+		float m_Drag;
+
+		bool m_MapCollision;
+		bool m_EntitiesCollision;
+
+		std::vector<PhysicsBox> m_PhysicsBoxes;
+		std::vector<Box> m_Boxes;
+	};
+
+}

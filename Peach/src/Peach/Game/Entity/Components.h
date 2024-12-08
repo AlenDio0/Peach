@@ -64,4 +64,17 @@ namespace Peach
 		FloatRect hitbox;
 		bool collide = false;
 	};
+
+	struct Physics : public Component
+	{
+		Physics() = default;
+		Physics(Vec2f velocity, Vec2f maxvelocity, float acceleration)
+			: velocity(velocity), maxvelocity(maxvelocity), acceleration(acceleration)
+		{
+		}
+
+		Vec2f velocity;
+		Vec2f maxvelocity;
+		float acceleration;
+	};
 }

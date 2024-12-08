@@ -36,6 +36,12 @@ namespace Peach
 		}
 	}
 
+	void TileMap::setCollideIDs(const std::vector<size_t>& collideid)
+	{
+		m_CollideIDs = collideid;
+		adjustTiles();
+	}
+
 	void TileMap::setSize(const Vec2u& newsize)
 	{
 		if (m_Size == newsize)
@@ -101,19 +107,25 @@ namespace Peach
 		}
 	}
 
-	std::map<MapKey, std::weak_ptr<Tile>> TileMap::getTiles(const UIntRect& rect)
+	std::map<MapKey, std::weak_ptr<Tile>> TileMap::getTiles(IntRect rect)
 	{
-		size_t map_area = (size_t)(m_Size.x * m_Size.y);
-		size_t rect_areapos = (size_t)((rect.x + rect.width) * (rect.y + rect.height));
-
-		if (rect_areapos == 0)
+		if (rect.x < 0)
 		{
-			return getTiles({ {}, m_Size });
+			rect.width -= rect.x;
+			rect.x = 0;
 		}
-		else if (map_area < rect_areapos)
+		if (rect.y < 0)
 		{
-			PEACH_CORE_ERROR("TileMap::getTiles(rect: {}), Il Rect supera la grandezza del TileMap [size: {}]", rect, m_Size);
-			return {};
+			rect.height -= rect.y;
+			rect.y = 0;
+		}
+		while (m_Size.x < rect.x + rect.width && rect.width > 0)
+		{
+			rect.width--;
+		}
+		while (m_Size.y < rect.y + rect.height && rect.height > 0)
+		{
+			rect.height--;
 		}
 
 		std::map<MapKey, std::weak_ptr<Tile>> tiles;
@@ -195,6 +207,24 @@ namespace Peach
 			tile->setScale(m_TileSize / m_SpriteSheet.getSpriteSize());
 
 			tile->setID(tile->getID());
+
+			if (auto& body = tile->has<RigidBody>().lock())
+			{
+				auto& [x, y, width, height] = body->hitbox;
+
+				x = 0;
+				y = 0;
+				width = m_TileSize.x;
+				height = m_TileSize.y;
+
+				for (auto& id : m_CollideIDs)
+				{
+					if (tile->getID() == id)
+					{
+						body->collide = true;
+					}
+				}
+			}
 		}
 	}
 

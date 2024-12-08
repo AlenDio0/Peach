@@ -13,7 +13,7 @@ namespace Peach
 	{
 		setTexture(texture, true);
 
-		addComponent<Transform>();
+		addComponent<Transform>(Vec2f(), Vec2f(1.f, 1.f));
 	}
 
 	void GameObject::setTexture(const sf::Texture& texture, bool resetrect)

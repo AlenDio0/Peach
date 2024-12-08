@@ -9,6 +9,7 @@ namespace Peach
 		setTexture(texture);
 
 		addComponent<ID>(0);
+		addComponent<RigidBody>();
 	}
 
 	void Tile::setID(size_t id)
