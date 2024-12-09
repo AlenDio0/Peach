@@ -23,13 +23,13 @@ private:
 			getTransform().position = position;
 
 			addComponent<Peach::RigidBody>(Peach::FloatRect(8.f, 32.f, 16.f, 32.f), true);
-			addComponent<Peach::Physics>(Peach::Vec2f(), Peach::Vec2f(6.f, 6.f), 0.6f);
+			addComponent<Peach::Movement>(Peach::Vec2f(), Peach::Vec2f(6.f, 6.f), 0.6f);
 		}
 		~Player() = default;
 
 		void update()
 		{
-			auto physics = has<Peach::Physics>().lock();
+			auto physics = has<Peach::Movement>().lock();
 			if (!physics)
 			{
 				return;

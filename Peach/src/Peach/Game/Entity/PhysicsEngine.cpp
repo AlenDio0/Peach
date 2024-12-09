@@ -76,7 +76,7 @@ namespace Peach
 		{
 			auto entity_transform = entity->has<Transform>().lock();
 			auto entity_body = entity->has<RigidBody>().lock();
-			auto entity_physics = entity->has<Physics>().lock();
+			auto entity_physics = entity->has<Movement>().lock();
 			if (!entity_body || !entity_transform || !entity_physics)
 			{
 				continue;
@@ -221,7 +221,7 @@ namespace Peach
 
 	void PhysicsEngine::updateCollisions(PhysicsBox& prime, const std::vector<Box>& boxes)
 	{
-		prime.box.position.x += prime.physics.velocity.x;
+		prime.box.position.x += prime.movement.velocity.x;
 		for (const auto& box : boxes)
 		{
 			if (!prime.box.isColliding(box))
@@ -229,7 +229,7 @@ namespace Peach
 				continue;
 			}
 
-			auto& [velocity, _, __] = prime.physics;
+			auto& [velocity, _, __] = prime.movement;
 			if (velocity.x > 0.f)
 			{
 				prime.box.position.x = box.position.x - prime.box.hitbox.width - prime.box.hitbox.x;
@@ -242,7 +242,7 @@ namespace Peach
 			}
 		}
 
-		prime.box.position.y += prime.physics.velocity.y;
+		prime.box.position.y += prime.movement.velocity.y;
 		for (const auto& box : boxes)
 		{
 			if (!prime.box.isColliding(box))
@@ -250,7 +250,7 @@ namespace Peach
 				continue;
 			}
 
-			auto& [velocity, _, __] = prime.physics;
+			auto& [velocity, _, __] = prime.movement;
 			if (velocity.y > 0.f)
 			{
 				prime.box.position.y = box.position.y - prime.box.hitbox.height - prime.box.hitbox.y;

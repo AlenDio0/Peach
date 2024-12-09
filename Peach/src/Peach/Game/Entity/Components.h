@@ -65,10 +65,10 @@ namespace Peach
 		bool collide = false;
 	};
 
-	struct Physics : public Component
+	struct Movement : public Component
 	{
-		Physics() = default;
-		Physics(Vec2f velocity, Vec2f maxvelocity, float acceleration)
+		Movement() = default;
+		Movement(Vec2f velocity, Vec2f maxvelocity, float acceleration)
 			: velocity(velocity), maxvelocity(maxvelocity), acceleration(acceleration)
 		{
 		}

@@ -52,17 +52,20 @@ namespace Peach
 		};
 		struct PhysicsBox
 		{
-			PhysicsBox(Box& box, Physics& physics)
-				: box(box), physics(physics)
+			PhysicsBox(Box& box, Movement& movement)
+				: box(box), movement(movement)
 			{
 			}
 
-			void operator=(const PhysicsBox& r)
+			PhysicsBox& operator=(const PhysicsBox& r)
 			{
+				box = r.box;
+				movement = r.movement;
+				return *this;
 			}
 
 			Box box;
-			Physics& physics;
+			Movement& movement;
 		};
 	private:
 		void addNearTiles(const PhysicsBox& prime, std::vector<Box>& boxes) const;
