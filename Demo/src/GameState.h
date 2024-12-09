@@ -4,19 +4,6 @@
 
 #include <Peach/Game.h>
 
-enum Tile
-{
-	Wall_UpLeftAngle = 0,
-	Wall_Up = 1,
-	Wall_UpRightAngle = 2,
-	Wall_Left = 8,
-	Wall_Right = 10,
-	Wall_DownLeftAngle = 16,
-	Wall_Down = 17,
-	Wall_DownRightAngle = 18,
-	Parquet = 9,
-};
-
 class GameState : public Peach::State
 {
 public:

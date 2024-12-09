@@ -27,12 +27,35 @@ namespace Peach
 		m_Map.clear();
 	}
 
-	void TileMap::setTexture(const sf::Texture& texture, bool resetrect)
+	void TileMap::adjustTiles()
 	{
-		m_SpriteSheet.setTexture(texture);
+		setTexture(m_SpriteSheet.getTexture());
 		for (auto& [position, tile] : m_Map)
 		{
-			tile->setTexture(texture, resetrect);
+			tile->setPosition(m_TileSize * position);
+			tile->setScale(m_TileSize / m_SpriteSheet.getSpriteSize());
+
+			tile->setID(tile->getID());
+
+			if (auto& body = tile->has<RigidBody>().lock())
+			{
+				auto& [x, y, width, height] = body->hitbox;
+
+				x = 0;
+				y = 0;
+				width = m_TileSize.x;
+				height = m_TileSize.y;
+
+				body->collide = false;
+				for (auto& id : m_CollideIDs)
+				{
+					if (tile->getID() == id)
+					{
+						body->collide = true;
+						break;
+					}
+				}
+			}
 		}
 	}
 
@@ -40,6 +63,15 @@ namespace Peach
 	{
 		m_CollideIDs = collideid;
 		adjustTiles();
+	}
+
+	void TileMap::setTexture(const sf::Texture& texture, bool resetrect)
+	{
+		m_SpriteSheet.setTexture(texture);
+		for (auto& [position, tile] : m_Map)
+		{
+			tile->setTexture(texture, resetrect);
+		}
 	}
 
 	void TileMap::setSize(const Vec2u& newsize)
@@ -195,36 +227,6 @@ namespace Peach
 		for (const auto& [position, tile] : m_Map)
 		{
 			target->draw(*tile);
-		}
-	}
-
-	void TileMap::adjustTiles()
-	{
-		setTexture(m_SpriteSheet.getTexture());
-		for (auto& [position, tile] : m_Map)
-		{
-			tile->setPosition(m_TileSize * position);
-			tile->setScale(m_TileSize / m_SpriteSheet.getSpriteSize());
-
-			tile->setID(tile->getID());
-
-			if (auto& body = tile->has<RigidBody>().lock())
-			{
-				auto& [x, y, width, height] = body->hitbox;
-
-				x = 0;
-				y = 0;
-				width = m_TileSize.x;
-				height = m_TileSize.y;
-
-				for (auto& id : m_CollideIDs)
-				{
-					if (tile->getID() == id)
-					{
-						body->collide = true;
-					}
-				}
-			}
 		}
 	}
 

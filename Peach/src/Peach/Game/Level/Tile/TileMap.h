@@ -18,8 +18,10 @@ namespace Peach
 		TileMap(TileMap&&) = default;
 		~TileMap();
 
-		void setTexture(const sf::Texture& texture, bool resetrect = false);
+		void adjustTiles();
 		void setCollideIDs(const std::vector<size_t>& collideid);
+
+		void setTexture(const sf::Texture& texture, bool resetrect = false);
 		void setSize(const Vec2u& newsize);
 		void setTileSize(const Vec2f& newsize);
 		void setSpriteSize(const Vec2u& newsize);
@@ -34,18 +36,16 @@ namespace Peach
 		void render(sf::RenderTarget* target, const IntRect& view, bool convertrect = false) const;
 		void render(sf::RenderTarget* target) const;
 	private:
+		void resizeX(uint32_t sizex);
+		void resizeY(uint32_t sizey);
+
+		Ref<Tile> createTile() const;
+	private:
 		std::map<MapKey, Ref<Tile>> m_Map;
 		std::vector<size_t> m_CollideIDs;
 
 		Vec2u m_Size;
 		Vec2f m_TileSize;
 		SpriteSheet m_SpriteSheet;
-	private:
-		void adjustTiles();
-
-		void resizeX(uint32_t sizex);
-		void resizeY(uint32_t sizey);
-
-		Ref<Tile> createTile() const;
 	};
 }

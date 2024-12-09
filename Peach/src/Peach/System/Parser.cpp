@@ -134,4 +134,43 @@ namespace Peach
 		out.y = std::abs(out.y);
 		return (Vec2u)out;
 	}
+	std::vector<size_t> Parser::stringToVectorU(const std::string& str)
+	{
+		std::vector<size_t> out;
+		bool in = false;
+		bool next = false;
+
+		size_t i = -1;
+		for (const char& c : str)
+		{
+			i++;
+			if (!in)
+			{
+				if (c == '[')
+				{
+					next = true;
+					in = true;
+				}
+				continue;
+			}
+			if (c == ']')
+			{
+				break;
+			}
+			if (c == ',')
+			{
+				next = true;
+				continue;
+			}
+			if (!next)
+			{
+				continue;
+			}
+
+			next = false;
+			std::string sub = str.substr(i);
+			out.push_back(nextUInt(sub));
+		}
+		return out;
+	}
 }

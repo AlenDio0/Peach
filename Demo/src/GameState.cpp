@@ -7,11 +7,6 @@ GameState::GameState(Peach::Ref<Peach::Data> data)
 	m_Player(getTexture("player"), Peach::Vec2f(m_Level.getTileMap().getTileSize() * 2.f))
 {
 	m_Level.getEntityManager().addEntity(Peach::MakeRef<Player>(m_Player));
-	m_Level.getTileMap().setCollideIDs({
-			Wall_UpLeftAngle, Wall_Up, Wall_UpRightAngle,
-			Wall_Left, Wall_Right,
-			Wall_DownLeftAngle, Wall_Down, Wall_DownRightAngle
-		});
 
 	m_Physics.setGravity(0.f);
 

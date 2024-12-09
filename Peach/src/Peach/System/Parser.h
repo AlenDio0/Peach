@@ -27,6 +27,8 @@ namespace Peach
 		static Vec2f stringToVec2f(const std::string& str);
 		static Vec2i stringToVec2i(const std::string& str);
 		static Vec2u stringToVec2u(const std::string& str);
+
+		static std::vector<size_t> stringToVectorU(const std::string& str);
 	private:
 		Parser() {}
 		~Parser() {}

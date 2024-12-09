@@ -29,6 +29,7 @@ namespace Peach
 			}
 		}
 
+		tilemap->adjustTiles();
 		return std::move(*tilemap);
 	}
 
@@ -37,6 +38,7 @@ namespace Peach
 		const char* token_mapsize = "MapSize";
 		const char* token_tilesize = "TileSize";
 		const char* token_spritesize = "SpriteSize";
+		const char* token_collideids = "CollideIDs";
 
 		while (!isEOF())
 		{
@@ -61,6 +63,11 @@ namespace Peach
 			{
 				const std::string str_spritesize = buff.substr(strlen(token_spritesize));
 				tilemap.setSpriteSize(stringToVec2u(str_spritesize));
+			}
+			else if (find(buff, token_collideids))
+			{
+				const std::string str_collideids = buff.substr(strlen(token_spritesize));
+				tilemap.setCollideIDs(stringToVectorU(str_collideids));
 			}
 		}
 	}

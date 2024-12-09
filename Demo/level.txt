@@ -2,6 +2,7 @@ START TileMap
 MapSize [6, 6]
 TileSize [60.0, 60.0]
 SpriteSize [16, 16]
+CollideIDs [0, 1, 2, 8, 10, 16, 17, 18]
 END
 
 START Map
