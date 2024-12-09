@@ -16,6 +16,9 @@ namespace Peach
 
 		size_t getID() const;
 
+		RigidBody getRigidBody() const;
+		RigidBody& getRigidBody();
+
 		virtual void update() override {}
 	private:
 		std::function<void(Tile&)> m_ChangedID;

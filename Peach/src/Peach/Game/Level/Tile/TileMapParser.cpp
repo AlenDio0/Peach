@@ -29,7 +29,6 @@ namespace Peach
 			}
 		}
 
-		tilemap->adjustTiles();
 		return std::move(*tilemap);
 	}
 

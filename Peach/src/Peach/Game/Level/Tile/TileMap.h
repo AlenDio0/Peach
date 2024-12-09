@@ -18,7 +18,6 @@ namespace Peach
 		TileMap(TileMap&&) = default;
 		~TileMap();
 
-		void adjustTiles();
 		void setCollideIDs(const std::vector<size_t>& collideid);
 
 		void setTexture(const sf::Texture& texture, bool resetrect = false);
@@ -40,6 +39,7 @@ namespace Peach
 		void resizeY(uint32_t sizey);
 
 		Ref<Tile> createTile() const;
+		void adjustTiles();
 	private:
 		std::map<MapKey, Ref<Tile>> m_Map;
 		std::vector<size_t> m_CollideIDs;

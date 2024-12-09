@@ -26,4 +26,14 @@ namespace Peach
 	{
 		return has<ID>().lock()->id;
 	}
+
+	RigidBody Tile::getRigidBody() const
+	{
+		return *has<RigidBody>().lock();
+	}
+
+	RigidBody& Tile::getRigidBody()
+	{
+		return *has<RigidBody>().lock();
+	}
 }
