@@ -169,8 +169,8 @@ namespace Peach
 		{
 			const Vec2f& tile_size = m_TileMap->getTileSize();
 
-			Vec2i relative_position = (prime.box.position / tile_size) - 1;
-			Vec2i relative_boxsize = ((prime.box.position + prime.box.hitbox.getSize()) / tile_size) + 1;
+			Vec2i relative_position = ((prime.box.position + prime.box.hitbox.getPosition()) / tile_size) - 2;
+			Vec2i relative_boxsize = ((prime.box.position + prime.box.hitbox.getPosition() + prime.box.hitbox.getSize()) / tile_size) + 2;
 
 			auto tiles_grid = m_TileMap->getTiles(IntRect(relative_position, relative_boxsize));
 			for (auto& [pos, t] : tiles_grid)
