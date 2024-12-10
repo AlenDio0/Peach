@@ -15,8 +15,8 @@ namespace Peach
 		virtual void setTexture(const sf::Texture& texture, bool resetrect = false);
 		virtual void setTextureRect(IntRect rect);
 
-		virtual void setPosition(Vec2f position);
-		virtual void setScale(Vec2f scale);
+		Vec2f getLocalSize() const;
+		Vec2f getGlobalSize() const;
 
 		Transform& getTransform();
 		Transform getTransform() const;

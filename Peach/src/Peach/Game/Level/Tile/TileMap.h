@@ -27,8 +27,8 @@ namespace Peach
 
 		const Vec2u& getSize() const;
 		const Vec2f& getTileSize() const;
-		std::weak_ptr<Tile> getTile(const MapKey& key);
-		std::map<MapKey, std::weak_ptr<Tile>> getTiles(IntRect rect = {});
+		std::weak_ptr<Tile> getTile(const MapKey& key) const;
+		std::map<MapKey, std::weak_ptr<Tile>> getTiles(IntRect rect = {}) const;
 
 		void update();
 

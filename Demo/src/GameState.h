@@ -21,9 +21,9 @@ private:
 			: GameObject(texture)
 		{
 			getTransform().position = position;
-			auto& scale = getTransform().scale *= 1.4f;
+			auto& scale = getTransform().scale *= 1.10f;
 
-			addComponent<Peach::RigidBody>(Peach::FloatRect(4.f * scale.x, 24.f * scale.y, 24.f * scale.x, 40.f * scale.y), true);
+			addComponent<Peach::RigidBody>(Peach::FloatRect(Peach::Vec2f(4.f, 32.f) * scale, Peach::Vec2f(24.f, 32.f) * scale), true);
 			addComponent<Peach::Movement>(Peach::Vec2f(), Peach::Vec2f(6.f, 6.f), 0.6f);
 		}
 		~Player() = default;

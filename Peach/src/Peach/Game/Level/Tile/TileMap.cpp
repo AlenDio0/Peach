@@ -94,7 +94,7 @@ namespace Peach
 		return m_TileSize;
 	}
 
-	std::weak_ptr<Tile> TileMap::getTile(const MapKey& key)
+	std::weak_ptr<Tile> TileMap::getTile(const MapKey& key) const
 	{
 		try
 		{
@@ -107,8 +107,13 @@ namespace Peach
 		}
 	}
 
-	std::map<MapKey, std::weak_ptr<Tile>> TileMap::getTiles(IntRect rect)
+	std::map<MapKey, std::weak_ptr<Tile>> TileMap::getTiles(IntRect rect) const
 	{
+		if (rect == IntRect())
+		{
+			rect = IntRect(Vec2i(), (Vec2i)m_Size);
+		}
+
 		if (rect.x < 0)
 		{
 			rect.width -= rect.x;
@@ -275,10 +280,11 @@ namespace Peach
 	void TileMap::adjustTiles()
 	{
 		setTexture(m_SpriteSheet.getTexture());
-		for (auto& [position, tile] : m_Map)
+		for (auto& [pos, tile] : m_Map)
 		{
-			tile->setPosition(m_TileSize * position);
-			tile->setScale(m_TileSize / m_SpriteSheet.getSpriteSize());
+			auto& [position, scale] = tile->getTransform();
+			position = m_TileSize * pos;
+			scale = m_TileSize / m_SpriteSheet.getSpriteSize();
 
 			tile->setID(tile->getID());
 
