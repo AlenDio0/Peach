@@ -10,7 +10,7 @@ public:
 	GameState(Peach::Ref<Peach::Data> data);
 	~GameState();
 
-	virtual void onEvent() override;
+	virtual void onEvent(sf::Event event) override;
 	virtual void onUpdate() override;
 	virtual void onRender() override;
 private:

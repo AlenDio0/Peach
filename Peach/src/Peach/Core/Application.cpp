@@ -21,6 +21,11 @@ namespace Peach
 		m_Data->machine.removeState();
 	}
 
+	Ref<IState> Application::getCurrentState() const
+	{
+		return m_Data->machine.getCurrentState();
+	}
+
 	void Application::loadTexture(const AssetKey& key, const std::string& path, bool force) const
 	{
 		loadAsset<Peach::Texture>(key, path, force);
@@ -54,7 +59,7 @@ namespace Peach
 			previous_time += delta_time;
 
 			m_Data->machine.update();
-			if (!m_Data->machine.getCurrentState())
+			if (!getCurrentState())
 			{
 				PEACH_CORE_FATAL("Application::run(), Impossibile continuare l'applicazione, State attuale nullo");
 				return;
@@ -64,17 +69,20 @@ namespace Peach
 			{
 				lag -= FRAME_DURATION;
 
-				m_Data->machine.getCurrentState()->onEvent();
+				for (sf::Event event; m_Data->window.pollEvent(event);)
+				{
+					getCurrentState()->onEvent(event);
+				}
 
-				m_Data->machine.getCurrentState()->onUpdate();
+				getCurrentState()->onUpdate();
 
 				if (FRAME_DURATION > lag)
 				{
-					m_Data->machine.getCurrentState()->onRender();
+					getCurrentState()->onRender();
 				}
 			}
 		} while (m_Data->window.isRunning());
 
-		PEACH_CORE_INFO("Application::run(), Applicazione chiusa nello State \"{}\"", m_Data->machine.getCurrentState()->getName());
+		PEACH_CORE_INFO("Application::run(), Applicazione chiusa nello State \"{}\"", getCurrentState() ? getCurrentState()->getName() : "Unknown");
 	}
 }

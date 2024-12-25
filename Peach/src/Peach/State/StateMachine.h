@@ -19,6 +19,8 @@ namespace Peach
 
 		void addState(Ref<IState> newstate, bool replacing);
 		void removeState();
+
+		void clear();
 	private:
 		std::stack<Ref<IState>> m_States;
 		Ref<IState> m_NewState;
