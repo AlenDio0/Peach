@@ -2,6 +2,7 @@
 
 #include "Peach/Core/Core.h"
 
+#include <SFML/Graphics.hpp>
 #include <string>
 
 namespace Peach
@@ -13,7 +14,7 @@ namespace Peach
 
 		virtual void onAdd() = 0;
 		virtual void onRemove() = 0;
-		virtual void onEvent() = 0;
+		virtual void onEvent(sf::Event event) = 0;
 		virtual void onUpdate() = 0;
 		virtual void onRender() = 0;
 

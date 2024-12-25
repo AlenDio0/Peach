@@ -64,7 +64,10 @@ namespace Peach
 			{
 				lag -= FRAME_DURATION;
 
-				m_Data->machine.getCurrentState()->onEvent();
+				for (sf::Event event; m_Data->window.pollEvent(event);)
+				{
+					m_Data->machine.getCurrentState()->onEvent(event);
+				}
 
 				m_Data->machine.getCurrentState()->onUpdate();
 

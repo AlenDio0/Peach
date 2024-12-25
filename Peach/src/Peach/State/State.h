@@ -16,7 +16,7 @@ namespace Peach
 
 		virtual void onAdd() override {}
 		virtual void onRemove() override {}
-		virtual void onEvent() override {}
+		virtual void onEvent(sf::Event event) override {}
 		virtual void onUpdate() override {}
 		virtual void onRender() override {}
 
@@ -25,7 +25,6 @@ namespace Peach
 		std::weak_ptr<Data> m_Data;
 	protected:
 		Peach::Window& getWindow() const;
-		bool pollEvent(sf::Event& event) const;
 		sf::RenderTarget* getRenderer() const;
 
 		template<typename T>

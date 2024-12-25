@@ -12,7 +12,7 @@ public:
 	DemoState(Peach::Ref<Peach::Data> data);
 	~DemoState();
 
-	virtual void onEvent() override;
+	virtual void onEvent(sf::Event event) override;
 	virtual void onUpdate() override;
 	virtual void onRender() override;
 private:

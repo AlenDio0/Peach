@@ -29,11 +29,6 @@ namespace Peach
 		throw std::runtime_error("Data inaccessibile");
 	}
 
-	bool State::pollEvent(sf::Event& event) const
-	{
-		return getWindow().pollEvent(event);
-	}
-
 	sf::RenderTarget* State::getRenderer() const
 	{
 		return getWindow().getRenderer();

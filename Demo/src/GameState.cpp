@@ -17,13 +17,10 @@ GameState::~GameState()
 {
 }
 
-void GameState::onEvent()
+void GameState::onEvent(sf::Event event)
 {
-	for (sf::Event event; pollEvent(event);)
-	{
-		getWindow().handleEvent(event);
-		m_Input.handleEvent(event);
-	}
+	getWindow().handleEvent(event);
+	m_Input.handleEvent(event);
 }
 
 void GameState::onUpdate()

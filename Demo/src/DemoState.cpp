@@ -97,20 +97,17 @@ DemoState::~DemoState()
 	while (m_Sound.getStatus() == sf::Sound::Status::Playing);
 }
 
-void DemoState::onEvent()
+void DemoState::onEvent(sf::Event event)
 {
-	for (sf::Event event; pollEvent(event);)
-	{
-		getWindow().handleEvent(event);
-		m_GuiManager.handleEvent(event);
-		m_Input.handleEvent(event);
+	getWindow().handleEvent(event);
+	m_GuiManager.handleEvent(event);
+	m_Input.handleEvent(event);
 
-		switch (event.type)
-		{
-		case sf::Event::KeyPressed:
-			PEACH_TRACE("KeyPressedEvent: {}", sf::Keyboard::getDescription(event.key.scancode).toAnsiString());
-			break;
-		}
+	switch (event.type)
+	{
+	case sf::Event::KeyPressed:
+		PEACH_TRACE("KeyPressedEvent: {}", sf::Keyboard::getDescription(event.key.scancode).toAnsiString());
+		break;
 	}
 }
 
