@@ -30,8 +30,6 @@ void GameState::onUpdate()
 {
 	m_Level.update();
 
-	m_Player.update();
-
 	m_Physics.update();
 }
 

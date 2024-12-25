@@ -68,6 +68,8 @@ namespace Peach
 			Movement& movement;
 		};
 	private:
+		void updateMovement(Movement& movement) const;
+
 		void addNearTiles(const PhysicsBox& prime, std::vector<Box>& boxes) const;
 		void addNearBoxes(const PhysicsBox& prime, const std::vector<PhysicsBox>& physicsboxes, std::vector<Box>& boxes) const;
 
