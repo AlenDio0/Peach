@@ -12,7 +12,6 @@ namespace Peach
 	{
 	public:
 		AssetManager()
-			: m_Config(nullptr)
 		{
 			PEACH_CORE_TRACE("AssetManager costruito");
 		}
@@ -27,13 +26,9 @@ namespace Peach
 
 		void initFile()
 		{
-			if (m_Config)
-			{
-				return;
-			}
-			m_Config = new AssetConfig();
+			AssetConfig config;
 
-			for (const auto& [section, map] : m_Config->getStructure())
+			for (const auto& [section, map] : config.getStructure())
 			{
 				for (const auto& [key, path] : map)
 				{
@@ -56,8 +51,6 @@ namespace Peach
 					}
 				}
 			}
-
-			delete m_Config;
 		}
 
 		template<typename T>
@@ -125,6 +118,5 @@ namespace Peach
 		}
 	private:
 		AssetMap m_Assets;
-		AssetConfig* m_Config;
 	};
 }
