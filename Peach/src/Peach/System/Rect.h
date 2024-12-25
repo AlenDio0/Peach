@@ -39,8 +39,44 @@ namespace Peach
 
 		// FUNCTIONS
 
+		const T& operator[](size_t index) const
+		{
+			switch (index)
+			{
+			default:
+			case 0:
+				return x;
+			case 1:
+				return y;
+			case 2:
+				return width;
+			case 3:
+				return height;
+			}
+		}
+		T& operator[](size_t index)
+		{
+			switch (index)
+			{
+			default:
+			case 0:
+				return x;
+			case 1:
+				return y;
+			case 2:
+				return width;
+			case 3:
+				return height;
+			}
+		}
+
 		Vec2<T> getPosition() const { return Vec2<T>(x, y); }
 		Vec2<T> getSize() const { return Vec2<T>(width, height); }
+		Vec2<T> max() const { return getPosition() + getSize(); }
+		T area() const { return getSize().area(); }
+		Vec2<T> center() const { return max().center(); }
+
+		bool contains(Vec2<T> point) const { return (point.x >= x && point.x < max().x) && (point.y >= y && point.y < max().y); }
 
 		// OPERATIONS
 
