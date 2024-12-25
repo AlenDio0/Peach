@@ -38,19 +38,19 @@ private:
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 			{
-				velocity.y -= acceleration;
+				velocity += Peach::Vec2f::up() * acceleration;
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 			{
-				velocity.y += acceleration;
+				velocity += Peach::Vec2f::down() * acceleration;
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 			{
-				velocity.x -= acceleration;
+				velocity += Peach::Vec2f::left() * acceleration;
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 			{
-				velocity.x += acceleration;
+				velocity += Peach::Vec2f::right() * acceleration;
 			}
 		}
 	};

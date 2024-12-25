@@ -34,7 +34,36 @@ namespace Peach
 
 		// FUNCTIONS
 
-		T square() { return x * y; }
+		const T& operator[](size_t index) const
+		{
+			switch (index)
+			{
+			default:
+			case 0:
+				return x;
+			case 1:
+				return y;
+			}
+		}
+		T& operator[](size_t index)
+		{
+			switch (index)
+			{
+			default:
+			case 0:
+				return x;
+			case 1:
+				return y;
+			}
+		}
+
+		T area() const { return x * y; }
+		Vec2<T> center() const { return *this / 2.f; }
+
+		static Vec2<T> up() { return Vec2<T>(0, -1); }
+		static Vec2<T> down() { return Vec2<T>(0, 1); }
+		static Vec2<T> left() { return Vec2<T>(-1, 0); }
+		static Vec2<T> right() { return Vec2<T>(1, 0); }
 
 		// OPERATIONS
 
