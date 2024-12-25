@@ -13,10 +13,7 @@ namespace Peach
 	{
 		PEACH_CORE_TRACE("StateMachine distrutto");
 
-		while (m_States.empty())
-		{
-			m_States.pop();
-		}
+		clear();
 	}
 
 	Ref<IState> StateMachine::getCurrentState() const
@@ -75,6 +72,14 @@ namespace Peach
 		m_IsRemoving = true;
 
 		PEACH_CORE_INFO("StateMachine::removeState(), [currentState: {}]", getCurrentState());
+	}
+
+	void StateMachine::clear()
+	{
+		while (!m_States.empty())
+		{
+			m_States.pop();
+		}
 	}
 
 	void StateMachine::onAdding()
