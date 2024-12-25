@@ -14,12 +14,12 @@ namespace Peach
 		EntityManager();
 		~EntityManager();
 
-		UUID addEntity(Ref<Entity> entity);
-		UUID addEntity(Entity* entity);
+		UUID add(Ref<Entity> entity);
+		UUID add(Entity* entity);
 
-		void removeEntity(UUID uuid);
-		void removeEntity(Ref<Entity> entity);
-		void removeEntity(Entity* entity);
+		void remove(UUID uuid);
+		void remove(Ref<Entity> entity);
+		void remove(Entity* entity);
 
 		const EntityMap& getEntities() const;
 		EntityMap& getEntities();
