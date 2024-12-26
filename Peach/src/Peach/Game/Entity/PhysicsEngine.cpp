@@ -143,8 +143,8 @@ namespace Peach
 	{
 		for (const auto& [box, physics] : m_PhysicsBoxes)
 		{
-			sf::RectangleShape box_shape(box.hitbox.getSize());
-			box_shape.setPosition(box.position + box.hitbox.getPosition());
+			sf::RectangleShape box_shape(box.hitbox.size);
+			box_shape.setPosition(box.position + box.hitbox.position);
 			box_shape.setFillColor(sf::Color::Transparent);
 			box_shape.setOutlineThickness(2.f);
 			box_shape.setOutlineColor(sf::Color::Blue);
@@ -153,7 +153,7 @@ namespace Peach
 		}
 		for (const auto& box : m_Boxes)
 		{
-			sf::RectangleShape box_shape(box.hitbox.getSize());
+			sf::RectangleShape box_shape(box.hitbox.size);
 			box_shape.setPosition(box.position + box.hitbox.x);
 			box_shape.setFillColor(sf::Color::Transparent);
 			box_shape.setOutlineThickness(2.f);
@@ -170,7 +170,7 @@ namespace Peach
 			const Vec2f& tile_size = m_TileMap->getTileSize();
 
 			Vec2i relative_position = (prime.box.position / tile_size) - 1;
-			Vec2i relative_boxsize = ((prime.box.position + prime.box.hitbox.getSize()) / tile_size) + 1;
+			Vec2i relative_boxsize = ((prime.box.position + prime.box.hitbox.size) / tile_size) + 1;
 
 			auto tiles_grid = m_TileMap->getTiles(IntRect(relative_position, relative_boxsize));
 			for (auto& [pos, t] : tiles_grid)
@@ -210,7 +210,7 @@ namespace Peach
 			auto [x2, y2] = box.position;
 			Vec2f distance(std::abs(x2 - x1), std::abs(y2 - y1));
 
-			if (distance > prime.box.hitbox.getSize() || distance > box.hitbox.getSize())
+			if (distance > prime.box.hitbox.size || distance > box.hitbox.size)
 			{
 				continue;
 			}

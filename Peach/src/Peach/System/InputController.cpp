@@ -3,14 +3,14 @@
 
 namespace Peach
 {
-	void InputController::addBind(sf::Keyboard::Key key, const std::function<void()>& callback, const std::string& description)
+	void InputController::addBind(sf::Keyboard::Key key, const std::function<void(sf::Event::KeyEvent)>& callback, const std::string& description)
 	{
 		PEACH_CORE_TRACE("InputController::bind(key: {}, description: {})", keyToString(key), description);
 
 		m_KeyBinds.emplace_back(key, callback, description);
 	}
 
-	void InputController::addBind(sf::Mouse::Button button, const std::function<void()>& callback, const std::string& description)
+	void InputController::addBind(sf::Mouse::Button button, const std::function<void(sf::Event::MouseButtonEvent)>& callback, const std::string& description)
 	{
 		PEACH_CORE_TRACE("InputController::bind(button: {}, description: {})", buttonToString(button), description);
 
@@ -42,7 +42,7 @@ namespace Peach
 			PEACH_CORE_INFO("InputController::onKeyPressed(), Chiamato bind: {}, Descrizione: {}", keyToString(key), description);
 			if (callback)
 			{
-				callback();
+				callback(event);
 			}
 		}
 	}
@@ -59,7 +59,7 @@ namespace Peach
 			PEACH_CORE_INFO("InputController::onMousePressed(), Chiamato bind: {}, Descrizione: {}", buttonToString(button), description);
 			if (callback)
 			{
-				callback();
+				callback(event);
 			}
 		}
 	}
