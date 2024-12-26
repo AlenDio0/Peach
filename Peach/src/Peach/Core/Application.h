@@ -20,10 +20,10 @@ namespace Peach
 		Ref<IState> getCurrentState() const;
 
 		template<typename T>
-		void loadAsset(const AssetKey& key, const std::string& path, bool force = true) const { m_Data->assets.loadAsset<T>(key, path, force); }
-		void loadTexture(const AssetKey& key, const std::string& path, bool force = true) const;
-		void loadFont(const AssetKey& key, const std::string& path, bool force = true) const;
-		void loadSound(const AssetKey& key, const std::string& path, bool force = true) const;
+		void loadAsset(const AssetKey& key, std::string_view path, bool force = true) const { m_Data->assets.loadAsset<T>(key, path, force); }
+		void loadTexture(const AssetKey& key, std::string_view path, bool force = true) const;
+		void loadFont(const AssetKey& key, std::string_view path, bool force = true) const;
+		void loadSound(const AssetKey& key, std::string_view path, bool force = true) const;
 		void initAssetFile();
 
 		void run();

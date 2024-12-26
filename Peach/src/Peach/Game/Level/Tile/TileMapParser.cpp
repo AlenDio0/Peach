@@ -17,7 +17,7 @@ namespace Peach
 				continue;
 			}
 
-			std::string token_str = buff.substr(6);
+			std::string_view token_str(buff.c_str() + 6);
 
 			if (token_str == "TileMap")
 			{
@@ -50,22 +50,22 @@ namespace Peach
 
 			if (find(buff, token_mapsize))
 			{
-				const std::string str_mapsize = buff.substr(strlen(token_mapsize));
+				std::string_view str_mapsize(buff.c_str() + strlen(token_mapsize));
 				tilemap.setSize(stringToVec2u(str_mapsize));
 			}
 			else if (find(buff, token_tilesize))
 			{
-				const std::string str_tilesize = buff.substr(strlen(token_tilesize));
+				std::string_view str_tilesize(buff.c_str() + strlen(token_tilesize));
 				tilemap.setTileSize(stringToVec2f(str_tilesize));
 			}
 			else if (find(buff, token_spritesize))
 			{
-				const std::string str_spritesize = buff.substr(strlen(token_spritesize));
+				std::string_view str_spritesize(buff.c_str() + strlen(token_spritesize));
 				tilemap.setSpriteSize(stringToVec2u(str_spritesize));
 			}
 			else if (find(buff, token_collideids))
 			{
-				const std::string str_collideids = buff.substr(strlen(token_spritesize));
+				std::string_view str_collideids(buff.c_str() + strlen(token_spritesize));
 				tilemap.setCollideIDs(stringToVectorU(str_collideids));
 			}
 		}

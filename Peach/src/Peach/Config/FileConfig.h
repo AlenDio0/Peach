@@ -8,13 +8,11 @@
 
 namespace Peach
 {
-	using INIType = std::string;
-
 	template<typename TKey>
 	class PEACH_API FileConfig
 	{
 	public:
-		FileConfig(const std::string& name)
+		FileConfig(std::string name)
 			: m_Name(name), m_File(name + ".ini")
 		{
 		}
@@ -36,13 +34,12 @@ namespace Peach
 		}
 
 		template<typename T>
-		T getValue(const INIType& section, const TKey& key) const
+		T getValue(std::string section, const TKey& key) const
 		{
 			const auto& keystr = getKeyToString(key);
 
 			m_File.read(m_Structure);
-			INIType strvalue = m_Structure[section][keystr];
-			std::stringstream ss(strvalue);
+			std::stringstream ss(m_Structure[section][keystr]);
 			T value;
 			if (!(ss >> value))
 			{
@@ -57,7 +54,7 @@ namespace Peach
 			return getValue<T>(m_Name, key);
 		}
 
-		void setValue(const INIType& section, const TKey& key, const INIType& value)
+		void setValue(std::string_view section, const TKey& key, std::string_view value)
 		{
 			const auto& keystr = getKeyToString(key);
 
@@ -66,7 +63,7 @@ namespace Peach
 			m_File.write(m_Structure);
 		}
 		template<typename T>
-		void setValue(const INIType& section, const TKey& key, const T& value)
+		void setValue(std::string_view section, const TKey& key, const T& value)
 		{
 			std::stringstream ss;
 			ss << value;

@@ -30,12 +30,12 @@ namespace Peach
 	struct Tag : public Component
 	{
 		Tag() = default;
-		Tag(const std::string& tag)
+		Tag(std::string_view tag)
 			: tag(tag)
 		{
 		}
 
-		operator const std::string& () const { return tag; }
+		operator std::string_view() const { return tag; }
 		operator std::string& () { return tag; }
 
 		std::string tag;

@@ -13,12 +13,12 @@ namespace Peach
 	{
 	}
 
-	TextBox::TextBox(Vec2f size, const sf::Font& font, const std::string& placeholder, bool selected)
+	TextBox::TextBox(Vec2f size, const sf::Font& font, std::string_view placeholder, bool selected)
 		: TextBox(size, font, placeholder, 0, selected)
 	{
 	}
 
-	TextBox::TextBox(Vec2f size, const sf::Font& font, const std::string& placeholder, size_t length, bool selected)
+	TextBox::TextBox(Vec2f size, const sf::Font& font, std::string_view placeholder, size_t length, bool selected)
 		: GuiObject(m_Container, false), m_TextLabel("", font), m_Placeholder(placeholder), m_Length(length), m_Space(true), m_Selected(selected), m_Blink(false)
 	{
 		PEACH_CORE_TRACE("TextBox costruito");
@@ -91,7 +91,7 @@ namespace Peach
 		m_Indicator.setPosition(x, y + ((getSize().y / 2.f) - (m_Indicator.getSize().y / 1.25f)));
 	}
 
-	void TextBox::setPlaceholder(const std::string& placeholder)
+	void TextBox::setPlaceholder(std::string_view placeholder)
 	{
 		m_Placeholder = placeholder;
 	}

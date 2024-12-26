@@ -11,8 +11,8 @@ namespace Peach
 	public:
 		TextBox(Vec2f size, const sf::Font& font, bool selected);
 		TextBox(Vec2f size, const sf::Font& font, size_t length, bool selected);
-		TextBox(Vec2f size, const sf::Font& font, const std::string& placeholder, bool selected);
-		TextBox(Vec2f size, const sf::Font& font, const std::string& placeholder, size_t length, bool selected);
+		TextBox(Vec2f size, const sf::Font& font, std::string_view placeholder, bool selected);
+		TextBox(Vec2f size, const sf::Font& font, std::string_view placeholder, size_t length, bool selected);
 		~TextBox();
 
 		void setIndex(size_t index);
@@ -20,7 +20,7 @@ namespace Peach
 		void setRestriction(const std::function<bool(int)> restriciton, bool space = true);
 		virtual void setSize(Vec2f size) override;
 		virtual void setPosition(Vec2f position) override;
-		void setPlaceholder(const std::string& placeholder);
+		void setPlaceholder(std::string_view placeholder);
 		void setCharSize(uint32_t size);
 		void setFont(const sf::Font& font);
 
