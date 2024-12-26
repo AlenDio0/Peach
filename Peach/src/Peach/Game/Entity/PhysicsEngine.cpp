@@ -93,33 +93,9 @@ namespace Peach
 		m_PhysicsBoxes.clear();
 		m_PhysicsBoxes = physics_boxes;
 
-		for (auto& [box, physics] : physics_boxes)
+		for (auto& [box, movement] : physics_boxes)
 		{
-			auto& [velocity, maxvelocity, acceleration] = physics;
-
-			// Add gravity
-			velocity.y += m_Gravity;
-
-			// Add drag
-			velocity *= m_Drag;
-
-			if (std::abs(velocity.x) > maxvelocity.x)
-			{
-				velocity.x = (velocity.x < 0.f ? -1.f : 1.f) * maxvelocity.x;
-			}
-			if (std::abs(velocity.y) > maxvelocity.y)
-			{
-				velocity.y = (velocity.y < 0.f ? -1.f : 1.f) * maxvelocity.y;
-			}
-
-			if (std::abs(velocity.x) < acceleration / 10.f)
-			{
-				velocity.x = 0.f;
-			}
-			if (std::abs(velocity.y) < acceleration / 10.f)
-			{
-				velocity.y = 0.f;
-			}
+			updateMovement(movement);
 		}
 
 		m_Boxes.clear();
@@ -141,7 +117,7 @@ namespace Peach
 
 	void PhysicsEngine::renderBoxes(sf::RenderTarget* target) const
 	{
-		for (const auto& [box, physics] : m_PhysicsBoxes)
+		for (const auto& [box, movement] : m_PhysicsBoxes)
 		{
 			sf::RectangleShape box_shape(box.hitbox.size);
 			box_shape.setPosition(box.position + box.hitbox.position);
@@ -163,14 +139,43 @@ namespace Peach
 		}
 	}
 
+	void PhysicsEngine::updateMovement(Movement& movement) const
+	{
+		auto& [velocity, minvelocity, maxvelocity, acceleration] = movement;
+
+		// Add gravity
+		velocity.y += m_Gravity;
+
+		// Add drag
+		velocity *= m_Drag;
+
+		if (std::abs(velocity.x) > maxvelocity.x)
+		{
+			velocity.x = (velocity.x < 0.f ? -1.f : 1.f) * maxvelocity.x;
+		}
+		if (std::abs(velocity.y) > maxvelocity.y)
+		{
+			velocity.y = (velocity.y < 0.f ? -1.f : 1.f) * maxvelocity.y;
+		}
+
+		if (std::abs(velocity.x) < minvelocity.x)
+		{
+			velocity.x = 0.f;
+		}
+		if (std::abs(velocity.y) < minvelocity.y)
+		{
+			velocity.y = 0.f;
+		}
+	}
+
 	void PhysicsEngine::addNearTiles(const PhysicsBox& prime, std::vector<Box>& boxes) const
 	{
 		if (m_TileMap)
 		{
 			const Vec2f& tile_size = m_TileMap->getTileSize();
 
-			Vec2i relative_position = (prime.box.position / tile_size) - 1;
-			Vec2i relative_boxsize = ((prime.box.position + prime.box.hitbox.size) / tile_size) + 1;
+			Vec2i relative_position = ((prime.box.position + prime.box.hitbox.getPosition()) / tile_size) - 2;
+			Vec2i relative_boxsize = ((prime.box.position + prime.box.hitbox.getPosition() + prime.box.hitbox.getSize()) / tile_size) + 2;
 
 			auto tiles_grid = m_TileMap->getTiles(IntRect(relative_position, relative_boxsize));
 			for (auto& [pos, t] : tiles_grid)
@@ -199,7 +204,7 @@ namespace Peach
 
 	void PhysicsEngine::addNearBoxes(const PhysicsBox& prime, const std::vector<PhysicsBox>& physicsboxes, std::vector<Box>& boxes) const
 	{
-		for (auto& [box, physics] : physicsboxes)
+		for (auto& [box, movement] : physicsboxes)
 		{
 			if (&prime.box == &box)
 			{
@@ -229,7 +234,7 @@ namespace Peach
 				continue;
 			}
 
-			auto& [velocity, _, __] = prime.movement;
+			auto& [velocity, _, __, ___] = prime.movement;
 			if (velocity.x > 0.f)
 			{
 				prime.box.position.x = box.position.x - prime.box.hitbox.width - prime.box.hitbox.x;
@@ -250,7 +255,7 @@ namespace Peach
 				continue;
 			}
 
-			auto& [velocity, _, __] = prime.movement;
+			auto& [velocity, _, __, ___] = prime.movement;
 			if (velocity.y > 0.f)
 			{
 				prime.box.position.y = box.position.y - prime.box.hitbox.height - prime.box.hitbox.y;

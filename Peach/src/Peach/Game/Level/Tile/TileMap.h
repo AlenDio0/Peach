@@ -27,8 +27,8 @@ namespace Peach
 
 		const Vec2u& getSize() const;
 		const Vec2f& getTileSize() const;
-		std::weak_ptr<Tile> getTile(const MapKey& key);
-		std::map<MapKey, std::weak_ptr<Tile>> getTiles(IntRect rect = {});
+		std::weak_ptr<Tile> getTile(const MapKey& key) const;
+		std::map<MapKey, std::weak_ptr<Tile>>& getTiles(IntRect rect = {}) const;
 
 		void update();
 
@@ -47,5 +47,11 @@ namespace Peach
 		Vec2u m_Size;
 		Vec2f m_TileSize;
 		SpriteSheet m_SpriteSheet;
+
+		mutable struct
+		{
+			IntRect rect;
+			std::map<MapKey, std::weak_ptr<Tile>> tiles;
+		} m_CachedRectTiles;
 	};
 }

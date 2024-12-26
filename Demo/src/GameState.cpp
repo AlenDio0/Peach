@@ -6,7 +6,7 @@ GameState::GameState(Peach::Ref<Peach::Data> data)
 	m_Physics(m_Level.getTileMap(), m_Level.getEntityManager()),
 	m_Player(getTexture("player"), Peach::Vec2f(m_Level.getTileMap().getTileSize() * 2.f))
 {
-	m_Level.getEntityManager().addEntity(Peach::MakeRef<Player>(m_Player));
+	m_Level.getEntityManager().add(Peach::MakeRef<Player>(m_Player));
 
 	m_Physics.setGravity(0.f);
 
@@ -26,8 +26,6 @@ void GameState::onEvent(sf::Event event)
 void GameState::onUpdate()
 {
 	m_Level.update();
-
-	m_Player.update();
 
 	m_Physics.update();
 }
@@ -56,7 +54,7 @@ void GameState::initBinds()
 			{
 				auto tile = new Peach::Tile(getAsset<Peach::Texture>("tiles"), nullptr);
 				tile->setID(10);
-				m_Level.getEntityManager().addEntity(tile);
+				m_Level.getEntityManager().add(tile);
 			}
 		}, "Test Memory leak - EntityManager");
 	m_Input.addBind(sf::Keyboard::Num2,

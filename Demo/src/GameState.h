@@ -21,20 +21,16 @@ private:
 			: GameObject(texture)
 		{
 			getTransform().position = position;
+			auto& scale = getTransform().scale *= 1.10f;
 
-			addComponent<Peach::RigidBody>(Peach::FloatRect(8.f, 32.f, 16.f, 32.f), true);
-			addComponent<Peach::Movement>(Peach::Vec2f(), Peach::Vec2f(6.f, 6.f), 0.6f);
+			addComponent<Peach::RigidBody>(Peach::FloatRect(Peach::Vec2f(4.f, 32.f) * scale, Peach::Vec2f(24.f, 32.f) * scale), true);
+			addComponent<Peach::Movement>(Peach::Vec2f(0.2f, 0.2f), Peach::Vec2f(20.f, 20.f), 0.6f);
 		}
 		~Player() = default;
 
 		void update()
 		{
-			auto physics = has<Peach::Movement>().lock();
-			if (!physics)
-			{
-				return;
-			}
-			auto& [velocity, _, acceleration] = *physics;
+			auto& [velocity, _, __, acceleration] = *has<Peach::Movement>().lock();
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 			{

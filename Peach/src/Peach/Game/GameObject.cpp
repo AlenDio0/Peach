@@ -26,6 +26,16 @@ namespace Peach
 		m_Sprite.setTextureRect(rect);
 	}
 
+	Vec2f GameObject::getLocalSize() const
+	{
+		return m_Sprite.getLocalBounds().getSize();
+	}
+
+	Vec2f GameObject::getGlobalSize() const
+	{
+		return getLocalSize() * getTransform().scale;
+	}
+
 	Transform GameObject::getTransform() const
 	{
 		return *has<Transform>().lock();
@@ -34,16 +44,6 @@ namespace Peach
 	Transform& GameObject::getTransform()
 	{
 		return *has<Transform>().lock();
-	}
-
-	void GameObject::setPosition(Vec2f position)
-	{
-		getTransform().position = position;
-	}
-
-	void GameObject::setScale(Vec2f scale)
-	{
-		getTransform().scale = scale;
 	}
 
 	void GameObject::draw(sf::RenderTarget& target, sf::RenderStates states) const
