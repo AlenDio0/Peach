@@ -54,6 +54,7 @@ namespace Peach
 			switch (index)
 			{
 			default:
+				throw std::out_of_range("rect index out of range");
 			case 0:
 				return x;
 			case 1:
@@ -69,6 +70,7 @@ namespace Peach
 			switch (index)
 			{
 			default:
+				throw std::out_of_range("rect index out of range");
 			case 0:
 				return x;
 			case 1:

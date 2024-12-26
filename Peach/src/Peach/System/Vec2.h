@@ -39,6 +39,7 @@ namespace Peach
 			switch (index)
 			{
 			default:
+				throw std::out_of_range("vec2 index out of range");
 			case 0:
 				return x;
 			case 1:
@@ -50,6 +51,7 @@ namespace Peach
 			switch (index)
 			{
 			default:
+				throw std::out_of_range("vec2 index out of range");
 			case 0:
 				return x;
 			case 1:
@@ -141,12 +143,12 @@ namespace Peach
 		// vec1 > vec2
 		bool operator>(const Vec2& r) const { return x == r.x ? y > r.y : x > r.x; }
 		// vec1 >= vec2
-		bool operator>=(const Vec2& r) const { return *this > r && *this == r; }
+		bool operator>=(const Vec2& r) const { return *this > r || *this == r; }
 
 		// vec1 < vec2
 		bool operator<(const Vec2& r) const { return x == r.x ? y < r.y : x < r.x; }
 		// vec1 <= vec2
-		bool operator<=(const Vec2& r) const { return *this < r && *this == r; }
+		bool operator<=(const Vec2& r) const { return *this < r || *this == r; }
 	};
 
 	template<typename T>
