@@ -50,11 +50,11 @@ void GameState::onRender()
 void GameState::initBinds()
 {
 	m_Input.addBind(sf::Keyboard::Escape,
-		[&]() {
+		[&](sf::Event::KeyEvent) {
 			removeState();
 		}, "Rimuove lo Stato attuale");
 	m_Input.addBind(sf::Keyboard::Num1,
-		[&]() {
+		[&](sf::Event::KeyEvent) {
 			for (size_t i = 0; i < 1000; i++)
 			{
 				auto tile = new Peach::Tile(getAsset<Peach::Texture>("tiles"), nullptr);
@@ -63,7 +63,7 @@ void GameState::initBinds()
 			}
 		}, "Test Memory leak - EntityManager");
 	m_Input.addBind(sf::Keyboard::Num2,
-		[&]() {
+		[&](sf::Event::KeyEvent) {
 			auto& tilemap = m_Level.getTileMap();
 			tilemap.setSize(tilemap.getSize() * 2);
 		}, "Test Memory leak - TileMap");
