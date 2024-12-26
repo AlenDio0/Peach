@@ -8,7 +8,17 @@ namespace Peach
 	template<typename T>
 	struct Rect
 	{
-		T x, y, width, height;
+		union
+		{
+			struct
+			{
+				T x, y, width, height;
+			};
+			struct
+			{
+				Vec2<T> position, size;
+			};
+		};
 
 		Rect()
 			: Rect(0, 0, 0, 0)
@@ -25,7 +35,7 @@ namespace Peach
 		}
 		template<typename U = T>
 		Rect(const Vec2<U>& position, const Vec2<U>& size)
-			: x((T)position.x), y((T)position.y), width((T)size.x), height((T)size.y)
+			: position(position), size(size)
 		{
 		}
 		template<typename U = T>
@@ -70,10 +80,8 @@ namespace Peach
 			}
 		}
 
-		Vec2<T> getPosition() const { return Vec2<T>(x, y); }
-		Vec2<T> getSize() const { return Vec2<T>(width, height); }
-		Vec2<T> max() const { return getPosition() + getSize(); }
-		T area() const { return getSize().area(); }
+		Vec2<T> max() const { return position + size; }
+		T area() const { return size.area(); }
 		Vec2<T> center() const { return max().center(); }
 
 		bool contains(Vec2<T> point) const { return (point.x >= x && point.x < max().x) && (point.y >= y && point.y < max().y); }

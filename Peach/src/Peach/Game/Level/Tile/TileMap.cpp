@@ -284,12 +284,8 @@ namespace Peach
 
 			if (auto& body = tile->has<RigidBody>().lock())
 			{
-				auto& [x, y, width, height] = body->hitbox;
-
-				x = 0;
-				y = 0;
-				width = m_TileSize.x;
-				height = m_TileSize.y;
+				body->hitbox.position = Vec2f();
+				body->hitbox.size = m_TileSize;
 			}
 		}
 	}
