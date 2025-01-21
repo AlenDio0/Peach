@@ -24,7 +24,7 @@ namespace Peach
 		operator size_t() const { return id; }
 		operator size_t& () { return id; }
 
-		size_t id;
+		size_t id = 0;
 	};
 
 	struct Tag : public Component
@@ -76,6 +76,6 @@ namespace Peach
 		Vec2f velocity;
 		Vec2f minvelocity;
 		Vec2f maxvelocity;
-		float acceleration;
+		float acceleration = 0.f;
 	};
 }

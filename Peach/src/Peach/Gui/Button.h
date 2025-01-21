@@ -8,7 +8,7 @@ namespace Peach
 	{
 	public:
 		Button(Vec2f size, const sf::String& label, const sf::Font& font);
-		~Button();
+		virtual ~Button() override;
 
 		virtual void setPosition(Vec2f position) override;
 		virtual void setSize(Vec2f size) override;

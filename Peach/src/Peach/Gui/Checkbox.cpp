@@ -37,11 +37,6 @@ namespace Peach
 		setSize(getSize());
 	}
 
-	const sf::Vector2f& Checkbox::getSize() const
-	{
-		return m_Container.getSize();
-	}
-
 	bool Checkbox::isActive() const
 	{
 		return m_Active;

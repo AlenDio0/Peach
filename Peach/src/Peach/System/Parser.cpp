@@ -50,14 +50,14 @@ namespace Peach
 
 		for (const char& c : buff)
 		{
-			if (isdigit(c))
+			if (first && (c == '-' || c == '+'))
+			{
+				in = true;
+			}
+			else if (isdigit(c))
 			{
 				in = true;
 				first = false;
-			}
-			else if (first && (c == '-' || c == '+'))
-			{
-				in = true;
 			}
 			else if (c == '.' && !afterpoint && in)
 			{
@@ -73,7 +73,6 @@ namespace Peach
 			}
 
 			num += c;
-			first = false;
 		}
 
 		return stof(num);
@@ -91,7 +90,7 @@ namespace Peach
 
 	Vec2f Parser::stringToVec2f(std::string_view str)
 	{
-		size_t in_x = -1, in_y = -1;
+		long long in_x = -1, in_y = -1;
 
 		size_t i = -1;
 		for (const char& c : str)

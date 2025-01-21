@@ -11,7 +11,7 @@ namespace Peach
 	GameObject::GameObject(const sf::Texture& texture)
 		: Entity(false)
 	{
-		setTexture(texture, true);
+		m_Sprite.setTexture(texture, true);
 
 		addComponent<Transform>(Vec2f(), Vec2f(1.f, 1.f));
 	}

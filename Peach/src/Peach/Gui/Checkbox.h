@@ -8,13 +8,12 @@ namespace Peach
 	{
 	public:
 		Checkbox(Vec2f size, const sf::Texture& texture, bool active = false);
-		~Checkbox();
+		virtual ~Checkbox() override;
 
 		virtual void setSize(Vec2f size) override;
 		virtual void setPosition(Vec2f position) override;
 		void setCheckTexture(const sf::Texture& texture);
 
-		const sf::Vector2f& getSize() const;
 		bool isActive() const;
 
 		virtual void handleSpecEvent(sf::Event event) override;

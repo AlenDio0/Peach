@@ -53,7 +53,7 @@ namespace Peach
 
 	bool Window::isRunning() const
 	{
-		return m_Window->isOpen() && m_Window;
+		return m_Window->isOpen();
 	}
 
 	bool Window::pollEvent(sf::Event& event) const

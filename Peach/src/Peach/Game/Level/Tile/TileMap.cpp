@@ -268,13 +268,13 @@ namespace Peach
 		auto changed_id = [&](Tile& tile)
 			{
 				tile.setTextureRect(m_SpriteSheet.getRect(tile.getID()));
-				bool& collide = tile.getRigidBody().collide = false;
 
-				for (auto& id : m_CollideIDs)
+				tile.getRigidBody().collide = false;
+				for (const auto& id : m_CollideIDs)
 				{
 					if (tile.getID() == id)
 					{
-						collide = true;
+						tile.getRigidBody().collide = true;
 						break;
 					}
 				}
