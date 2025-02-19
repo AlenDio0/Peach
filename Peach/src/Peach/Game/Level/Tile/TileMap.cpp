@@ -107,7 +107,7 @@ namespace Peach
 		}
 	}
 
-	std::map<MapKey, std::weak_ptr<Tile>>& TileMap::getTiles(IntRect rect) const
+	const std::map<MapKey, std::weak_ptr<Tile>>& TileMap::getTiles(IntRect rect) const
 	{
 		if (rect == IntRect())
 		{
@@ -146,14 +146,7 @@ namespace Peach
 			for (uint32_t y = rect.y; y < rect.height + rect.y; ++y)
 			{
 				MapKey key(x, y);
-				try
-				{
-					cachedTiles[key] = m_Map.at(key);
-				}
-				catch (const std::exception& e)
-				{
-					PEACH_CORE_ERROR("TileMap::getTiles(rect: {}), [key: {}] Eccezione catturata: {}", rect, key, e.what());
-				}
+				cachedTiles[key] = getTile(key);
 			}
 		}
 
