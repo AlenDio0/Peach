@@ -13,6 +13,7 @@ namespace Peach
 		virtual void setSize(Vec2f size) override;
 		virtual void setPosition(Vec2f position) override;
 		void setCheckTexture(const sf::Texture& texture);
+		void toggle();
 
 		const sf::Vector2f& getSize() const;
 		bool isActive() const;

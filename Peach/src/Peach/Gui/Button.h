@@ -22,6 +22,7 @@ namespace Peach
 		virtual void handleSpecEvent(sf::Event event) override;
 		void onMouseMovedEvent(sf::Event::MouseMoveEvent event);
 		void onMousePressedEvent(sf::Event::MouseButtonEvent event);
+		void onMouseReleasedEvent(sf::Event::MouseButtonEvent event);
 
 		virtual void update() override;
 		virtual void render(sf::RenderTarget* target) const override;

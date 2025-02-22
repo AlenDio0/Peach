@@ -37,6 +37,11 @@ namespace Peach
 		setSize(getSize());
 	}
 
+	void Checkbox::toggle()
+	{
+		m_Active = !m_Active;
+	}
+
 	const sf::Vector2f& Checkbox::getSize() const
 	{
 		return m_Container.getSize();
@@ -66,7 +71,7 @@ namespace Peach
 
 		if (isCursorOn(event))
 		{
-			m_Active = !m_Active;
+			toggle();
 		}
 	}
 
