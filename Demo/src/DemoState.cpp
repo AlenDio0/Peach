@@ -7,7 +7,7 @@
 #include "GameState.h"
 
 DemoState::DemoState(Peach::Ref<Peach::Data> data)
-	: State(data, "Demo")
+	: AppState(data, "Demo")
 {
 	Peach::Button* button1 = new Peach::Button({ 225.f, 55.f }, "RIMPIAZZA", getFont("consola"));
 	Peach::Button* button2 = new Peach::Button({ 225.f, 55.f }, "GIOCA", getFont("consola"));

@@ -17,7 +17,7 @@ namespace Peach
 		void addState(bool replacing = false) const { m_Data->machine.addState(MakeRef<T>(m_Data), replacing); }
 		void removeState();
 
-		Ref<IState> getCurrentState() const;
+		Ref<State> getCurrentState() const;
 
 		template<typename T>
 		void loadAsset(const AssetKey& key, const std::string& path, bool force = true) const { m_Data->assets.loadAsset<T>(key, path, force); }

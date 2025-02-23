@@ -21,7 +21,7 @@ namespace Peach
 		m_Data->machine.removeState();
 	}
 
-	Ref<IState> Application::getCurrentState() const
+	Ref<State> Application::getCurrentState() const
 	{
 		return m_Data->machine.getCurrentState();
 	}
@@ -61,7 +61,7 @@ namespace Peach
 			m_Data->machine.update();
 			if (!getCurrentState())
 			{
-				PEACH_CORE_FATAL("Application::run(), Impossibile continuare l'applicazione, State attuale nullo");
+				PEACH_CORE_FATAL("Application::run(), Impossibile continuare l'applicazione, AppState attuale nullo");
 				return;
 			}
 
@@ -83,6 +83,6 @@ namespace Peach
 			}
 		} while (m_Data->window.isRunning());
 
-		PEACH_CORE_INFO("Application::run(), Applicazione chiusa nello State \"{}\"", getCurrentState() ? getCurrentState()->getName() : "Unknown");
+		PEACH_CORE_INFO("Application::run(), Applicazione chiusa nello AppState \"{}\"", getCurrentState() ? getCurrentState()->getName() : "Unknown");
 	}
 }
