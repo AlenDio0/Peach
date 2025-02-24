@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IState.h"
+#include "State.h"
 
 #include <memory>
 #include <stack>
@@ -13,17 +13,17 @@ namespace Peach
 		StateMachine();
 		~StateMachine();
 
-		Ref<IState> getCurrentState() const;
+		Ref<State> getCurrentState() const;
 
 		void update();
 
-		void addState(Ref<IState> newstate, bool replacing);
+		void addState(Ref<State> newstate, bool replacing);
 		void removeState();
 
 		void clear();
 	private:
-		std::stack<Ref<IState>> m_States;
-		Ref<IState> m_NewState;
+		std::stack<Ref<State>> m_States;
+		Ref<State> m_NewState;
 
 		bool m_IsAdding;
 		bool m_IsReplacing;

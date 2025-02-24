@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Peach/State/State.h>
+#include <Peach/State/AppState.h>
 
 #include <Peach/Game.h>
 
-class GameState : public Peach::State
+class GameState : public Peach::AppState
 {
 public:
 	GameState(Peach::Ref<Peach::Data> data);

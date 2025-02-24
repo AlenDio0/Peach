@@ -1,12 +1,12 @@
 #pragma once
 
-#include <Peach/State/State.h>
+#include <Peach/State/AppState.h>
 
 #include <Peach/Gui/GuiManager.h>
 #include <Peach/Assets/AssetManager.h>
 #include <Peach/System/InputController.h>
 
-class DemoState : public Peach::State
+class DemoState : public Peach::AppState
 {
 public:
 	DemoState(Peach::Ref<Peach::Data> data);

@@ -16,7 +16,7 @@ namespace Peach
 		clear();
 	}
 
-	Ref<IState> StateMachine::getCurrentState() const
+	Ref<State> StateMachine::getCurrentState() const
 	{
 		if (m_States.empty())
 		{
@@ -50,9 +50,9 @@ namespace Peach
 		}
 	}
 
-	void StateMachine::addState(Ref<IState> newstate, bool replacing)
+	void StateMachine::addState(Ref<State> newstate, bool replacing)
 	{
-		PEACH_CORE_INFO("StateMachine::addState(newState: {}, isReplacing: {})", newstate, replacing);
+		PEACH_CORE_TRACE("StateMachine::addState(newState: {}, isReplacing: {})", newstate, replacing);
 
 		if (!newstate)
 		{
@@ -71,7 +71,7 @@ namespace Peach
 	{
 		m_IsRemoving = true;
 
-		PEACH_CORE_INFO("StateMachine::removeState(), [currentState: {}]", getCurrentState());
+		PEACH_CORE_TRACE("StateMachine::removeState(), [currentState: {}]", getCurrentState());
 	}
 
 	void StateMachine::clear()
@@ -84,7 +84,7 @@ namespace Peach
 
 	void StateMachine::onAdding()
 	{
-		PEACH_CORE_INFO("StateMachine::onAdding(), Tentativo di aggiungere State in corso [isReplacing: {}]", m_IsReplacing);
+		PEACH_CORE_TRACE("StateMachine::onAdding(), Tentativo di aggiungere State in corso [isReplacing: {}]", m_IsReplacing);
 
 		if (!m_NewState)
 		{
@@ -95,7 +95,7 @@ namespace Peach
 
 		if (m_IsReplacing)
 		{
-			PEACH_CORE_INFO("StateMachine::onAdding(), Tentativo di rimpiazzo dello State \"{}\" in corso", getCurrentState()->getName());
+			PEACH_CORE_TRACE("StateMachine::onAdding(), Tentativo di rimpiazzo dello State \"{}\" in corso", getCurrentState()->getName());
 
 			onRemoving();
 		}
@@ -110,7 +110,7 @@ namespace Peach
 
 	void StateMachine::onRemoving()
 	{
-		PEACH_CORE_INFO("StateMachine::onRemoving(), Tentativo di rimozione stato in corso");
+		PEACH_CORE_TRACE("StateMachine::onRemoving(), Tentativo di rimozione stato in corso");
 
 		if (m_States.empty())
 		{
