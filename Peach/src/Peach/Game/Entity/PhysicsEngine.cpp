@@ -44,12 +44,12 @@ namespace Peach
 		m_Drag = drag;
 	}
 
-	bool PhysicsEngine::getMapCollisions() const
+	bool PhysicsEngine::isMapCollision() const
 	{
 		return m_MapCollision;
 	}
 
-	bool PhysicsEngine::getEntitiesCollisions() const
+	bool PhysicsEngine::isEntitiesCollision() const
 	{
 		return m_EntitiesCollision;
 	}
@@ -64,7 +64,7 @@ namespace Peach
 		return m_Gravity;
 	}
 
-	void PhysicsEngine::update()
+	void PhysicsEngine::update(float deltaTime)
 	{
 		if (!m_EntityManager)
 		{
@@ -87,7 +87,7 @@ namespace Peach
 				continue;
 			}
 
-			physics_boxes.emplace_back(Box(entity_transform->position, entity_body->hitbox), *entity_physics);
+			physics_boxes.emplace_back(Box(entity_transform->position, entity_body->hitbox), entity_physics);
 		}
 
 		m_PhysicsBoxes.clear();
@@ -95,7 +95,14 @@ namespace Peach
 
 		for (auto& [box, movement] : physics_boxes)
 		{
-			updateMovement(movement);
+			if (auto& linearMovement = std::dynamic_pointer_cast<LinearMovement>(movement))
+			{
+				updateLinearMovement(*linearMovement);
+			}
+			else if (auto& accelerationMovement = std::dynamic_pointer_cast<AccelerationMovement>(movement))
+			{
+				updateAccelerationMovement(*accelerationMovement);
+			}
 		}
 
 		m_Boxes.clear();
@@ -139,9 +146,18 @@ namespace Peach
 		}
 	}
 
-	void PhysicsEngine::updateMovement(Movement& movement) const
+	void PhysicsEngine::updateLinearMovement(LinearMovement& movement) const
 	{
-		auto& [velocity, minvelocity, maxvelocity, acceleration] = movement;
+		auto& [x, y] = movement.speed;
+
+		y += m_Gravity;
+	}
+
+	void PhysicsEngine::updateAccelerationMovement(AccelerationMovement& movement) const
+	{
+		Vec2f& velocity = movement.velocity;
+		Vec2f& minvelocity = movement.minvelocity;
+		Vec2f& maxvelocity = movement.maxvelocity;
 
 		// Add gravity
 		velocity.y += m_Gravity;
@@ -226,7 +242,7 @@ namespace Peach
 
 	void PhysicsEngine::updateCollisions(PhysicsBox& prime, const std::vector<Box>& boxes)
 	{
-		prime.box.position.x += prime.movement.velocity.x;
+		prime.box.position.x += prime.movement->velocity.x;
 		for (const auto& box : boxes)
 		{
 			if (!prime.box.isColliding(box))
@@ -234,7 +250,7 @@ namespace Peach
 				continue;
 			}
 
-			auto& [velocity, _, __, ___] = prime.movement;
+			Vec2f& velocity = prime.movement->velocity;
 			if (velocity.x > 0.f)
 			{
 				prime.box.position.x = box.position.x - prime.box.hitbox.width - prime.box.hitbox.x;
@@ -247,7 +263,7 @@ namespace Peach
 			}
 		}
 
-		prime.box.position.y += prime.movement.velocity.y;
+		prime.box.position.y += prime.movement->velocity.y;
 		for (const auto& box : boxes)
 		{
 			if (!prime.box.isColliding(box))
@@ -255,7 +271,7 @@ namespace Peach
 				continue;
 			}
 
-			auto& [velocity, _, __, ___] = prime.movement;
+			Vec2f& velocity = prime.movement->velocity;
 			if (velocity.y > 0.f)
 			{
 				prime.box.position.y = box.position.y - prime.box.hitbox.height - prime.box.hitbox.y;

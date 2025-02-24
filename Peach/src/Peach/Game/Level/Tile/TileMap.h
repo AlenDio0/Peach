@@ -30,7 +30,7 @@ namespace Peach
 		std::weak_ptr<Tile> getTile(const MapKey& key) const;
 		const std::map<MapKey, std::weak_ptr<Tile>>& getTiles(IntRect rect = {}) const;
 
-		void update();
+		void update(float deltaTime);
 
 		void render(sf::RenderTarget* target, const IntRect& view, bool convertrect = false) const;
 		void render(sf::RenderTarget* target) const;

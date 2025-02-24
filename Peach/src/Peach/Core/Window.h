@@ -17,6 +17,7 @@ namespace Peach
 		void close();
 
 		void setMouseCursor(const sf::Cursor& cursor);
+		void setMaxFps(unsigned int fps);
 
 		WindowConfig& getConfig();
 		bool isRunning() const;

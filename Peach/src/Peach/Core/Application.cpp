@@ -48,15 +48,12 @@ namespace Peach
 
 	void Application::run()
 	{
-		const std::chrono::microseconds FRAME_DURATION(16667);
-		std::chrono::microseconds lag(0);
-		std::chrono::steady_clock::time_point previous_time = std::chrono::steady_clock::now();
+		sf::Clock clock;
+		float previousTime = clock.restart().asSeconds();
 
 		do
 		{
-			std::chrono::microseconds delta_time = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - previous_time);
-			lag += delta_time;
-			previous_time += delta_time;
+			float deltaTime = clock.restart().asSeconds() - previousTime;
 
 			m_Data->machine.update();
 			if (!getCurrentState())
@@ -65,22 +62,13 @@ namespace Peach
 				return;
 			}
 
-			while (FRAME_DURATION <= lag)
+			for (sf::Event event; m_Data->window.pollEvent(event);)
 			{
-				lag -= FRAME_DURATION;
-
-				for (sf::Event event; m_Data->window.pollEvent(event);)
-				{
-					getCurrentState()->onEvent(event);
-				}
-
-				getCurrentState()->onUpdate();
-
-				if (FRAME_DURATION > lag)
-				{
-					getCurrentState()->onRender();
-				}
+				getCurrentState()->onEvent(event);
 			}
+
+			getCurrentState()->onUpdate(deltaTime);
+			getCurrentState()->onRender();
 		} while (m_Data->window.isRunning());
 
 		PEACH_CORE_INFO("Application::run(), Applicazione chiusa nello AppState \"{}\"", getCurrentState() ? getCurrentState()->getName() : "Unknown");

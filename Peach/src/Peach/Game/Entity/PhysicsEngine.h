@@ -20,12 +20,12 @@ namespace Peach
 		void setGravity(float gravity);
 		void setDrag(float drag);
 
-		bool getMapCollisions() const;
-		bool getEntitiesCollisions() const;
+		bool isMapCollision() const;
+		bool isEntitiesCollision() const;
 		float getDrag() const;
 		float getGravity() const;
 
-		void update();
+		void update(float deltaTime);
 		void renderBoxes(sf::RenderTarget* target) const;
 	private:
 		struct Box
@@ -52,7 +52,7 @@ namespace Peach
 		};
 		struct PhysicsBox
 		{
-			PhysicsBox(Box& box, Movement& movement)
+			PhysicsBox(Box& box, Ref<Movement> movement)
 				: box(box), movement(movement)
 			{
 			}
@@ -65,10 +65,11 @@ namespace Peach
 			}
 
 			Box box;
-			Movement& movement;
+			Ref<Movement> movement;
 		};
 	private:
-		void updateMovement(Movement& movement) const;
+		void updateLinearMovement(LinearMovement& movement) const;
+		void updateAccelerationMovement(AccelerationMovement& movement) const;
 
 		void addNearTiles(const PhysicsBox& prime, std::vector<Box>& boxes) const;
 		void addNearBoxes(const PhysicsBox& prime, const std::vector<PhysicsBox>& physicsboxes, std::vector<Box>& boxes) const;

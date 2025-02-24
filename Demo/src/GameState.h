@@ -11,7 +11,7 @@ public:
 	~GameState();
 
 	virtual void onEvent(sf::Event event) override;
-	virtual void onUpdate() override;
+	virtual void onUpdate(float deltaTime) override;
 	virtual void onRender() override;
 private:
 	class Player : public Peach::GameObject
@@ -24,29 +24,39 @@ private:
 			auto& scale = getTransform().scale *= 1.10f;
 
 			addComponent<Peach::RigidBody>(Peach::FloatRect(Peach::Vec2f(4.f, 32.f) * scale, Peach::Vec2f(24.f, 32.f) * scale), true);
-			addComponent<Peach::Movement>(Peach::Vec2f(0.2f, 0.2f), Peach::Vec2f(20.f, 20.f), 0.6f);
+			addComponent<Peach::LinearMovement>(200.f, 200.f);
 		}
 		~Player() = default;
 
-		void update()
+		void update(float deltaTime)
 		{
-			auto& [velocity, _, __, acceleration] = *has<Peach::Movement>().lock();
+			auto& movement = *has<Peach::LinearMovement>().lock();
+			Peach::Vec2f& velocity = movement.velocity, speed = movement.speed;
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 			{
-				velocity += Peach::Vec2f::up() * acceleration;
+				velocity.y = -speed.y * deltaTime;
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 			{
-				velocity += Peach::Vec2f::down() * acceleration;
+				velocity.y = speed.y * deltaTime;
 			}
+			else
+			{
+				velocity.y = 0;
+			}
+
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 			{
-				velocity += Peach::Vec2f::left() * acceleration;
+				velocity.x = -speed.x * deltaTime;
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 			{
-				velocity += Peach::Vec2f::right() * acceleration;
+				velocity.x = speed.x * deltaTime;
+			}
+			else
+			{
+				velocity.x = 0;
 			}
 		}
 	};

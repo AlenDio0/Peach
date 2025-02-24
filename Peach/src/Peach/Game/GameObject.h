@@ -21,7 +21,7 @@ namespace Peach
 		Transform& getTransform();
 		Transform getTransform() const;
 
-		virtual void update() override = 0;
+		virtual void update(float deltaTime) override = 0;
 	private:
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	private:

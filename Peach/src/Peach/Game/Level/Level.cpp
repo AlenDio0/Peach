@@ -39,10 +39,10 @@ namespace Peach
 		return m_EntityManager;
 	}
 
-	void Level::update()
+	void Level::update(float deltaTime)
 	{
-		m_TileMap.update();
-		m_EntityManager.update();
+		m_TileMap.update(deltaTime);
+		m_EntityManager.update(deltaTime);
 	}
 
 	void Level::render(sf::RenderTarget* target) const

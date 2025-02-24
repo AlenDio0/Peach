@@ -17,7 +17,7 @@ namespace Peach
 		virtual void onAdd() override {}
 		virtual void onRemove() override {}
 		virtual void onEvent(sf::Event event) override {}
-		virtual void onUpdate() override {}
+		virtual void onUpdate(float deltaTime) override {}
 		virtual void onRender() override {}
 
 		virtual const std::string& getName() const override;

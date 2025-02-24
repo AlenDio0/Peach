@@ -153,11 +153,11 @@ namespace Peach
 		return cachedTiles;
 	}
 
-	void TileMap::update()
+	void TileMap::update(float deltaTime)
 	{
 		for (auto& [position, tile] : m_Map)
 		{
-			tile->update();
+			tile->update(deltaTime);
 		}
 	}
 

@@ -13,7 +13,7 @@ public:
 	~DemoState();
 
 	virtual void onEvent(sf::Event event) override;
-	virtual void onUpdate() override;
+	virtual void onUpdate(float deltaTime) override;
 	virtual void onRender() override;
 private:
 	Peach::GuiManager m_GuiManager;

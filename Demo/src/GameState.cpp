@@ -4,7 +4,7 @@ GameState::GameState(Peach::Ref<Peach::Data> data)
 	: Peach::AppState(data, "Game"),
 	m_Level(Peach::TileMapParser::parse("level.txt", getTexture("tiles"))),
 	m_Physics(m_Level.getTileMap(), m_Level.getEntityManager()),
-	m_Player(getTexture("player"), Peach::Vec2f(m_Level.getTileMap().getTileSize() * 2.f))
+	m_Player(getTexture("player"), Peach::Vec2f(m_Level.getTileMap().getTileSize() * 3))
 {
 	m_Level.getEntityManager().add(Peach::MakeRef<Player>(m_Player));
 
@@ -23,11 +23,11 @@ void GameState::onEvent(sf::Event event)
 	m_Input.handleEvent(event);
 }
 
-void GameState::onUpdate()
+void GameState::onUpdate(float deltaTime)
 {
-	m_Level.update();
+	m_Level.update(deltaTime);
 
-	m_Physics.update();
+	m_Physics.update(deltaTime);
 }
 
 void GameState::onRender()
@@ -62,4 +62,13 @@ void GameState::initBinds()
 			auto& tilemap = m_Level.getTileMap();
 			tilemap.setSize(tilemap.getSize() * 2);
 		}, "Test Memory leak - TileMap");
+
+	m_Input.addBind(sf::Keyboard::E,
+		[&](sf::Event::KeyEvent) {
+			static bool limited = false;
+			limited = !limited;
+
+			auto& data = m_Data.lock();
+			data->window.setMaxFps(limited ? 2 : data->window.getConfig().getValue<int>(Peach::WindowConfig::FPSLIMIT));
+		}, "Test - Limit Framerate");
 }

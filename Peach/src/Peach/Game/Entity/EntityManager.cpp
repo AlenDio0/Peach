@@ -71,11 +71,11 @@ namespace Peach
 		return m_Entities;
 	}
 
-	void EntityManager::update()
+	void EntityManager::update(float deltaTime)
 	{
 		for (auto& [uuid, entity] : m_Entities)
 		{
-			entity->update();
+			entity->update(deltaTime);
 		}
 	}
 

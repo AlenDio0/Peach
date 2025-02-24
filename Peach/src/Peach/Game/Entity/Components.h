@@ -68,12 +68,34 @@ namespace Peach
 	struct Movement : public Component
 	{
 		Movement() = default;
-		Movement(Vec2f minvelocity, Vec2f maxvelocity, float acceleration)
+		virtual ~Movement() = default;
+
+		Vec2f velocity;
+	};
+
+	struct LinearMovement : public Movement
+	{
+		LinearMovement() = default;
+		LinearMovement(Vec2f speed)
+			: speed(speed)
+		{
+		}
+		LinearMovement(float x, float y)
+			: speed(x, y)
+		{
+		}
+
+		Vec2f speed;
+	};
+
+	struct AccelerationMovement : public Movement
+	{
+		AccelerationMovement() = default;
+		AccelerationMovement(Vec2f minvelocity, Vec2f maxvelocity, float acceleration)
 			: minvelocity(minvelocity), maxvelocity(maxvelocity), acceleration(acceleration)
 		{
 		}
 
-		Vec2f velocity;
 		Vec2f minvelocity;
 		Vec2f maxvelocity;
 		float acceleration = 0.f;

@@ -56,7 +56,7 @@ namespace Peach
 			m_Components.push_back(MakeRef<T>(std::forward<Args>(args)...));
 		}
 
-		virtual void update() = 0;
+		virtual void update(float deltaTime) = 0;
 	private:
 		bool m_DebugLog;
 

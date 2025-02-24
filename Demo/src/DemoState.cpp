@@ -111,7 +111,7 @@ void DemoState::onEvent(sf::Event event)
 	}
 }
 
-void DemoState::onUpdate()
+void DemoState::onUpdate(float deltaTime)
 {
 	m_GuiManager.update();
 }

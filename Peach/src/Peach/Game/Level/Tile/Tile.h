@@ -19,7 +19,7 @@ namespace Peach
 		RigidBody getRigidBody() const;
 		RigidBody& getRigidBody();
 
-		virtual void update() override {}
+		virtual void update(float deltaTime) override {}
 	private:
 		std::function<void(Tile&)> m_ChangedID;
 	};

@@ -33,7 +33,6 @@ namespace Peach
 		PEACH_RETURN_ASSERT(m_Window, "Window::create(), Window e' nullo");
 	}
 
-
 	void Window::close()
 	{
 		PEACH_CORE_INFO("Window::close(), Window e' in fase di chiusura");
@@ -44,6 +43,11 @@ namespace Peach
 	void Window::setMouseCursor(const sf::Cursor& cursor)
 	{
 		m_Window->setMouseCursor(cursor);
+	}
+
+	void Window::setMaxFps(unsigned int fps)
+	{
+		m_Window->setFramerateLimit(fps);
 	}
 
 	WindowConfig& Window::getConfig()

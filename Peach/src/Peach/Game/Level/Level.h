@@ -21,7 +21,7 @@ namespace Peach
 		const EntityManager& getEntityManager() const;
 		EntityManager& getEntityManager();
 
-		virtual void update();
+		virtual void update(float deltaTime);
 		virtual void render(sf::RenderTarget* target) const;
 	private:
 		TileMap m_TileMap;
