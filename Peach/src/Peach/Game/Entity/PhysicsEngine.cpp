@@ -18,9 +18,14 @@ namespace Peach
 	{
 	}
 
+	PhysicsEngine::PhysicsEngine(Level& level)
+		: PhysicsEngine(level.getTileMap(), level.getEntityManager())
+	{
+	}
+
 	PhysicsEngine::PhysicsEngine(TileMap& tilemap, EntityManager& entitymanager)
 		: m_TileMap(&tilemap), m_EntityManager(&entitymanager),
-		m_Gravity(0.4f), m_Drag(0.89f), m_MapCollision(true), m_EntitiesCollision(true)
+		m_Gravity(5.f), m_Drag(0.89f), m_MapCollision(true), m_EntitiesCollision(true)
 	{
 	}
 
@@ -148,7 +153,7 @@ namespace Peach
 
 	void PhysicsEngine::updateLinearMovement(LinearMovement& movement) const
 	{
-		auto& [x, y] = movement.speed;
+		auto& [x, y] = movement.velocity;
 
 		y += m_Gravity;
 	}

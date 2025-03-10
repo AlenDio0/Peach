@@ -2,8 +2,7 @@
 
 GameState::GameState(Peach::Ref<Peach::Data> data)
 	: Peach::AppState(data, "Game"),
-	m_Level(Peach::TileMapParser::parse("level.txt", getTexture("tiles"))),
-	m_Physics(m_Level.getTileMap(), m_Level.getEntityManager()),
+	m_Level(Peach::TileMapParser::parse("level.txt", getTexture("tiles"))), m_Physics(m_Level),
 	m_Player(getTexture("player"), Peach::Vec2f(m_Level.getTileMap().getTileSize() * 3))
 {
 	m_Level.getEntityManager().add(Peach::MakeRef<Player>(m_Player));

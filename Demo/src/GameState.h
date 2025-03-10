@@ -32,6 +32,7 @@ private:
 		{
 			auto& movement = *has<Peach::LinearMovement>().lock();
 			Peach::Vec2f& velocity = movement.velocity, speed = movement.speed;
+			velocity *= 0.f;
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 			{
@@ -41,10 +42,6 @@ private:
 			{
 				velocity.y = speed.y * deltaTime;
 			}
-			else
-			{
-				velocity.y = 0;
-			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 			{
@@ -53,10 +50,6 @@ private:
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 			{
 				velocity.x = speed.x * deltaTime;
-			}
-			else
-			{
-				velocity.x = 0;
 			}
 		}
 	};

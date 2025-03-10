@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Peach/Game/Level/Tile/TileMap.h"
-#include "EntityManager.h"
+#include "Peach/Game/Level/Level.h"
 
 namespace Peach
 {
@@ -11,6 +10,7 @@ namespace Peach
 		PhysicsEngine();
 		PhysicsEngine(TileMap& tilemap);
 		PhysicsEngine(EntityManager& entitymanager);
+		PhysicsEngine(Level& level);
 		PhysicsEngine(TileMap& tilemap, EntityManager& entitymanager);
 		~PhysicsEngine() = default;
 
