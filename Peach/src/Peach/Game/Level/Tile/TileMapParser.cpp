@@ -34,10 +34,10 @@ namespace Peach
 
 	void TileMapParser::fileToTileMap(TileMap& tilemap)
 	{
-		const char* token_mapsize = "MapSize";
-		const char* token_tilesize = "TileSize";
-		const char* token_spritesize = "SpriteSize";
-		const char* token_collideids = "CollideIDs";
+		constexpr char* token_mapsize = "MapSize";
+		constexpr char* token_tilesize = "TileSize";
+		constexpr char* token_spritesize = "SpriteSize";
+		constexpr char* token_collideids = "CollideIDs";
 
 		while (!isEOF())
 		{
@@ -73,10 +73,10 @@ namespace Peach
 
 	void TileMapParser::fileToMap(TileMap& tilemap)
 	{
-		const char* token_pos = "Pos";
-		const char* token_id = "ID";
+		constexpr char* token_pos = "Pos";
+		constexpr char* token_id = "ID";
 
-		const size_t& npos = std::string::npos;
+		constexpr size_t npos = std::string::npos;
 
 		Vec2u tile_pos;
 		std::string buff;
