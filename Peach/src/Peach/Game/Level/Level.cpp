@@ -4,8 +4,7 @@
 namespace Peach
 {
 	Level::Level()
-		: Level(std::move(TileMap()))
-	{
+		: Level(std::move(TileMap())) {
 	}
 
 	Level::Level(TileMap&& tilemap)
@@ -39,19 +38,19 @@ namespace Peach
 		return m_EntityManager;
 	}
 
-	void Level::update(float deltaTime)
+	void Level::update(const float deltaTime)
 	{
 		m_TileMap.update(deltaTime);
 		m_EntityManager.update(deltaTime);
 	}
 
-	void Level::render(sf::RenderTarget* target) const
+	void Level::render(sf::RenderTarget& target) const
 	{
 		m_TileMap.render(target);
 
 		for (const auto& [uuid, gameobj] : m_EntityManager.getEntities<GameObject>())
 		{
-			target->draw(*gameobj);
+			target.draw(*gameobj);
 		}
 	}
 }

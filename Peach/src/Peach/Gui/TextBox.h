@@ -9,19 +9,19 @@ namespace Peach
 	class PEACH_API TextBox : public GuiObject
 	{
 	public:
-		TextBox(Vec2f size, const sf::Font& font, bool selected);
-		TextBox(Vec2f size, const sf::Font& font, size_t length, bool selected);
-		TextBox(Vec2f size, const sf::Font& font, std::string_view placeholder, bool selected);
-		TextBox(Vec2f size, const sf::Font& font, std::string_view placeholder, size_t length, bool selected);
+		TextBox(const Vec2f size, const sf::Font& font, bool selected);
+		TextBox(const Vec2f size, const sf::Font& font, const size_t length, bool selected);
+		TextBox(const Vec2f size, const sf::Font& font, const std::string_view placeholder, bool selected);
+		TextBox(const Vec2f size, const sf::Font& font, const std::string_view placeholder, const size_t length, bool selected);
 		virtual ~TextBox() override;
 
-		void setIndex(size_t index);
+		void setIndex(const size_t index);
 		void setSelected(bool selected);
-		void setRestriction(const std::function<bool(int)> restriciton, bool space = true);
-		virtual void setSize(Vec2f size) override;
-		virtual void setPosition(Vec2f position) override;
-		void setPlaceholder(std::string_view placeholder);
-		void setCharSize(uint32_t size);
+		void setRestriction(const std::function<bool(int)>& restriciton, bool space = true);
+		virtual void setSize(const Vec2f size) override;
+		virtual void setPosition(const Vec2f position) override;
+		void setPlaceholder(const std::string_view placeHolder);
+		void setCharSize(const uint32_t size);
 		void setFont(const sf::Font& font);
 
 		std::string getBuff() const;
@@ -29,13 +29,13 @@ namespace Peach
 		bool isOverLimit() const;
 		size_t calcMaxLength() const;
 
-		virtual void handleSpecEvent(sf::Event event) override;
-		void onMousePressedEvent(sf::Event::MouseButtonEvent event);
-		void onTextEnteredEvent(sf::Event::TextEvent event);
-		void onKeyPressedEvent(sf::Event::KeyEvent event);
+		virtual void handleSpecEvent(const sf::Event& event) override;
+		void onMousePressedEvent(const sf::Event::MouseButtonEvent event);
+		void onTextEnteredEvent(const sf::Event::TextEvent event);
+		void onKeyPressedEvent(const sf::Event::KeyEvent event);
 
-		virtual void update() override;
-		virtual void render(sf::RenderTarget* target) const override;
+		virtual void update(const float deltaTime) override;
+		virtual void render(sf::RenderTarget& target) const override;
 	private:
 		sf::RectangleShape m_Container;
 		sf::Text m_TextLabel;

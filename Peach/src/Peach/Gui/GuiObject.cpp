@@ -3,8 +3,8 @@
 
 namespace Peach
 {
-	GuiObject::GuiObject(sf::Shape& container, bool debuglog)
-		: m_Shape(&container), m_DebugLog(debuglog)
+	GuiObject::GuiObject(sf::Shape& container, bool debugLog)
+		: m_Shape(&container), m_DebugLog(debugLog)
 	{
 		if (m_DebugLog)
 		{
@@ -20,41 +20,41 @@ namespace Peach
 		}
 	}
 
-	void GuiObject::addCallback(sf::Event::EventType type, const std::function<void(GuiObject&, sf::Event)>& callback)
+	void GuiObject::addCallback(const sf::Event::EventType type, const std::function<void(GuiObject&, sf::Event)>& callback)
 	{
 		m_Callbacks.push_back({ type, callback });
 	}
 
-	void GuiObject::setPosition(Vec2f position)
+	void GuiObject::setPosition(const Vec2f position)
 	{
 		m_Shape->setPosition(position);
 	}
 
-	void GuiObject::setAppearance(Appearance appearance)
+	void GuiObject::setAppearance(const Appearance appearance)
 	{
 		m_Appearance = appearance;
-		m_Shape->setOutlineThickness(m_Appearance.outline_thickness);
+		m_Shape->setOutlineThickness(m_Appearance.outlineThickness);
 	}
 
-	void GuiObject::setOutlineThickness(float thickness)
+	void GuiObject::setOutlineThickness(const float thickness)
 	{
-		m_Appearance.outline_thickness = thickness;
-		m_Shape->setOutlineThickness(m_Appearance.outline_thickness);
+		m_Appearance.outlineThickness = thickness;
+		m_Shape->setOutlineThickness(m_Appearance.outlineThickness);
 	}
 
-	void GuiObject::setPrimaryColor(sf::Color color)
+	void GuiObject::setPrimaryColor(const sf::Color color)
 	{
-		m_Appearance.primary_color = color;
+		m_Appearance.primaryColor = color;
 	}
 
-	void GuiObject::setSecondaryColor(sf::Color color)
+	void GuiObject::setSecondaryColor(const sf::Color color)
 	{
-		m_Appearance.secondary_color = color;
+		m_Appearance.secondaryColor = color;
 	}
 
-	void GuiObject::setBackgroundColor(sf::Color color)
+	void GuiObject::setBackgroundColor(const sf::Color color)
 	{
-		m_Appearance.background_color = color;
+		m_Appearance.backgroundColor = color;
 	}
 
 	Vec2f GuiObject::getSize() const
@@ -67,17 +67,17 @@ namespace Peach
 		return m_Shape->getPosition();
 	}
 
-	bool GuiObject::isCursorOn(Vec2i mouseposition) const
+	bool GuiObject::isCursorOn(const Vec2i mouseposition) const
 	{
 		return m_Shape->getGlobalBounds().contains((Vec2f)mouseposition);
 	}
 
-	bool GuiObject::isCursorOn(sf::Event::MouseMoveEvent event) const
+	bool GuiObject::isCursorOn(const sf::Event::MouseMoveEvent event) const
 	{
 		return isCursorOn(Vec2i(event.x, event.y));
 	}
 
-	bool GuiObject::isCursorOn(sf::Event::MouseButtonEvent event) const
+	bool GuiObject::isCursorOn(const sf::Event::MouseButtonEvent event) const
 	{
 		return isCursorOn(Vec2i(event.x, event.y));
 	}
@@ -87,7 +87,7 @@ namespace Peach
 		return m_Appearance;
 	}
 
-	void GuiObject::callback(sf::Event event)
+	void GuiObject::callback(const sf::Event& event)
 	{
 		for (const auto& [type, cback] : m_Callbacks)
 		{
@@ -103,14 +103,14 @@ namespace Peach
 		}
 	}
 
-	void GuiObject::handleEvent(sf::Event event)
+	void GuiObject::handleEvent(const sf::Event& event)
 	{
 		callback(event);
 
 		handleSpecEvent(event);
 	}
 
-	void GuiObject::handleSpecEvent(sf::Event event)
+	void GuiObject::handleSpecEvent(const sf::Event& event)
 	{
 	}
 }

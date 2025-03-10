@@ -17,7 +17,7 @@ namespace Peach
 		void close();
 
 		void setMouseCursor(const sf::Cursor& cursor);
-		void setMaxFps(unsigned int fps);
+		void setMaxFps(const unsigned int fps);
 
 		WindowConfig& getConfig();
 		bool isRunning() const;
@@ -26,7 +26,7 @@ namespace Peach
 		void handleEvent(const sf::Event& event);
 		void onClosed();
 
-		sf::RenderTarget* getRenderer();
+		sf::RenderTarget& getRenderer();
 		void display();
 	private:
 		Scope<sf::RenderWindow> m_Window;

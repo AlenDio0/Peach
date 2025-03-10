@@ -13,7 +13,7 @@ namespace Peach
 	public:
 		TileMap();
 		TileMap(const sf::Texture& texture);
-		TileMap(const sf::Texture& texture, const Vec2u& mapsize, const Vec2f& tilesize, const Vec2u& spritesize);
+		TileMap(const sf::Texture& texture, const Vec2u mapsize, const Vec2f tilesize, const Vec2u spritesize);
 		TileMap(const TileMap&) = default;
 		TileMap(TileMap&&) = default;
 		~TileMap();
@@ -21,22 +21,22 @@ namespace Peach
 		void setCollideIDs(const std::vector<size_t>& collideid);
 
 		void setTexture(const sf::Texture& texture, bool resetrect = false);
-		void setSize(const Vec2u& newsize);
-		void setTileSize(const Vec2f& newsize);
-		void setSpriteSize(const Vec2u& newsize);
+		void setSize(const Vec2u newsize);
+		void setTileSize(const Vec2f newsize);
+		void setSpriteSize(const Vec2u newsize);
 
 		const Vec2u& getSize() const;
 		const Vec2f& getTileSize() const;
-		std::weak_ptr<Tile> getTile(const MapKey& key) const;
+		std::weak_ptr<Tile> getTile(const MapKey key) const;
 		const std::map<MapKey, std::weak_ptr<Tile>>& getTiles(IntRect rect = {}) const;
 
-		void update(float deltaTime);
+		void update(const float deltaTime);
 
-		void render(sf::RenderTarget* target, const IntRect& view, bool convertrect = false) const;
-		void render(sf::RenderTarget* target) const;
+		void render(sf::RenderTarget& target, const IntRect view, bool convertrect = false) const;
+		void render(sf::RenderTarget& target) const;
 	private:
-		void resizeX(uint32_t sizex);
-		void resizeY(uint32_t sizey);
+		void resizeX(const uint32_t sizex);
+		void resizeY(const uint32_t sizey);
 
 		Ref<Tile> createTile() const;
 		void adjustTiles();

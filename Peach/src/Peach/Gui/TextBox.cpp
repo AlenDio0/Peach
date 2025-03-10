@@ -3,22 +3,19 @@
 
 namespace Peach
 {
-	TextBox::TextBox(Vec2f size, const sf::Font& font, bool selected)
-		: TextBox(size, font, 0, selected)
-	{
+	TextBox::TextBox(const Vec2f size, const sf::Font& font, bool selected)
+		: TextBox(size, font, 0, selected) {
 	}
 
-	TextBox::TextBox(Vec2f size, const sf::Font& font, size_t length, bool selected)
-		: TextBox(size, font, "", length, selected)
-	{
+	TextBox::TextBox(const Vec2f size, const sf::Font& font, const size_t length, bool selected)
+		: TextBox(size, font, "", length, selected) {
 	}
 
-	TextBox::TextBox(Vec2f size, const sf::Font& font, std::string_view placeholder, bool selected)
-		: TextBox(size, font, placeholder, 0, selected)
-	{
+	TextBox::TextBox(const Vec2f size, const sf::Font& font, const std::string_view placeholder, bool selected)
+		: TextBox(size, font, placeholder, 0, selected) {
 	}
 
-	TextBox::TextBox(Vec2f size, const sf::Font& font, std::string_view placeholder, size_t length, bool selected)
+	TextBox::TextBox(const Vec2f size, const sf::Font& font, const std::string_view placeholder, const size_t length, bool selected)
 		: GuiObject(m_Container, false), m_TextLabel("", font), m_Placeholder(placeholder), m_Length(length), m_Space(true), m_Selected(selected), m_Blink(false)
 	{
 		PEACH_CORE_TRACE("TextBox costruito");
@@ -43,7 +40,7 @@ namespace Peach
 		PEACH_CORE_TRACE("TextBox distrutto");
 	}
 
-	void TextBox::setIndex(size_t index)
+	void TextBox::setIndex(const size_t index)
 	{
 		if (index >= 0 && index <= getBuffSize() && m_Index != index)
 		{
@@ -64,13 +61,13 @@ namespace Peach
 		setPosition(getPosition());
 	}
 
-	void TextBox::setRestriction(const std::function<bool(int)> restriciton, bool space)
+	void TextBox::setRestriction(const std::function<bool(int)>& restriciton, bool space)
 	{
 		m_Restriction = restriciton;
 		m_Space = space;
 	}
 
-	void TextBox::setSize(Vec2f size)
+	void TextBox::setSize(const Vec2f size)
 	{
 		m_Container.setSize(size);
 		setCharSize((sf::Uint32)(size.y / 1.75f));
@@ -78,7 +75,7 @@ namespace Peach
 		setPosition(getPosition());
 	}
 
-	void TextBox::setPosition(Vec2f position)
+	void TextBox::setPosition(const Vec2f position)
 	{
 		m_Container.setPosition(position);
 		m_TextLabel.setPosition
@@ -91,12 +88,12 @@ namespace Peach
 		m_Indicator.setPosition(x, y + ((getSize().y / 2.f) - (m_Indicator.getSize().y / 1.25f)));
 	}
 
-	void TextBox::setPlaceholder(std::string_view placeholder)
+	void TextBox::setPlaceholder(const std::string_view placeholder)
 	{
 		m_Placeholder = placeholder;
 	}
 
-	void TextBox::setCharSize(uint32_t size)
+	void TextBox::setCharSize(const uint32_t size)
 	{
 		m_TextLabel.setCharacterSize(size);
 
@@ -108,7 +105,7 @@ namespace Peach
 		m_TextLabel.setFont(font);
 	}
 
-	void TextBox::handleSpecEvent(sf::Event event)
+	void TextBox::handleSpecEvent(const sf::Event& event)
 	{
 		switch (event.type)
 		{
@@ -124,7 +121,7 @@ namespace Peach
 		}
 	}
 
-	void TextBox::onMousePressedEvent(sf::Event::MouseButtonEvent event)
+	void TextBox::onMousePressedEvent(const sf::Event::MouseButtonEvent event)
 	{
 		const auto& [button, x, y] = event;
 		if (!isCursorOn(event) || button != sf::Mouse::Button::Left)
@@ -167,7 +164,7 @@ namespace Peach
 		}
 	}
 
-	void TextBox::onTextEnteredEvent(sf::Event::TextEvent event)
+	void TextBox::onTextEnteredEvent(const sf::Event::TextEvent event)
 	{
 		uint32_t input = event.unicode;
 
@@ -236,7 +233,7 @@ namespace Peach
 		m_BlinkTimer.restart();
 	}
 
-	void TextBox::onKeyPressedEvent(sf::Event::KeyEvent event)
+	void TextBox::onKeyPressedEvent(const sf::Event::KeyEvent event)
 	{
 		if (!m_Selected)
 		{
@@ -282,7 +279,7 @@ namespace Peach
 		return getBuffSize() >= m_Length;
 	}
 
-	void TextBox::update()
+	void TextBox::update(const float deltaTime)
 	{
 		const auto [_, primary, secondary, background] = getAppearance();
 		sf::Color placeholder_color = sf::Color(primary.r, primary.g, primary.b, 140u);
@@ -318,14 +315,14 @@ namespace Peach
 		}
 	}
 
-	void TextBox::render(sf::RenderTarget* target) const
+	void TextBox::render(sf::RenderTarget& target) const
 	{
-		target->draw(m_Container);
-		target->draw(m_TextLabel);
+		target.draw(m_Container);
+		target.draw(m_TextLabel);
 
 		if (m_Blink && m_Selected)
 		{
-			target->draw(m_Indicator);
+			target.draw(m_Indicator);
 		}
 	}
 }

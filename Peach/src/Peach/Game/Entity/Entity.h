@@ -11,7 +11,7 @@ namespace Peach
 	{
 	public:
 		Entity();
-		Entity(bool debuglog);
+		Entity(bool debugLog);
 		virtual ~Entity();
 
 		template<typename T>
@@ -56,7 +56,7 @@ namespace Peach
 			m_Components.push_back(MakeRef<T>(std::forward<Args>(args)...));
 		}
 
-		virtual void update(float deltaTime) = 0;
+		virtual void update(const float deltaTime) = 0;
 	private:
 		bool m_DebugLog;
 

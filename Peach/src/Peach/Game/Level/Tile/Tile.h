@@ -9,7 +9,7 @@ namespace Peach
 	class PEACH_API Tile : public GameObject
 	{
 	public:
-		Tile(const sf::Texture& texture, const std::function<void(Tile&)>& changedid = nullptr);
+		Tile(const sf::Texture& texture, const std::function<void(Tile&)>& changedId = nullptr);
 		virtual ~Tile() = default;
 
 		void setID(size_t id);
@@ -19,7 +19,7 @@ namespace Peach
 		RigidBody getRigidBody() const;
 		RigidBody& getRigidBody();
 
-		virtual void update(float deltaTime) override {}
+		virtual void update(const float deltaTime) override {}
 	private:
 		std::function<void(Tile&)> m_ChangedID;
 	};

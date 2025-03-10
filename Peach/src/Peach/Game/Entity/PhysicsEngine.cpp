@@ -4,29 +4,23 @@
 namespace Peach
 {
 	PhysicsEngine::PhysicsEngine()
-		: PhysicsEngine(TileMap(), EntityManager())
-	{
+		: PhysicsEngine(TileMap(), EntityManager()) {
 	}
 
 	PhysicsEngine::PhysicsEngine(TileMap& tilemap)
-		: PhysicsEngine(tilemap, EntityManager())
-	{
+		: PhysicsEngine(tilemap, EntityManager()) {
 	}
 
 	PhysicsEngine::PhysicsEngine(EntityManager& entitymanager)
-		: PhysicsEngine(TileMap(), entitymanager)
-	{
+		: PhysicsEngine(TileMap(), entitymanager) {
 	}
 
 	PhysicsEngine::PhysicsEngine(Level& level)
-		: PhysicsEngine(level.getTileMap(), level.getEntityManager())
-	{
+		: PhysicsEngine(level.getTileMap(), level.getEntityManager()) {
 	}
 
 	PhysicsEngine::PhysicsEngine(TileMap& tilemap, EntityManager& entitymanager)
-		: m_TileMap(&tilemap), m_EntityManager(&entitymanager),
-		m_Gravity(5.f), m_Drag(0.89f), m_MapCollision(true), m_EntitiesCollision(true)
-	{
+		: m_TileMap(&tilemap), m_EntityManager(&entitymanager), m_Gravity(5.f), m_Drag(0.89f), m_MapCollision(true), m_EntitiesCollision(true) {
 	}
 
 	void PhysicsEngine::setMapCollision(bool collide)
@@ -69,7 +63,7 @@ namespace Peach
 		return m_Gravity;
 	}
 
-	void PhysicsEngine::update(float deltaTime)
+	void PhysicsEngine::update(const float deltaTime)
 	{
 		if (!m_EntityManager)
 		{
@@ -127,7 +121,7 @@ namespace Peach
 		m_Boxes = collisions_boxes;
 	}
 
-	void PhysicsEngine::renderBoxes(sf::RenderTarget* target) const
+	void PhysicsEngine::renderBoxes(sf::RenderTarget& target) const
 	{
 		for (const auto& [box, movement] : m_PhysicsBoxes)
 		{
@@ -137,7 +131,7 @@ namespace Peach
 			box_shape.setOutlineThickness(2.f);
 			box_shape.setOutlineColor(sf::Color::Blue);
 
-			target->draw(box_shape);
+			target.draw(box_shape);
 		}
 		for (const auto& box : m_Boxes)
 		{
@@ -147,7 +141,7 @@ namespace Peach
 			box_shape.setOutlineThickness(2.f);
 			box_shape.setOutlineColor(sf::Color::Red);
 
-			target->draw(box_shape);
+			target.draw(box_shape);
 		}
 	}
 
@@ -161,8 +155,8 @@ namespace Peach
 	void PhysicsEngine::updateAccelerationMovement(AccelerationMovement& movement) const
 	{
 		Vec2f& velocity = movement.velocity;
-		Vec2f& minvelocity = movement.minvelocity;
-		Vec2f& maxvelocity = movement.maxvelocity;
+		Vec2f& minvelocity = movement.minVelocity;
+		Vec2f& maxvelocity = movement.maxVelocity;
 
 		// Add gravity
 		velocity.y += m_Gravity;

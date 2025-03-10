@@ -3,8 +3,8 @@
 
 namespace Peach
 {
-	Tile::Tile(const sf::Texture& texture, const std::function<void(Tile&)>& changedid)
-		: GameObject(texture), m_ChangedID(changedid)
+	Tile::Tile(const sf::Texture& texture, const std::function<void(Tile&)>& changedId)
+		: GameObject(texture), m_ChangedID(changedId)
 	{
 		setTexture(texture);
 

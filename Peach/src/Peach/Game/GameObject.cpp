@@ -4,8 +4,7 @@
 namespace Peach
 {
 	GameObject::GameObject()
-		: GameObject(sf::Texture())
-	{
+		: GameObject(sf::Texture()) {
 	}
 
 	GameObject::GameObject(const sf::Texture& texture)
@@ -16,12 +15,12 @@ namespace Peach
 		addComponent<Transform>(Vec2f(), Vec2f(1.f, 1.f));
 	}
 
-	void GameObject::setTexture(const sf::Texture& texture, bool resetrect)
+	void GameObject::setTexture(const sf::Texture& texture, bool resetRect)
 	{
-		m_Sprite.setTexture(texture, resetrect);
+		m_Sprite.setTexture(texture, resetRect);
 	}
 
-	void GameObject::setTextureRect(IntRect rect)
+	void GameObject::setTextureRect(const IntRect rect)
 	{
 		m_Sprite.setTextureRect(rect);
 	}

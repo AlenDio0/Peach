@@ -16,8 +16,8 @@ namespace Peach
 
 		virtual void onAdd() override {}
 		virtual void onRemove() override {}
-		virtual void onEvent(sf::Event event) override {}
-		virtual void onUpdate(float deltaTime) override {}
+		virtual void onEvent(const sf::Event& event) override {}
+		virtual void onUpdate(const float deltaTime) override {}
 		virtual void onRender() override {}
 
 		virtual const std::string& getName() const override;
@@ -25,7 +25,7 @@ namespace Peach
 		std::weak_ptr<Data> m_Data;
 	protected:
 		Peach::Window& getWindow() const;
-		sf::RenderTarget* getRenderer() const;
+		sf::RenderTarget& getRenderer() const;
 
 		template<typename T>
 		void addState(bool replacing = false) const

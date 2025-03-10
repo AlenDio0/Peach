@@ -12,8 +12,8 @@ namespace Peach
 		GameObject();
 		GameObject(const sf::Texture& texture);
 
-		virtual void setTexture(const sf::Texture& texture, bool resetrect = false);
-		virtual void setTextureRect(IntRect rect);
+		virtual void setTexture(const sf::Texture& texture, bool resetRect = false);
+		virtual void setTextureRect(const IntRect rect);
 
 		Vec2f getLocalSize() const;
 		Vec2f getGlobalSize() const;
@@ -21,7 +21,7 @@ namespace Peach
 		Transform& getTransform();
 		Transform getTransform() const;
 
-		virtual void update(float deltaTime) override = 0;
+		virtual void update(const float deltaTime) override = 0;
 	private:
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	private:

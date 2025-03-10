@@ -25,14 +25,13 @@ namespace Peach
 		float getDrag() const;
 		float getGravity() const;
 
-		void update(float deltaTime);
-		void renderBoxes(sf::RenderTarget* target) const;
+		void update(const float deltaTime);
+		void renderBoxes(sf::RenderTarget& target) const;
 	private:
 		struct Box
 		{
 			Box(Vec2f& position, const FloatRect& hitbox)
-				: position(position), hitbox(hitbox)
-			{
+				: position(position), hitbox(hitbox) {
 			}
 
 			bool isColliding(const Box& r) const
@@ -43,9 +42,7 @@ namespace Peach
 					position.y + hitbox.height > r.position.y + r.hitbox.y - hitbox.y;	// BOTTOM
 			}
 
-			void operator=(const Box& r)
-			{
-			}
+			void operator=(const Box& r) {}
 
 			Vec2f& position;
 			FloatRect hitbox;
@@ -53,8 +50,7 @@ namespace Peach
 		struct PhysicsBox
 		{
 			PhysicsBox(Box& box, Ref<Movement> movement)
-				: box(box), movement(movement)
-			{
+				: box(box), movement(movement) {
 			}
 
 			PhysicsBox& operator=(const PhysicsBox& r)

@@ -29,7 +29,7 @@ namespace Peach
 		throw std::runtime_error("Data inaccessibile");
 	}
 
-	sf::RenderTarget* AppState::getRenderer() const
+	sf::RenderTarget& AppState::getRenderer() const
 	{
 		return getWindow().getRenderer();
 	}

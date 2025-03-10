@@ -4,12 +4,11 @@
 namespace Peach
 {
 	Entity::Entity()
-		: Entity(true)
-	{
+		: Entity(true) {
 	}
 
-	Entity::Entity(bool debuglog)
-		: m_DebugLog(debuglog)
+	Entity::Entity(bool debugLog)
+		: m_DebugLog(debugLog)
 	{
 		if (m_DebugLog)
 		{

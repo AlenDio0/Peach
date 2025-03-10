@@ -17,7 +17,7 @@ namespace Peach
 		m_MouseBinds.emplace_back(button, callback, description);
 	}
 
-	void InputController::handleEvent(sf::Event event)
+	void InputController::handleEvent(const sf::Event& event)
 	{
 		switch (event.type)
 		{
@@ -30,7 +30,7 @@ namespace Peach
 		}
 	}
 
-	void InputController::onKeyPressedEvent(sf::Event::KeyEvent event)
+	void InputController::onKeyPressedEvent(const sf::Event::KeyEvent event)
 	{
 		for (const auto& [key, callback, description] : m_KeyBinds)
 		{
@@ -47,7 +47,7 @@ namespace Peach
 		}
 	}
 
-	void InputController::onMousePressedEvent(sf::Event::MouseButtonEvent event)
+	void InputController::onMousePressedEvent(const sf::Event::MouseButtonEvent event)
 	{
 		for (const auto& [button, callback, description] : m_MouseBinds)
 		{
@@ -64,12 +64,12 @@ namespace Peach
 		}
 	}
 
-	std::string InputController::keyToString(sf::Keyboard::Key key) const
+	std::string InputController::keyToString(const sf::Keyboard::Key key) const
 	{
 		return sf::Keyboard::getDescription(sf::Keyboard::delocalize(key)).toAnsiString();
 	}
 
-	std::string InputController::buttonToString(sf::Mouse::Button button) const
+	std::string InputController::buttonToString(const sf::Mouse::Button button) const
 	{
 		using Button = sf::Mouse::Button;
 		switch (button)

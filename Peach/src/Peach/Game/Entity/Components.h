@@ -17,8 +17,7 @@ namespace Peach
 	{
 		ID() = default;
 		ID(size_t id)
-			: id(id)
-		{
+			: id(id) {
 		}
 
 		operator size_t() const { return id; }
@@ -31,8 +30,7 @@ namespace Peach
 	{
 		Tag() = default;
 		Tag(std::string_view tag)
-			: tag(tag)
-		{
+			: tag(tag) {
 		}
 
 		operator std::string_view() const { return tag; }
@@ -45,8 +43,7 @@ namespace Peach
 	{
 		Transform() = default;
 		Transform(Vec2f position, Vec2f scale)
-			: position(position), scale(scale)
-		{
+			: position(position), scale(scale) {
 		}
 
 		Vec2f position;
@@ -57,8 +54,7 @@ namespace Peach
 	{
 		RigidBody() = default;
 		RigidBody(FloatRect hitbox, bool collide)
-			: hitbox(hitbox), collide(collide)
-		{
+			: hitbox(hitbox), collide(collide) {
 		}
 
 		FloatRect hitbox;
@@ -77,12 +73,10 @@ namespace Peach
 	{
 		LinearMovement() = default;
 		LinearMovement(Vec2f speed)
-			: speed(speed)
-		{
+			: speed(speed) {
 		}
 		LinearMovement(float x, float y)
-			: speed(x, y)
-		{
+			: speed(x, y) {
 		}
 
 		Vec2f speed;
@@ -91,13 +85,12 @@ namespace Peach
 	struct AccelerationMovement : public Movement
 	{
 		AccelerationMovement() = default;
-		AccelerationMovement(Vec2f minvelocity, Vec2f maxvelocity, float acceleration)
-			: minvelocity(minvelocity), maxvelocity(maxvelocity), acceleration(acceleration)
-		{
+		AccelerationMovement(Vec2f minVelocity, Vec2f maxVelocity, float acceleration)
+			: minVelocity(minVelocity), maxVelocity(maxVelocity), acceleration(acceleration) {
 		}
 
-		Vec2f minvelocity;
-		Vec2f maxvelocity;
+		Vec2f minVelocity;
+		Vec2f maxVelocity;
 		float acceleration = 0.f;
 	};
 }

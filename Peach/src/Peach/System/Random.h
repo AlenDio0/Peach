@@ -14,7 +14,7 @@ namespace Peach
 			return s_Distribution(s_Engine);
 		}
 
-		static uint32_t getUInt(uint32_t min, uint32_t max)
+		static uint32_t getUInt(const uint32_t min, const uint32_t max)
 		{
 			return min + (getUInt() % (max - min + 1));
 		}

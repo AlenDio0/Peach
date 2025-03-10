@@ -3,11 +3,11 @@
 
 namespace Peach
 {
-	TileMap&& TileMapParser::parse(const std::filesystem::path& filepath, const sf::Texture& texture)
+	TileMap&& TileMapParser::parse(const std::filesystem::path& filePath, const sf::Texture& texture)
 	{
 		TileMap* tilemap = new TileMap(texture);
 
-		open(filepath);
+		open(filePath);
 		while (!isEOF())
 		{
 			std::string buff = consumeLine();

@@ -17,7 +17,7 @@ namespace Peach
 
 		void update();
 
-		void addState(Ref<State> newstate, bool replacing);
+		void addState(Ref<State> newState, bool replacing);
 		void removeState();
 
 		void clear();

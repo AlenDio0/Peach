@@ -10,8 +10,8 @@ public:
 	GameState(Peach::Ref<Peach::Data> data);
 	~GameState();
 
-	virtual void onEvent(sf::Event event) override;
-	virtual void onUpdate(float deltaTime) override;
+	virtual void onEvent(const sf::Event& event) override;
+	virtual void onUpdate(const float deltaTime) override;
 	virtual void onRender() override;
 private:
 	class Player : public Peach::GameObject

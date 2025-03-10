@@ -47,7 +47,7 @@ namespace Peach
 			return std::dynamic_pointer_cast<T>(getEntity(uuid));
 		}
 
-		void update(float deltaTime);
+		void update(const float deltaTime);
 	private:
 		EntityMap m_Entities;
 	};

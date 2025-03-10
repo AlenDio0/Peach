@@ -16,13 +16,13 @@ GameState::~GameState()
 {
 }
 
-void GameState::onEvent(sf::Event event)
+void GameState::onEvent(const sf::Event& event)
 {
 	getWindow().handleEvent(event);
 	m_Input.handleEvent(event);
 }
 
-void GameState::onUpdate(float deltaTime)
+void GameState::onUpdate(const float deltaTime)
 {
 	m_Level.update(deltaTime);
 
@@ -31,9 +31,9 @@ void GameState::onUpdate(float deltaTime)
 
 void GameState::onRender()
 {
-	getRenderer()->setView(getRenderer()->getDefaultView());
+	getRenderer().setView(getRenderer().getDefaultView());
 
-	getRenderer()->clear();
+	getRenderer().clear();
 
 	m_Level.render(getRenderer());
 	m_Physics.renderBoxes(getRenderer());

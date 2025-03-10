@@ -21,27 +21,22 @@ namespace Peach
 		};
 
 		Rect()
-			: Rect(0, 0, 0, 0)
-		{
+			: Rect(0, 0, 0, 0) {
 		}
 		Rect(const T& x, const T& y, const T& width, const T& height)
-			: x(x), y(y), width(width), height(height)
-		{
+			: x(x), y(y), width(width), height(height) {
 		}
 		template<typename U = T>
 		Rect(const Rect<U>& rect)
-			: x((T)rect.x), y((T)rect.y), width((T)rect.width), height((T)rect.height)
-		{
+			: x((T)rect.x), y((T)rect.y), width((T)rect.width), height((T)rect.height) {
 		}
 		template<typename U = T>
 		Rect(const Vec2<U>& position, const Vec2<U>& size)
-			: position(position), size(size)
-		{
+			: position(position), size(size) {
 		}
 		template<typename U = T>
 		Rect(const sf::Rect<U>& rect)
-			: x((T)rect.left), y((T)rect.top), width((T)rect.width), height((T)rect.height)
-		{
+			: x((T)rect.left), y((T)rect.top), width((T)rect.width), height((T)rect.height) {
 		}
 
 		template<typename U = T>
@@ -49,12 +44,12 @@ namespace Peach
 
 		// FUNCTIONS
 
-		const T& operator[](size_t index) const
+		const T& operator[](const size_t index) const
 		{
 			switch (index)
 			{
 			default:
-				throw std::out_of_range("rect index out of range");
+				throw std::out_of_range("Rect index out of range");
 			case 0:
 				return x;
 			case 1:
@@ -65,12 +60,12 @@ namespace Peach
 				return height;
 			}
 		}
-		T& operator[](size_t index)
+		T& operator[](const size_t index)
 		{
 			switch (index)
 			{
 			default:
-				throw std::out_of_range("rect index out of range");
+				throw std::out_of_range("Rect index out of range");
 			case 0:
 				return x;
 			case 1:
@@ -86,7 +81,7 @@ namespace Peach
 		T area() const { return size.area(); }
 		Vec2<T> center() const { return max().center(); }
 
-		bool contains(Vec2<T> point) const { return (point.x >= x && point.x < max().x) && (point.y >= y && point.y < max().y); }
+		bool contains(const Vec2<T> point) const { return (point.x >= x && point.x < max().x) && (point.y >= y && point.y < max().y); }
 
 		// OPERATIONS
 

@@ -18,7 +18,7 @@ namespace Peach
 		m_Objects.clear();
 	}
 
-	UUID GuiManager::add(Ref<GuiObject> object)
+	UUID GuiManager::add(const Ref<GuiObject>& object)
 	{
 		UUID uuid;
 
@@ -38,13 +38,13 @@ namespace Peach
 		return add(Ref<GuiObject>(object));
 	}
 
-	void GuiManager::remove(UUID uuid)
+	void GuiManager::remove(const UUID uuid)
 	{
 		PEACH_CORE_TRACE("GuiManager::remove(uuid: {})", uuid);
 		m_Objects.erase(uuid);
 	}
 
-	void GuiManager::remove(Ref<GuiObject> object)
+	void GuiManager::remove(const Ref<GuiObject>& object)
 	{
 		PEACH_CORE_TRACE("GuiManager::remove(object: {})", object);
 		for (auto& [uuid, value] : m_Objects)
@@ -93,15 +93,15 @@ namespace Peach
 		}
 	}
 
-	void GuiManager::update()
+	void GuiManager::update(const float deltaTime)
 	{
 		for (auto& [uuid, object] : m_Objects)
 		{
-			object->update();
+			object->update(deltaTime);
 		}
 	}
 
-	void GuiManager::render(sf::RenderTarget* target) const
+	void GuiManager::render(sf::RenderTarget& target) const
 	{
 		for (const auto& [uuid, object] : m_Objects)
 		{

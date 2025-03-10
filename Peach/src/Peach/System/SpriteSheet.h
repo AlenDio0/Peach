@@ -20,7 +20,7 @@ namespace Peach
 		const Vec2u& getSize() const;
 
 		size_t getMaxID() const;
-		IntRect getRect(size_t id) const;
+		IntRect getRect(const size_t id) const;
 	private:
 		const sf::Texture* m_Texture;
 		Vec2u m_SpriteSize;

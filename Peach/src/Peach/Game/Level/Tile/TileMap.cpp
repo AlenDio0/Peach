@@ -4,16 +4,14 @@
 namespace Peach
 {
 	TileMap::TileMap()
-		: TileMap(sf::Texture())
-	{
+		: TileMap(sf::Texture()) {
 	}
 
 	TileMap::TileMap(const sf::Texture& texture)
-		: TileMap(texture, {}, {}, { 1, 1 })
-	{
+		: TileMap(texture, {}, {}, { 1, 1 }) {
 	}
 
-	TileMap::TileMap(const sf::Texture& texture, const Vec2u& mapsize, const Vec2f& tilesize, const Vec2u& spritesize)
+	TileMap::TileMap(const sf::Texture& texture, const Vec2u mapsize, const Vec2f tilesize, const Vec2u spritesize)
 		: m_TileSize(tilesize), m_SpriteSheet(texture, spritesize)
 	{
 		setSize(mapsize);
@@ -42,7 +40,7 @@ namespace Peach
 		}
 	}
 
-	void TileMap::setSize(const Vec2u& newsize)
+	void TileMap::setSize(const Vec2u newsize)
 	{
 		if (m_Size == newsize)
 		{
@@ -72,13 +70,13 @@ namespace Peach
 		adjustTiles();
 	}
 
-	void TileMap::setTileSize(const Vec2f& newsize)
+	void TileMap::setTileSize(const Vec2f newsize)
 	{
 		m_TileSize = newsize;
 		adjustTiles();
 	}
 
-	void TileMap::setSpriteSize(const Vec2u& newsize)
+	void TileMap::setSpriteSize(const Vec2u newsize)
 	{
 		m_SpriteSheet.setSpriteSize(newsize);
 		adjustTiles();
@@ -94,7 +92,7 @@ namespace Peach
 		return m_TileSize;
 	}
 
-	std::weak_ptr<Tile> TileMap::getTile(const MapKey& key) const
+	std::weak_ptr<Tile> TileMap::getTile(const MapKey key) const
 	{
 		try
 		{
@@ -153,7 +151,7 @@ namespace Peach
 		return cachedTiles;
 	}
 
-	void TileMap::update(float deltaTime)
+	void TileMap::update(const float deltaTime)
 	{
 		for (auto& [position, tile] : m_Map)
 		{
@@ -161,7 +159,7 @@ namespace Peach
 		}
 	}
 
-	void TileMap::render(sf::RenderTarget* target, const IntRect& view, bool convertrect) const
+	void TileMap::render(sf::RenderTarget& target, const IntRect view, bool convertrect) const
 	{
 		int x = view.x;
 		int y = view.y;
@@ -191,14 +189,14 @@ namespace Peach
 				}
 			}
 
-			target->draw(*tile);
+			target.draw(*tile);
 		}
 	}
-	void TileMap::render(sf::RenderTarget* target) const
+	void TileMap::render(sf::RenderTarget& target) const
 	{
 		for (const auto& [position, tile] : m_Map)
 		{
-			target->draw(*tile);
+			target.draw(*tile);
 		}
 	}
 

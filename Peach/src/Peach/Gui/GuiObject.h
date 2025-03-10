@@ -23,45 +23,45 @@ namespace Peach
 			{
 			}
 			Appearance(float outline, sf::Color primary, sf::Color secondary, sf::Color background)
-				: outline_thickness(outline), primary_color(primary), secondary_color(secondary), background_color(background)
+				: outlineThickness(outline), primaryColor(primary), secondaryColor(secondary), backgroundColor(background)
 			{
 			}
 
-			float outline_thickness;
+			float outlineThickness;
 
-			sf::Color primary_color;
-			sf::Color secondary_color;
-			sf::Color background_color;
+			sf::Color primaryColor;
+			sf::Color secondaryColor;
+			sf::Color backgroundColor;
 		};
 	public:
-		GuiObject(sf::Shape& container, bool debuglog = true);
+		GuiObject(sf::Shape& container, bool debugLog = true);
 		virtual ~GuiObject();
 
-		void addCallback(sf::Event::EventType type, const std::function<void(GuiObject&, sf::Event)>& callback);
-		virtual void setSize(Vec2f size) = 0;
-		virtual void setPosition(Vec2f position);
+		void addCallback(const sf::Event::EventType type, const std::function<void(GuiObject&, sf::Event)>& callback);
+		virtual void setSize(const Vec2f size) = 0;
+		virtual void setPosition(const Vec2f position);
 
-		void setAppearance(Appearance appearance);
-		void setOutlineThickness(float thickness);
-		void setPrimaryColor(sf::Color color);
-		void setSecondaryColor(sf::Color color);
-		void setBackgroundColor(sf::Color color);
+		void setAppearance(const Appearance appearance);
+		void setOutlineThickness(const float thickness);
+		void setPrimaryColor(const sf::Color color);
+		void setSecondaryColor(const sf::Color color);
+		void setBackgroundColor(const sf::Color color);
 
 		Vec2f getSize() const;
 		Vec2f getPosition() const;
-		bool isCursorOn(Vec2i mouseposition) const;
-		bool isCursorOn(sf::Event::MouseMoveEvent event) const;
-		bool isCursorOn(sf::Event::MouseButtonEvent event) const;
+		bool isCursorOn(const Vec2i mouseposition) const;
+		bool isCursorOn(const sf::Event::MouseMoveEvent event) const;
+		bool isCursorOn(const sf::Event::MouseButtonEvent event) const;
 
 		Appearance getAppearance() const;
 
-		void callback(sf::Event event);
-		void handleEvent(sf::Event event);
+		void callback(const sf::Event& event);
+		void handleEvent(const sf::Event& event);
 
-		virtual void update() = 0;
-		virtual void render(sf::RenderTarget* target) const = 0;
+		virtual void update(const float deltaTime) = 0;
+		virtual void render(sf::RenderTarget& target) const = 0;
 	protected:
-		virtual void handleSpecEvent(sf::Event event);
+		virtual void handleSpecEvent(const sf::Event& event);
 	private:
 		struct EventCallback
 		{

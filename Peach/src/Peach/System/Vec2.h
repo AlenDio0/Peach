@@ -11,22 +11,18 @@ namespace Peach
 		T x, y;
 
 		Vec2()
-			: Vec2(0, 0)
-		{
+			: Vec2(0, 0) {
 		}
 		Vec2(const T& x, const T& y)
-			: x(x), y(y)
-		{
+			: x(x), y(y) {
 		}
 		template<typename U = T>
 		Vec2(const Vec2<U>& vec)
-			: x((T)vec.x), y((T)vec.y)
-		{
+			: x((T)vec.x), y((T)vec.y) {
 		}
 		template<typename U = T>
 		Vec2(const sf::Vector2<U>& vec)
-			: x((T)vec.x), y((T)vec.y)
-		{
+			: x((T)vec.x), y((T)vec.y) {
 		}
 
 		template<typename U = T>
@@ -34,24 +30,24 @@ namespace Peach
 
 		// FUNCTIONS
 
-		const T& operator[](size_t index) const
+		const T& operator[](const size_t index) const
 		{
 			switch (index)
 			{
 			default:
-				throw std::out_of_range("vec2 index out of range");
+				throw std::out_of_range("Vec2 index out of range");
 			case 0:
 				return x;
 			case 1:
 				return y;
 			}
 		}
-		T& operator[](size_t index)
+		T& operator[](const size_t index)
 		{
 			switch (index)
 			{
 			default:
-				throw std::out_of_range("vec2 index out of range");
+				throw std::out_of_range("Vec2 index out of range");
 			case 0:
 				return x;
 			case 1:

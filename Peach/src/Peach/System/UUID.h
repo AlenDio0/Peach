@@ -10,7 +10,7 @@ namespace Peach
 	{
 	public:
 		UUID();
-		UUID(size_t uuid);
+		UUID(const size_t uuid);
 
 		operator size_t() const { return m_UUID; }
 

@@ -10,12 +10,10 @@ namespace Peach
 	static std::uniform_int_distribution<size_t> s_UniformDistribution((size_t)pow(10, 19));
 
 	UUID::UUID()
-		: m_UUID(s_UniformDistribution(s_Engine))
-	{
+		: m_UUID(s_UniformDistribution(s_Engine)) {
 	}
 
-	UUID::UUID(size_t uuid)
-		: m_UUID(uuid)
-	{
+	UUID::UUID(const size_t uuid)
+		: m_UUID(uuid) {
 	}
 }

@@ -80,9 +80,9 @@ namespace Peach
 		close();
 	}
 
-	sf::RenderTarget* Window::getRenderer()
+	sf::RenderTarget& Window::getRenderer()
 	{
-		return m_Window.get();
+		return *m_Window.get();
 	}
 
 	void Window::display()

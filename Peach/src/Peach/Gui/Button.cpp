@@ -3,7 +3,7 @@
 
 namespace Peach
 {
-	Button::Button(Vec2f size, const sf::String& label, const sf::Font& font)
+	Button::Button(const Vec2f size, const sf::String& label, const sf::Font& font)
 		: GuiObject(m_Container, false), m_TextLabel(label, font), m_Hover(false)
 	{
 		PEACH_CORE_TRACE("Button costruito");
@@ -18,7 +18,7 @@ namespace Peach
 		PEACH_CORE_TRACE("Button distrutto");
 	}
 
-	void Button::setPosition(Vec2f position)
+	void Button::setPosition(const Vec2f position)
 	{
 		m_Container.setPosition(position);
 		m_TextLabel.setPosition
@@ -28,7 +28,7 @@ namespace Peach
 		);
 	}
 
-	void Button::setSize(Vec2f size)
+	void Button::setSize(const Vec2f size)
 	{
 		m_Container.setSize(size);
 		setCharSize((sf::Uint32)(size.y / 1.75f));
@@ -41,7 +41,7 @@ namespace Peach
 		m_TextLabel.setString(label);
 	}
 
-	void Button::setCharSize(uint32_t size)
+	void Button::setCharSize(const uint32_t size)
 	{
 		m_TextLabel.setCharacterSize(size);
 
@@ -55,7 +55,7 @@ namespace Peach
 		setPosition(getPosition());
 	}
 
-	void Button::setLabelStyle(sf::Text::Style style)
+	void Button::setLabelStyle(const sf::Text::Style style)
 	{
 		m_TextLabel.setStyle(style);
 
@@ -67,7 +67,7 @@ namespace Peach
 		return m_TextLabel.getString();
 	}
 
-	void Button::handleSpecEvent(sf::Event event)
+	void Button::handleSpecEvent(const sf::Event& event)
 	{
 		switch (event.type)
 		{
@@ -80,7 +80,7 @@ namespace Peach
 		}
 	}
 
-	void Button::onMouseMovedEvent(sf::Event::MouseMoveEvent event)
+	void Button::onMouseMovedEvent(const sf::Event::MouseMoveEvent event)
 	{
 		if (isCursorOn(event))
 		{
@@ -92,7 +92,7 @@ namespace Peach
 		}
 	}
 
-	void Button::onMousePressedEvent(sf::Event::MouseButtonEvent event)
+	void Button::onMousePressedEvent(const sf::Event::MouseButtonEvent event)
 	{
 		if (isCursorOn(event))
 		{
@@ -100,7 +100,7 @@ namespace Peach
 		}
 	}
 
-	void Button::update()
+	void Button::update(const float deltaTime)
 	{
 		const auto [_, primary, secondary, background] = getAppearance();
 		sf::Color inverted_background = sf::Color(primary.r, primary.g, primary.b, 200u);
@@ -119,9 +119,9 @@ namespace Peach
 		m_Container.setFillColor(background);
 	}
 
-	void Button::render(sf::RenderTarget* target) const
+	void Button::render(sf::RenderTarget& target) const
 	{
-		target->draw(m_Container);
-		target->draw(m_TextLabel);
+		target.draw(m_Container);
+		target.draw(m_TextLabel);
 	}
 }
