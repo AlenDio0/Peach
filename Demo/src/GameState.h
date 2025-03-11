@@ -53,6 +53,25 @@ private:
 			}
 		}
 	};
+	class NPC : public Peach::GameObject
+	{
+	public:
+		NPC(const Peach::Texture& texture, Peach::Vec2f position)
+			: GameObject(texture)
+		{
+			getTransform().position = position;
+
+			addComponent<Peach::RigidBody>(Peach::FloatRect(Peach::Vec2f(0.f, 0.f), Peach::Vec2f(texture.getSize()) * getTransform().scale), true);
+			//addComponent<Peach::LinearMovement>(200.f, 200.f);
+		}
+		~NPC() = default;
+
+		void update(float deltaTime)
+		{
+			//auto& movement = *has<Peach::LinearMovement>().lock();
+			//Peach::Vec2f& velocity = movement.velocity, speed = movement.speed;
+		}
+	};
 
 private:
 	Peach::Level m_Level;

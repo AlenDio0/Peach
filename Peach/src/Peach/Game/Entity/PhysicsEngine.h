@@ -36,10 +36,10 @@ namespace Peach
 
 			bool isColliding(const Box& r) const
 			{
-				return position.x + hitbox.x < r.position.x + r.hitbox.width &&			// LEFT
-					position.x + hitbox.width > r.position.x + r.hitbox.x - hitbox.x &&	// RIGHT
-					position.y + hitbox.y < r.position.y + r.hitbox.height &&			// TOP
-					position.y + hitbox.height > r.position.y + r.hitbox.y - hitbox.y;	// BOTTOM
+				return position.x + hitbox.x < r.position.x + r.hitbox.max().x &&	// LEFT-RIGHT
+					position.x + hitbox.max().x > r.position.x + r.hitbox.x &&		// RIGHT-LEFT
+					position.y + hitbox.y < r.position.y + r.hitbox.max().y &&		// TOP-BOTTOM
+					position.y + hitbox.max().y > r.position.y + r.hitbox.y;		// BOTTOM-TOP
 			}
 
 			void operator=(const Box& r) {}

@@ -6,6 +6,8 @@ GameState::GameState(Peach::Ref<Peach::Data> data)
 	m_Player(getTexture("player"), Peach::Vec2f(m_Level.getTileMap().getTileSize() * 3))
 {
 	m_Level.getEntityManager().add(Peach::MakeRef<Player>(m_Player));
+	m_Level.getEntityManager().add(Peach::MakeRef<Player>(getTexture("player"), Peach::Vec2(m_Level.getTileMap().getTileSize() * 3.2f)));
+	m_Level.getEntityManager().add(Peach::MakeRef<NPC>(getTexture("player"), Peach::Vec2f(200.f, 100.f)));
 
 	m_Physics.setGravity(0.f);
 
