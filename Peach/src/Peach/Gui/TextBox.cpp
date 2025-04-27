@@ -147,12 +147,12 @@ namespace Peach
 			m_Length = length > max ? max : length;
 		}
 
-		if (m_Index > m_Length)
+		/*if (m_Index > m_Length)
 		{
 			setIndex(m_Length);
-		}
+		}*/
 
-		if (truncate && lastLength > m_Length)
+		if (truncate)
 		{
 			setBuff(m_Buff.str().substr(0, m_Length));
 		}
@@ -203,12 +203,12 @@ namespace Peach
 
 				if (!isLast)
 				{
-					const float relative_mouse_x = x + (m_TextLabel.getGlobalBounds().width / (float)(getBuffLength() * 2));
-					const float char_x = m_TextLabel.findCharacterPos(i).x;
-					const float next_char_x = m_TextLabel.findCharacterPos(i + 1).x;
+					const float relativeMouseX = x + (m_TextLabel.getGlobalBounds().width / (float)(getBuffLength() * 2));
+					const float charX = m_TextLabel.findCharacterPos(i).x;
+					const float nextCharX = m_TextLabel.findCharacterPos(i + 1).x;
 
-					const bool isInbounds = relative_mouse_x >= char_x && relative_mouse_x <= next_char_x;
-					const bool isBefore = relative_mouse_x <= char_x && isFirst;
+					const bool isInbounds = relativeMouseX >= charX && relativeMouseX <= nextCharX;
+					const bool isBefore = relativeMouseX <= charX && isFirst;
 
 					isOnMouse = isInbounds || isBefore;
 				}
@@ -245,45 +245,11 @@ namespace Peach
 		switch (input)
 		{
 		default:
-		{
-			if (m_Restriction)
-			{
-				if (!(m_Restriction(input) || (input == ' ' && m_Space)))
-				{
-					m_Blink = true;
-					return;
-				}
-			}
-
-			if (m_Index == getBuffLength())
-			{
-				m_Buff << (char)input;
-				setIndex(m_Index + 1);
-				break;
-			}
-
-			std::string firstHalf = getBuff().substr(0, m_Index);
-			firstHalf += (char)input;
-			std::string secondHalf = getBuff().substr(m_Index);
-
-			setBuff(firstHalf.append(secondHalf));
-			setIndex(m_Index + 1);
+			insertIndexChar(input);
 			break;
-		}
 		case DELETE_KEY:
-		{
-			if (getBuff().empty() || m_Index == 0)
-			{
-				return;
-			}
-
-			std::string firstHalf = getBuff().substr(0, m_Index - 1);
-			std::string secondHalf = getBuff().substr(m_Index);
-
-			setBuff(firstHalf.append(secondHalf));
-			setIndex(m_Index - 1);
-		}
-		break;
+			deleteIndexChar();
+			break;
 		case ESCAPE_KEY:
 		case ENTER_KEY:
 			setSelected(false);
@@ -307,27 +273,33 @@ namespace Peach
 		switch (input)
 		{
 		case sf::Keyboard::Key::Right:
-			setIndex(m_Index + 1);
-			break;
-		case sf::Keyboard::Key::Left:
-			setIndex(m_Index - 1);
-			break;
-		case sf::Keyboard::Key::Up:
-			setIndex(0);
+			setIndex(event.control ? getBuffLength() : m_Index + 1);
 			break;
 		case sf::Keyboard::Key::Down:
 			setIndex(getBuffLength());
 			break;
+		case sf::Keyboard::Key::Left:
+			setIndex(event.control ? 0 : m_Index - 1);
+			break;
+		case sf::Keyboard::Key::Up:
+			setIndex(0);
+			break;
 		case sf::Keyboard::Key::BackSpace:
 			if (event.control)
 			{
-				if (getBuff().empty() || m_Index == 0)
-				{
-					break;
-				}
-
-				setBuff(getBuff().substr(m_Index));
-				setIndex(0);
+				deleteBeforeIndex();
+			}
+			break;
+		case sf::Keyboard::Key::C:
+			if (event.control)
+			{
+				copyClipboard();
+			}
+			break;
+		case sf::Keyboard::Key::V:
+			if (event.control)
+			{
+				pasteClipboard();
 			}
 			break;
 		}
@@ -418,5 +390,93 @@ namespace Peach
 		{
 			target.draw(m_Indicator);
 		}
+	}
+
+	void TextBox::insertIndexChar(int input)
+	{
+		if (m_Restriction)
+		{
+			if (!(m_Restriction(input) || (input == ' ' && m_Space)))
+			{
+				m_Blink = true;
+				return;
+			}
+		}
+
+		if (m_Index == getBuffLength())
+		{
+			m_Buff << (char)input;
+			setIndex(m_Index + 1);
+			return;
+		}
+
+		std::string firstHalf = getBuff().substr(0, m_Index) + (char)input;
+		std::string secondHalf = getBuff().substr(m_Index);
+
+		setBuff(std::string(firstHalf + secondHalf));
+		setIndex(m_Index + 1);
+	}
+
+	void TextBox::deleteIndexChar()
+	{
+		if (getBuff().empty() || m_Index == 0)
+		{
+			return;
+		}
+
+		std::string firstHalf = getBuff().substr(0, m_Index - 1);
+		std::string secondHalf = getBuff().substr(m_Index);
+
+		setBuff(std::string(firstHalf + secondHalf));
+		setIndex(m_Index - 1);
+	}
+
+	void TextBox::deleteBeforeIndex()
+	{
+		if (getBuff().empty() || m_Index == 0)
+		{
+			return;
+		}
+
+		setBuff(getBuff().substr(m_Index));
+		setIndex(0);
+	}
+
+	void TextBox::copyClipboard() const
+	{
+		if (getBuff().empty())
+		{
+			return;
+		}
+
+		sf::Clipboard::setString(getBuff());
+	}
+
+	void TextBox::pasteClipboard()
+	{
+		if (isOverLimit())
+		{
+			return;
+		}
+
+		std::string clipboard = sf::Clipboard::getString();
+		if (getBuff().size() + clipboard.size() > m_Length)
+		{
+			return;
+		}
+
+		for (const char c : clipboard)
+		{
+			if (!m_Restriction(c))
+			{
+				return;
+			}
+		}
+
+		std::string firstHalf = getBuff().substr(0, m_Index) + clipboard;
+		std::string secondHalf = getBuff().substr(m_Index);
+
+		setBuff(std::string(firstHalf + secondHalf));
+		setIndex(firstHalf.size());
 	}
 }

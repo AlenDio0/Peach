@@ -76,7 +76,7 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	textbox1->addCallback(sf::Event::KeyPressed,
 		[&](Peach::GuiObject* obj, sf::Event event) {
 			auto& keyEvent = event.key;
-			if (keyEvent.code != sf::Keyboard::E)
+			if (keyEvent.code != sf::Keyboard::Add)
 			{
 				return;
 			}

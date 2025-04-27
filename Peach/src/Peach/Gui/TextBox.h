@@ -66,5 +66,11 @@ namespace Peach
 			ENTER_KEY = 13,
 			ESCAPE_KEY = 27,
 		};
+	private:
+		void insertIndexChar(int input);
+		void deleteIndexChar();
+		void deleteBeforeIndex();
+		void copyClipboard() const;
+		void pasteClipboard();
 	};
 }
