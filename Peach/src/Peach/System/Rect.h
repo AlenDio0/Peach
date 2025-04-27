@@ -143,3 +143,18 @@ namespace Peach
 	using UIntRect = Rect<unsigned int>;
 	using FloatRect = Rect<float>;
 }
+
+// FIXME: Doesn't work with std::unordered_map<Peach::Rect<T>, U>
+/*
+namespace std
+{
+	template<typename T>
+	struct hash<Peach::Rect<T>>
+	{
+		size_t operator()(const Peach::Rect<T>& key)
+		{
+			return hash<std::string>()(std::to_string(key.x) + "," + std::to_string(key.y) + "," + std::to_string(key.width) + "," + std::to_string(key.height));
+		}
+	};
+}
+*/
