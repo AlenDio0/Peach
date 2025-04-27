@@ -77,19 +77,15 @@ namespace Peach
 		case sf::Event::MouseButtonPressed:
 			onMousePressedEvent(event.mouseButton);
 			break;
+		case sf::Event::MouseButtonReleased:
+			onMouseReleasedEvent(event.mouseButton);
+			break;
 		}
 	}
 
 	void Button::onMouseMovedEvent(const sf::Event::MouseMoveEvent event)
 	{
-		if (isCursorOn(event))
-		{
-			m_Hover = true;
-		}
-		else
-		{
-			m_Hover = false;
-		}
+		m_Hover = isCursorOn(event);
 	}
 
 	void Button::onMousePressedEvent(const sf::Event::MouseButtonEvent event)
@@ -97,6 +93,14 @@ namespace Peach
 		if (isCursorOn(event))
 		{
 			m_Hover = false;
+		}
+	}
+
+	void Button::onMouseReleasedEvent(const sf::Event::MouseButtonEvent event)
+	{
+		if (isCursorOn(event))
+		{
+			m_Hover = true;
 		}
 	}
 

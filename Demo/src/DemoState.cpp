@@ -35,14 +35,14 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	button1->setLabelStyle(sf::Text::Bold);
 	button1->setPosition({ (getRenderer().getSize().x - button1->getSize().x) / 2.f, 100 });
 	button1->addCallback(sf::Event::MouseButtonPressed,
-		[&](Peach::GuiObject& obj, sf::Event event) {
+		[&](Peach::GuiObject* obj, sf::Event event) {
 			auto& buttonEvent = event.mouseButton;
 			if (buttonEvent.button != sf::Mouse::Button::Left)
 			{
 				return;
 			}
 
-			if (obj.isCursorOn(buttonEvent))
+			if (obj->isCursorOn(buttonEvent))
 			{
 				PEACH_INFO("RIMPIAZZA");
 				addState<DemoState>(true);
@@ -54,14 +54,14 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	button2->setLabelStyle(sf::Text::Italic);
 	button2->setPosition({ (getRenderer().getSize().x - button2->getSize().x) / 2.f, 165 });
 	button2->addCallback(sf::Event::MouseButtonPressed,
-		[&](Peach::GuiObject& obj, sf::Event event) {
+		[&](Peach::GuiObject* obj, sf::Event event) {
 			auto& buttonEvent = event.mouseButton;
 			if (buttonEvent.button != sf::Mouse::Button::Left)
 			{
 				return;
 			}
 
-			if (obj.isCursorOn(buttonEvent))
+			if (obj->isCursorOn(buttonEvent))
 			{
 				PEACH_INFO("GIOCA");
 				addState<GameState>(false);
@@ -75,6 +75,25 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	textbox1->setRestriction(isalnum);
 	textbox1->setAppearance({ 2.f, sf::Color::Black, sf::Color::Black, sf::Color::White });
 	textbox1->setPosition({ (getRenderer().getSize().x - textbox1->getSize().x) / 2.f, 250 });
+	textbox1->addCallback(sf::Event::KeyPressed,
+		[&](Peach::GuiObject* obj, sf::Event event) {
+			auto& keyEvent = event.key;
+			if (keyEvent.code != sf::Keyboard::Add)
+			{
+				return;
+			}
+
+			if (auto textbox = dynamic_cast<Peach::TextBox*>(obj))
+			{
+				if (!textbox->isSelected())
+				{
+					return;
+				}
+
+				textbox->setLength(textbox->getBuffLength() - 2);
+			}
+		}
+	);
 
 	textbox2->setRestriction(isdigit, false);
 	textbox2->setAppearance({ 2.f, sf::Color::Magenta, sf::Color::Green, sf::Color::White });

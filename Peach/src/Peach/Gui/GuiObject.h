@@ -37,7 +37,7 @@ namespace Peach
 		GuiObject(sf::Shape& container, bool debugLog = true);
 		virtual ~GuiObject();
 
-		void addCallback(const sf::Event::EventType type, const std::function<void(GuiObject&, sf::Event)>& callback);
+		void addCallback(const sf::Event::EventType type, const std::function<void(GuiObject*, sf::Event)>& callback);
 		virtual void setSize(const Vec2f size) = 0;
 		virtual void setPosition(const Vec2f position);
 
@@ -66,7 +66,7 @@ namespace Peach
 		struct EventCallback
 		{
 			sf::Event::EventType type;
-			std::function<void(GuiObject&, sf::Event)> callback;
+			std::function<void(GuiObject*, sf::Event)> callback;
 		};
 	private:
 		sf::Shape* m_Shape;

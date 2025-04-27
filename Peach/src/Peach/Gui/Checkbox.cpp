@@ -37,6 +37,11 @@ namespace Peach
 		setSize(getSize());
 	}
 
+	void Checkbox::toggle()
+	{
+		m_Active = !m_Active;
+	}
+
 	bool Checkbox::isActive() const
 	{
 		return m_Active;
@@ -61,7 +66,7 @@ namespace Peach
 
 		if (isCursorOn(event))
 		{
-			m_Active = !m_Active;
+			toggle();
 		}
 	}
 
