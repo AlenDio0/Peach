@@ -12,3 +12,5 @@
 #include "System/InputController.h"
 
 #include "System/Parser.h"
+
+#include "System/Timer.h"

@@ -9,6 +9,8 @@
 DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	: AppState(data, "Demo")
 {
+	Peach::ScopeTimer timer = Peach::ScopeTimer("DemoState");
+
 	Peach::Button* button1 = new Peach::Button({ 225.f, 55.f }, "RIMPIAZZA", getFont("consola"));
 	Peach::Button* button2 = new Peach::Button({ 225.f, 55.f }, "GIOCA", getFont("consola"));
 

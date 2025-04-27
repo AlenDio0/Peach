@@ -160,3 +160,18 @@ namespace Peach
 	using Vec2u = Vec2<unsigned int>;
 	using Vec2f = Vec2<float>;
 }
+
+// FIXME: Doesn't work with std::unordered_map<Peach::Vec2<T>, U>
+/*
+namespace std
+{
+	template<typename T>
+	struct hash<Peach::Vec2<T>>
+	{
+		size_t operator()(const Peach::Vec2<T>& key)
+		{
+			return hash<std::string>()(std::to_string(key.x) + "," + std::to_string(key.y));
+		}
+	};
+}
+*/
