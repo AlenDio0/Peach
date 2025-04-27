@@ -15,19 +15,26 @@ namespace Peach
 		TextBox(const Vec2f size, const sf::Font& font, const std::string_view placeholder, const size_t length, bool selected);
 		virtual ~TextBox() override;
 
+		void setBuff(const std::string& buff);
 		void setIndex(const size_t index);
 		void setSelected(bool selected);
 		void setRestriction(const std::function<bool(int)>& restriciton, bool space = true);
 		virtual void setSize(const Vec2f size) override;
 		virtual void setPosition(const Vec2f position) override;
 		void setPlaceholder(const std::string_view placeHolder);
-		void setCharSize(const uint32_t size);
+		void setCharSize(const uint32_t size, bool force = false, bool adjustLength = false);
+		void setLength(const size_t length, bool truncate = true, bool force = false, bool adjustCharSize = false);
 		void setFont(const sf::Font& font);
 
 		std::string getBuff() const;
-		size_t getBuffSize() const;
+		size_t getBuffLength() const;
+		size_t getIndex() const;
+		bool isSelected() const;
+		const std::string& getPlaceholder() const;
 		bool isOverLimit() const;
+
 		size_t calcMaxLength() const;
+		uint32_t calcMaxCharSize() const;
 
 		virtual void handleSpecEvent(const sf::Event& event) override;
 		void onMousePressedEvent(const sf::Event::MouseButtonEvent event);

@@ -26,12 +26,16 @@ namespace Peach
 
 		setSize(size);
 
-		setPosition({ 0, 0 });
+		setPosition({});
 		setIndex(0);
 
 		if (m_Length == 0)
 		{
-			m_Length = calcMaxLength();
+			setLength(calcMaxLength(), true);
+		}
+		else
+		{
+			setCharSize(calcMaxCharSize(), true);
 		}
 	}
 
@@ -40,25 +44,42 @@ namespace Peach
 		PEACH_CORE_TRACE("TextBox distrutto");
 	}
 
+	void TextBox::setBuff(const std::string& buff)
+	{
+		if (getBuff() != buff)
+		{
+			m_Buff.str("");
+			m_Buff << buff;
+		}
+
+		m_TextLabel.setString(getBuff());
+		setPosition(getPosition());
+	}
+
 	void TextBox::setIndex(const size_t index)
 	{
-		if (index >= 0 && index <= getBuffSize() && m_Index != index)
+		if (!(index >= 0 && index <= getBuffLength()))
 		{
-			m_Index = index;
-
-			setPosition(getPosition());
-
-			m_Blink = true;
-			m_BlinkTimer.restart();
+			return;
 		}
+		if (m_Index == index)
+		{
+			return;
+		}
+
+		m_Index = index;
+
+		setPosition(getPosition());
+
+		m_Blink = true;
+		m_BlinkTimer.restart();
 	}
 
 	void TextBox::setSelected(bool selected)
 	{
 		m_Selected = selected;
 
-		m_TextLabel.setString(m_Buff.str());
-		setPosition(getPosition());
+		setBuff(getBuff());
 	}
 
 	void TextBox::setRestriction(const std::function<bool(int)>& restriciton, bool space)
@@ -70,7 +91,7 @@ namespace Peach
 	void TextBox::setSize(const Vec2f size)
 	{
 		m_Container.setSize(size);
-		setCharSize((sf::Uint32)(size.y / 1.75f));
+		setCharSize(size.y / 1.75f, true);
 
 		setPosition(getPosition());
 	}
@@ -85,7 +106,7 @@ namespace Peach
 		);
 
 		const auto [x, y] = m_TextLabel.findCharacterPos(m_Index);
-		m_Indicator.setPosition(x, y + ((getSize().y / 2.f) - (m_Indicator.getSize().y / 1.25f)));
+		m_Indicator.setPosition(x, y + 5.f);
 	}
 
 	void TextBox::setPlaceholder(const std::string_view placeholder)
@@ -93,11 +114,53 @@ namespace Peach
 		m_Placeholder = placeholder;
 	}
 
-	void TextBox::setCharSize(const uint32_t size)
+	void TextBox::setCharSize(const uint32_t size, bool force, bool adjustLength)
 	{
-		m_TextLabel.setCharacterSize(size);
+		if (force)
+		{
+			m_TextLabel.setCharacterSize(size);
+		}
+		else
+		{
+			uint32_t max = calcMaxCharSize();
+			m_TextLabel.setCharacterSize(size > max ? max : size);
+		}
 
 		m_Indicator.setSize({ 1.5f, (float)size - 2.f });
+
+		if (adjustLength)
+		{
+			setLength(calcMaxLength());
+		}
+	}
+
+	void TextBox::setLength(const size_t length, bool truncate, bool force, bool adjustCharSize)
+	{
+		size_t lastLength = m_Length;
+		if (force)
+		{
+			m_Length = length;
+		}
+		else
+		{
+			size_t max = calcMaxLength();
+			m_Length = length > max ? max : length;
+		}
+
+		if (m_Index > m_Length)
+		{
+			setIndex(m_Length);
+		}
+
+		if (truncate && lastLength > m_Length)
+		{
+			setBuff(m_Buff.str().substr(0, m_Length));
+		}
+
+		if (adjustCharSize)
+		{
+			setCharSize(calcMaxCharSize());
+		}
 	}
 
 	void TextBox::setFont(const sf::Font& font)
@@ -132,15 +195,15 @@ namespace Peach
 
 		if (!getBuff().empty())
 		{
-			for (size_t i = 0; i <= getBuffSize(); ++i)
+			for (size_t i = 0; i <= getBuffLength(); ++i)
 			{
 				const bool isFirst = i == 0;
-				const bool isLast = i == getBuffSize();
+				const bool isLast = i == getBuffLength();
 				bool isOnMouse = false;
 
 				if (!isLast)
 				{
-					const float relative_mouse_x = x + (m_TextLabel.getGlobalBounds().width / (float)(getBuffSize() * 2));
+					const float relative_mouse_x = x + (m_TextLabel.getGlobalBounds().width / (float)(getBuffLength() * 2));
 					const float char_x = m_TextLabel.findCharacterPos(i).x;
 					const float next_char_x = m_TextLabel.findCharacterPos(i + 1).x;
 
@@ -168,10 +231,13 @@ namespace Peach
 	{
 		uint32_t input = event.unicode;
 
-		bool is_ascii = input < 128;
-		bool is_delete = input == DELETE_KEY;
+		bool isDelete = input == DELETE_KEY;
 
-		if (!m_Selected || !is_ascii || (isOverLimit() && !is_delete))
+		if (!m_Selected)
+		{
+			return;
+		}
+		if ((isOverLimit() && !isDelete))
 		{
 			return;
 		}
@@ -184,24 +250,23 @@ namespace Peach
 			{
 				if (!(m_Restriction(input) || (input == ' ' && m_Space)))
 				{
+					m_Blink = true;
 					return;
 				}
 			}
 
-			if (m_Index == getBuffSize())
+			if (m_Index == getBuffLength())
 			{
 				m_Buff << (char)input;
 				setIndex(m_Index + 1);
 				break;
 			}
 
-			std::string first_half = getBuff().substr(0, m_Index);
-			first_half += (char)input;
-			std::string second_half = getBuff().substr(m_Index);
+			std::string firstHalf = getBuff().substr(0, m_Index);
+			firstHalf += (char)input;
+			std::string secondHalf = getBuff().substr(m_Index);
 
-			m_Buff.str("");
-			m_Buff << first_half << second_half;
-
+			setBuff(firstHalf.append(secondHalf));
 			setIndex(m_Index + 1);
 			break;
 		}
@@ -212,12 +277,10 @@ namespace Peach
 				return;
 			}
 
-			std::string first_half = getBuff().substr(0, m_Index - 1);
-			std::string second_half = getBuff().substr(m_Index);
+			std::string firstHalf = getBuff().substr(0, m_Index - 1);
+			std::string secondHalf = getBuff().substr(m_Index);
 
-			m_Buff.str("");
-			m_Buff << first_half << second_half;
-
+			setBuff(firstHalf.append(secondHalf));
 			setIndex(m_Index - 1);
 		}
 		break;
@@ -227,8 +290,7 @@ namespace Peach
 			return;
 		}
 
-		m_TextLabel.setString(getBuff());
-		setPosition(getPosition());
+		setBuff(getBuff());
 
 		m_BlinkTimer.restart();
 	}
@@ -254,7 +316,19 @@ namespace Peach
 			setIndex(0);
 			break;
 		case sf::Keyboard::Key::Down:
-			setIndex(getBuffSize());
+			setIndex(getBuffLength());
+			break;
+		case sf::Keyboard::Key::BackSpace:
+			if (event.control)
+			{
+				if (getBuff().empty() || m_Index == 0)
+				{
+					break;
+				}
+
+				setBuff(getBuff().substr(m_Index));
+				setIndex(0);
+			}
 			break;
 		}
 	}
@@ -264,25 +338,45 @@ namespace Peach
 		return m_Buff.str();
 	}
 
-	size_t TextBox::getBuffSize() const
+	size_t TextBox::getBuffLength() const
 	{
-		return getBuff().size();
+		return getBuff().length();
+	}
+
+	size_t TextBox::getIndex() const
+	{
+		return m_Index;
+	}
+
+	bool TextBox::isSelected() const
+	{
+		return m_Selected;
+	}
+
+	const std::string& TextBox::getPlaceholder() const
+	{
+		return m_Placeholder;
 	}
 
 	size_t TextBox::calcMaxLength() const
 	{
-		return (size_t)m_Container.getSize().x / (size_t)(m_TextLabel.getCharacterSize() / 1.75f);
+		return (size_t)floor(m_Container.getSize().x / (m_TextLabel.getCharacterSize() / 1.75f));
+	}
+
+	uint32_t TextBox::calcMaxCharSize() const
+	{
+		return (uint32_t)floor(m_Container.getSize().x / (m_Length / 1.75f));
 	}
 
 	bool TextBox::isOverLimit() const
 	{
-		return getBuffSize() >= m_Length;
+		return getBuffLength() >= m_Length;
 	}
 
 	void TextBox::update(const float deltaTime)
 	{
 		const auto [_, primary, secondary, background] = getAppearance();
-		sf::Color placeholder_color = sf::Color(primary.r, primary.g, primary.b, 140u);
+		sf::Color placeholderColor = sf::Color(primary.r, primary.g, primary.b, 140u);
 
 		m_TextLabel.setFillColor(primary);
 		m_Container.setOutlineColor(secondary);
@@ -299,7 +393,7 @@ namespace Peach
 			if (getBuff().empty())
 			{
 				m_TextLabel.setStyle(sf::Text::Style::Italic);
-				m_TextLabel.setFillColor(placeholder_color);
+				m_TextLabel.setFillColor(placeholderColor);
 				m_TextLabel.setString(m_Placeholder);
 				setPosition(getPosition());
 			}

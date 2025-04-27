@@ -96,15 +96,7 @@ namespace Peach
 		}
 	}
 
-	void Button::onMouseReleasedEvent(sf::Event::MouseButtonEvent event)
-	{
-		if (isCursorOn(event))
-		{
-			m_Hover = true;
-		}
-	}
-
-	void Button::onMouseReleasedEvent(sf::Event::MouseButtonEvent event)
+	void Button::onMouseReleasedEvent(const sf::Event::MouseButtonEvent event)
 	{
 		if (isCursorOn(event))
 		{

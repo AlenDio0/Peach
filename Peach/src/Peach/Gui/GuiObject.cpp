@@ -20,7 +20,7 @@ namespace Peach
 		}
 	}
 
-	void GuiObject::addCallback(const sf::Event::EventType type, const std::function<void(GuiObject&, sf::Event)>& callback)
+	void GuiObject::addCallback(const sf::Event::EventType type, const std::function<void(GuiObject*, sf::Event)>& callback)
 	{
 		m_Callbacks.push_back({ type, callback });
 	}
@@ -98,7 +98,7 @@ namespace Peach
 
 			if (cback)
 			{
-				cback(*this, event);
+				cback(this, event);
 			}
 		}
 	}
