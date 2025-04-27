@@ -12,11 +12,11 @@ namespace Peach
 		GuiManager();
 		~GuiManager();
 
-		UUID add(Ref<GuiObject> object);
+		UUID add(const Ref<GuiObject>& object);
 		UUID add(GuiObject* object);
 
-		void remove(UUID uuid);
-		void remove(Ref<GuiObject> object);
+		void remove(const UUID uuid);
+		void remove(const Ref<GuiObject>& object);
 		void remove(GuiObject* object);
 		template<typename T>
 		void remove()
@@ -30,7 +30,7 @@ namespace Peach
 		const sf::Cursor& getCursor() const;
 
 		template<typename T = GuiObject>
-		std::weak_ptr<T> getGuiObject(UUID uuid)
+		std::weak_ptr<T> getGuiObject(const UUID uuid)
 		{
 			try
 			{
@@ -64,8 +64,8 @@ namespace Peach
 
 		void handleEvent(const sf::Event& event);
 
-		void update();
-		void render(sf::RenderTarget* target) const;
+		void update(const float deltaTime);
+		void render(sf::RenderTarget& target) const;
 	private:
 		std::unordered_map<UUID, Ref<GuiObject>> m_Objects;
 

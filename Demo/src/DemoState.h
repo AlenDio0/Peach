@@ -1,19 +1,19 @@
 #pragma once
 
-#include <Peach/State/State.h>
+#include <Peach/State/AppState.h>
 
 #include <Peach/Gui/GuiManager.h>
 #include <Peach/Assets/AssetManager.h>
 #include <Peach/System/InputController.h>
 
-class DemoState : public Peach::State
+class DemoState : public Peach::AppState
 {
 public:
 	DemoState(Peach::Ref<Peach::Data> data);
 	~DemoState();
 
-	virtual void onEvent() override;
-	virtual void onUpdate() override;
+	virtual void onEvent(const sf::Event& event) override;
+	virtual void onUpdate(const float deltaTime) override;
 	virtual void onRender() override;
 private:
 	Peach::GuiManager m_GuiManager;

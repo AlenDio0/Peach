@@ -11,22 +11,18 @@ namespace Peach
 		T x, y;
 
 		Vec2()
-			: Vec2(0, 0)
-		{
+			: Vec2(0, 0) {
 		}
 		Vec2(const T& x, const T& y)
-			: x(x), y(y)
-		{
+			: x(x), y(y) {
 		}
 		template<typename U = T>
 		Vec2(const Vec2<U>& vec)
-			: x((T)vec.x), y((T)vec.y)
-		{
+			: x((T)vec.x), y((T)vec.y) {
 		}
 		template<typename U = T>
 		Vec2(const sf::Vector2<U>& vec)
-			: x((T)vec.x), y((T)vec.y)
-		{
+			: x((T)vec.x), y((T)vec.y) {
 		}
 
 		template<typename U = T>
@@ -34,7 +30,38 @@ namespace Peach
 
 		// FUNCTIONS
 
-		T square() { return x * y; }
+		const T& operator[](const size_t index) const
+		{
+			switch (index)
+			{
+			default:
+				throw std::out_of_range("Vec2 index out of range");
+			case 0:
+				return x;
+			case 1:
+				return y;
+			}
+		}
+		T& operator[](const size_t index)
+		{
+			switch (index)
+			{
+			default:
+				throw std::out_of_range("Vec2 index out of range");
+			case 0:
+				return x;
+			case 1:
+				return y;
+			}
+		}
+
+		T area() const { return x * y; }
+		Vec2<T> center() const { return *this / 2.f; }
+
+		static Vec2<T> up() { return Vec2<T>(0, -1); }
+		static Vec2<T> down() { return Vec2<T>(0, 1); }
+		static Vec2<T> left() { return Vec2<T>(-1, 0); }
+		static Vec2<T> right() { return Vec2<T>(1, 0); }
 
 		// OPERATIONS
 
@@ -112,12 +139,12 @@ namespace Peach
 		// vec1 > vec2
 		bool operator>(const Vec2& r) const { return x == r.x ? y > r.y : x > r.x; }
 		// vec1 >= vec2
-		bool operator>=(const Vec2& r) const { return *this > r && *this == r; }
+		bool operator>=(const Vec2& r) const { return *this > r || *this == r; }
 
 		// vec1 < vec2
 		bool operator<(const Vec2& r) const { return x == r.x ? y < r.y : x < r.x; }
 		// vec1 <= vec2
-		bool operator<=(const Vec2& r) const { return *this < r && *this == r; }
+		bool operator<=(const Vec2& r) const { return *this < r || *this == r; }
 	};
 
 	template<typename T>

@@ -4,24 +4,54 @@
 namespace Peach
 {
 	GameObject::GameObject()
-		: GameObject(true)
-	{
+		: GameObject(sf::Texture()) {
 	}
 
-	GameObject::GameObject(bool debuglog)
-		: m_DebugLog(debuglog)
+	GameObject::GameObject(const sf::Texture& texture)
+		: Entity(false)
 	{
-		if (m_DebugLog)
-		{
-			PEACH_CORE_TRACE("GameObject costruito");
-		}
+		m_Sprite.setTexture(texture, true);
+
+		addComponent<Transform>(Vec2f(), Vec2f(1.f, 1.f));
 	}
 
-	GameObject::~GameObject()
+	void GameObject::setTexture(const sf::Texture& texture, bool resetRect)
 	{
-		if (m_DebugLog)
-		{
-			PEACH_CORE_TRACE("GameObject distrutto");
-		}
+		m_Sprite.setTexture(texture, resetRect);
+	}
+
+	void GameObject::setTextureRect(const IntRect rect)
+	{
+		m_Sprite.setTextureRect(rect);
+	}
+
+	Vec2f GameObject::getLocalSize() const
+	{
+		return m_Sprite.getLocalBounds().getSize();
+	}
+
+	Vec2f GameObject::getGlobalSize() const
+	{
+		return getLocalSize() * getTransform().scale;
+	}
+
+	Transform GameObject::getTransform() const
+	{
+		return *has<Transform>().lock();
+	}
+
+	Transform& GameObject::getTransform()
+	{
+		return *has<Transform>().lock();
+	}
+
+	void GameObject::draw(sf::RenderTarget& target, sf::RenderStates states) const
+	{
+		const auto& [position, scale] = getTransform();
+
+		states.transform.translate(position);
+		states.transform.scale(scale);
+
+		target.draw(m_Sprite, states);
 	}
 }

@@ -38,10 +38,10 @@ namespace Peach
 
 	size_t SpriteSheet::getMaxID() const
 	{
-		return Vec2<size_t>(m_Size).square();
+		return Vec2<size_t>(m_Size).area();
 	}
 
-	IntRect SpriteSheet::getRect(size_t id) const
+	IntRect SpriteSheet::getRect(const size_t id) const
 	{
 		int64_t max = getMaxID();
 

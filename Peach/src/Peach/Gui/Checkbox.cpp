@@ -3,7 +3,7 @@
 
 namespace Peach
 {
-	Checkbox::Checkbox(Vec2f size, const sf::Texture& texture, bool active)
+	Checkbox::Checkbox(const Vec2f size, const sf::Texture& texture, bool active)
 		: GuiObject(m_Container, false), m_Active(active)
 	{
 		PEACH_CORE_TRACE("Checkbox costruito");
@@ -19,13 +19,13 @@ namespace Peach
 		PEACH_CORE_TRACE("Checkbox distrutto");
 	}
 
-	void Checkbox::setSize(Vec2f size)
+	void Checkbox::setSize(const Vec2f size)
 	{
 		m_Container.setSize(size);
 		m_Check.setScale(size.x / m_Check.getTextureRect().width, size.y / m_Check.getTextureRect().height);
 	}
 
-	void Checkbox::setPosition(Vec2f position)
+	void Checkbox::setPosition(const Vec2f position)
 	{
 		m_Container.setPosition(position);
 		m_Check.setPosition(position);
@@ -42,17 +42,12 @@ namespace Peach
 		m_Active = !m_Active;
 	}
 
-	const sf::Vector2f& Checkbox::getSize() const
-	{
-		return m_Container.getSize();
-	}
-
 	bool Checkbox::isActive() const
 	{
 		return m_Active;
 	}
 
-	void Checkbox::handleSpecEvent(sf::Event event)
+	void Checkbox::handleSpecEvent(const sf::Event& event)
 	{
 		switch (event.type)
 		{
@@ -62,7 +57,7 @@ namespace Peach
 		}
 	}
 
-	void Checkbox::onMousePressedEvent(sf::Event::MouseButtonEvent event)
+	void Checkbox::onMousePressedEvent(const sf::Event::MouseButtonEvent event)
 	{
 		if (event.button != sf::Mouse::Button::Left)
 		{
@@ -75,7 +70,7 @@ namespace Peach
 		}
 	}
 
-	void Checkbox::update()
+	void Checkbox::update(const float deltaTime)
 	{
 		const auto [_, primary, secondary, background] = getAppearance();
 
@@ -84,13 +79,13 @@ namespace Peach
 		m_Container.setFillColor(background);
 	}
 
-	void Checkbox::render(sf::RenderTarget* target) const
+	void Checkbox::render(sf::RenderTarget& target) const
 	{
-		target->draw(m_Container);
+		target.draw(m_Container);
 
 		if (m_Active)
 		{
-			target->draw(m_Check);
+			target.draw(m_Check);
 		}
 	}
 }

@@ -33,7 +33,6 @@ namespace Peach
 		PEACH_RETURN_ASSERT(m_Window, "Window::create(), Window e' nullo");
 	}
 
-
 	void Window::close()
 	{
 		PEACH_CORE_INFO("Window::close(), Window e' in fase di chiusura");
@@ -46,6 +45,11 @@ namespace Peach
 		m_Window->setMouseCursor(cursor);
 	}
 
+	void Window::setMaxFps(unsigned int fps)
+	{
+		m_Window->setFramerateLimit(fps);
+	}
+
 	WindowConfig& Window::getConfig()
 	{
 		return m_Config;
@@ -53,7 +57,7 @@ namespace Peach
 
 	bool Window::isRunning() const
 	{
-		return m_Window->isOpen() && m_Window;
+		return m_Window->isOpen();
 	}
 
 	bool Window::pollEvent(sf::Event& event) const
@@ -76,9 +80,9 @@ namespace Peach
 		close();
 	}
 
-	sf::RenderTarget* Window::getRenderer()
+	sf::RenderTarget& Window::getRenderer()
 	{
-		return m_Window.get();
+		return *m_Window.get();
 	}
 
 	void Window::display()

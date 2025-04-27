@@ -3,18 +3,18 @@
 
 namespace Peach
 {
-	void InputController::bind(sf::Keyboard::Key key, const std::function<void()>& callback, const std::string& description, bool logcall)
+	void InputController::addBind(sf::Keyboard::Key key, const std::function<void(sf::Event::KeyEvent)>& callback, const std::string& description)
 	{
 		PEACH_CORE_TRACE("InputController::bind(key: {}, description: {})", keyToString(key), description);
 
-		m_KeyBinds[key] = { callback, (logcall ? description : "") };
+		m_KeyBinds.emplace_back(key, callback, description);
 	}
 
-	void InputController::bind(sf::Mouse::Button button, const std::function<void()>& callback, const std::string& description, bool logcall)
+	void InputController::addBind(sf::Mouse::Button button, const std::function<void(sf::Event::MouseButtonEvent)>& callback, const std::string& description)
 	{
 		PEACH_CORE_TRACE("InputController::bind(button: {}, description: {})", buttonToString(button), description);
 
-		m_MouseBinds[button] = { callback, (logcall ? description : "") };
+		m_MouseBinds.emplace_back(button, callback, description);
 	}
 
 	void InputController::handleEvent(const sf::Event& event)
@@ -22,93 +22,70 @@ namespace Peach
 		switch (event.type)
 		{
 		case sf::Event::KeyPressed:
-			onKeyPressed(event);
+			onKeyPressedEvent(event.key);
 			break;
 		case sf::Event::MouseButtonPressed:
-			onMousePressed(event);
+			onMousePressedEvent(event.mouseButton);
 			break;
 		}
 	}
 
-	void InputController::onKeyPressed(const sf::Event& event)
+	void InputController::onKeyPressedEvent(const sf::Event::KeyEvent event)
 	{
-		for (const auto& [key, callback] : m_KeyBinds)
+		for (const auto& [key, callback, description] : m_KeyBinds)
 		{
-			if (key == event.key.code)
+			if (key != event.code)
 			{
-				m_Keys.push(key);
+				continue;
+			}
+
+			PEACH_CORE_INFO("InputController::onKeyPressed(), Chiamato bind: {}, Descrizione: {}", keyToString(key), description);
+			if (callback)
+			{
+				callback(event);
 			}
 		}
 	}
 
-	void InputController::onMousePressed(const sf::Event& event)
+	void InputController::onMousePressedEvent(const sf::Event::MouseButtonEvent event)
 	{
-		for (const auto& [button, callback] : m_MouseBinds)
+		for (const auto& [button, callback, description] : m_MouseBinds)
 		{
-			if (button == event.mouseButton.button)
+			if (button != event.button)
 			{
-				m_Buttons.push(button);
+				continue;
+			}
+
+			PEACH_CORE_INFO("InputController::onMousePressed(), Chiamato bind: {}, Descrizione: {}", buttonToString(button), description);
+			if (callback)
+			{
+				callback(event);
 			}
 		}
 	}
 
-	void InputController::update()
-	{
-		while (!m_Keys.empty())
-		{
-			auto& bind = m_KeyBinds[m_Keys.top()];
-			if (!bind.description.empty())
-			{
-				PEACH_CORE_INFO
-				(
-					"InputController::update(), Chiamato bind: {}, Descrizione: {}",
-					keyToString(m_Keys.top()), bind.description
-				);
-			}
-			bind.callback();
-
-			m_Keys.pop();
-		}
-
-		while (!m_Buttons.empty())
-		{
-			auto& bind = m_MouseBinds[m_Buttons.top()];
-			if (!bind.description.empty())
-			{
-				PEACH_CORE_INFO
-				(
-					"InputController::update(), Chiamato bind: {}, Descrizione: {}",
-					buttonToString(m_Buttons.top()), bind.description
-				);
-			}
-			bind.callback();
-
-			m_Buttons.pop();
-		}
-	}
-
-	std::string InputController::keyToString(sf::Keyboard::Key key) const
+	std::string InputController::keyToString(const sf::Keyboard::Key key) const
 	{
 		return sf::Keyboard::getDescription(sf::Keyboard::delocalize(key)).toAnsiString();
 	}
 
-	std::string InputController::buttonToString(sf::Mouse::Button button) const
+	std::string InputController::buttonToString(const sf::Mouse::Button button) const
 	{
 		using Button = sf::Mouse::Button;
 		switch (button)
 		{
 		case Button::Left:
-			return "LEFT";
+			return "Left";
 		case Button::Right:
-			return "RIGHT";
+			return "Right";
 		case Button::Middle:
-			return "MIDDLE";
+			return "Middle";
 		case Button::XButton1:
 			return "XButton1";
 		case Button::XButton2:
 			return "XButton2";
 		default:
-			return "UNKNOWN";
+			return "Unknown";
 		}
 	}
 }

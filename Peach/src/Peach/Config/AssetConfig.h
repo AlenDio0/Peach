@@ -4,7 +4,7 @@
 
 namespace Peach
 {
-	using Key = std::string;
+	using Key = std::string_view;
 
 	class PEACH_API AssetConfig : public FileConfig<Key>
 	{
@@ -37,7 +37,7 @@ namespace Peach
 
 		virtual std::string getKeyToString(const Key& key) const override
 		{
-			return key;
+			return std::string(key);
 		}
 	};
 }

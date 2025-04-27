@@ -13,13 +13,10 @@ namespace Peach
 	{
 		PEACH_CORE_TRACE("StateMachine distrutto");
 
-		while (m_States.empty())
-		{
-			m_States.pop();
-		}
+		clear();
 	}
 
-	Ref<IState> StateMachine::getCurrentState() const
+	Ref<State> StateMachine::getCurrentState() const
 	{
 		if (m_States.empty())
 		{
@@ -53,18 +50,18 @@ namespace Peach
 		}
 	}
 
-	void StateMachine::addState(Ref<IState> newstate, bool replacing)
+	void StateMachine::addState(Ref<State> newState, bool replacing)
 	{
-		PEACH_CORE_INFO("StateMachine::addState(newState: {}, isReplacing: {})", newstate, replacing);
+		PEACH_CORE_TRACE("StateMachine::addState(newState: {}, isReplacing: {})", newState, replacing);
 
-		if (!newstate)
+		if (!newState)
 		{
 			PEACH_CORE_ERROR("StateMachine::addState(...), Impossibile aggiungere uno State nullo");
 
 			return;
 		}
 
-		m_NewState = std::move(newstate);
+		m_NewState = std::move(newState);
 
 		m_IsAdding = true;
 		m_IsReplacing = replacing;
@@ -74,12 +71,20 @@ namespace Peach
 	{
 		m_IsRemoving = true;
 
-		PEACH_CORE_INFO("StateMachine::removeState(), [currentState: {}]", getCurrentState());
+		PEACH_CORE_TRACE("StateMachine::removeState(), [currentState: {}]", getCurrentState());
+	}
+
+	void StateMachine::clear()
+	{
+		while (!m_States.empty())
+		{
+			m_States.pop();
+		}
 	}
 
 	void StateMachine::onAdding()
 	{
-		PEACH_CORE_INFO("StateMachine::onAdding(), Tentativo di aggiungere State in corso [isReplacing: {}]", m_IsReplacing);
+		PEACH_CORE_TRACE("StateMachine::onAdding(), Tentativo di aggiungere State in corso [isReplacing: {}]", m_IsReplacing);
 
 		if (!m_NewState)
 		{
@@ -88,28 +93,24 @@ namespace Peach
 			return;
 		}
 
-		if (m_IsReplacing && !m_States.empty())
+		if (m_IsReplacing)
 		{
-			PEACH_CORE_INFO("StateMachine::onAdding(), Tentativo di rimpiazzo dello State \"{}\" riuscito", getCurrentState()->getName());
+			PEACH_CORE_TRACE("StateMachine::onAdding(), Tentativo di rimpiazzo dello State \"{}\" in corso", getCurrentState()->getName());
 
-			m_States.pop();
-		}
-		else if (m_IsReplacing)
-		{
-			PEACH_CORE_WARN("StateMachine::onAdding(), Impossibile rimpiazzare, StateStack vuoto");
+			onRemoving();
 		}
 
-		PEACH_CORE_INFO("StateMachine::onAdding(), Aggiungendo State \"{}\"", m_NewState->getName());
+		PEACH_CORE_TRACE("StateMachine::onAdding(), Aggiungendo State \"{}\"", m_NewState->getName());
 
+		m_NewState->onAdd();
 		m_States.push(std::move(m_NewState));
-		getCurrentState()->onAdd();
 
 		PEACH_CORE_INFO("StateMachine::onAdding(), Aggiunto State \"{}\" con successo", getCurrentState()->getName());
 	}
 
 	void StateMachine::onRemoving()
 	{
-		PEACH_CORE_INFO("StateMachine::onRemoving(), Tentativo di rimozione stato in corso");
+		PEACH_CORE_TRACE("StateMachine::onRemoving(), Tentativo di rimozione stato in corso");
 
 		if (m_States.empty())
 		{

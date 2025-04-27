@@ -13,12 +13,12 @@ namespace Peach
 	{
 		Data()
 		{
-			PEACH_CORE_INFO("Data inizializzato");
+			PEACH_CORE_TRACE("Data inizializzato");
 		}
 
 		~Data()
 		{
-			PEACH_CORE_INFO("Data distrutto");
+			PEACH_CORE_TRACE("Data distrutto");
 		}
 
 		Window window;

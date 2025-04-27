@@ -3,11 +3,11 @@
 
 namespace Peach
 {
-	TileMap&& TileMapParser::parse(const std::filesystem::path& filepath, const sf::Texture& texture)
+	TileMap&& TileMapParser::parse(const std::filesystem::path& filePath, const sf::Texture& texture)
 	{
 		TileMap* tilemap = new TileMap(texture);
 
-		open(filepath);
+		open(filePath);
 		while (!isEOF())
 		{
 			std::string buff = consumeLine();
@@ -17,7 +17,7 @@ namespace Peach
 				continue;
 			}
 
-			std::string token_str = buff.substr(6);
+			std::string_view token_str(buff.c_str() + 6);
 
 			if (token_str == "TileMap")
 			{
@@ -34,9 +34,10 @@ namespace Peach
 
 	void TileMapParser::fileToTileMap(TileMap& tilemap)
 	{
-		const char* token_mapsize = "MapSize";
-		const char* token_tilesize = "TileSize";
-		const char* token_spritesize = "SpriteSize";
+		constexpr char* token_mapsize = "MapSize";
+		constexpr char* token_tilesize = "TileSize";
+		constexpr char* token_spritesize = "SpriteSize";
+		constexpr char* token_collideids = "CollideIDs";
 
 		while (!isEOF())
 		{
@@ -49,28 +50,33 @@ namespace Peach
 
 			if (find(buff, token_mapsize))
 			{
-				const std::string str_mapsize = buff.substr(strlen(token_mapsize));
+				std::string_view str_mapsize(buff.c_str() + strlen(token_mapsize));
 				tilemap.setSize(stringToVec2u(str_mapsize));
 			}
 			else if (find(buff, token_tilesize))
 			{
-				const std::string str_tilesize = buff.substr(strlen(token_tilesize));
+				std::string_view str_tilesize(buff.c_str() + strlen(token_tilesize));
 				tilemap.setTileSize(stringToVec2f(str_tilesize));
 			}
 			else if (find(buff, token_spritesize))
 			{
-				const std::string str_spritesize = buff.substr(strlen(token_spritesize));
+				std::string_view str_spritesize(buff.c_str() + strlen(token_spritesize));
 				tilemap.setSpriteSize(stringToVec2u(str_spritesize));
+			}
+			else if (find(buff, token_collideids))
+			{
+				std::string_view str_collideids(buff.c_str() + strlen(token_spritesize));
+				tilemap.setCollideIDs(stringToVectorU(str_collideids));
 			}
 		}
 	}
 
 	void TileMapParser::fileToMap(TileMap& tilemap)
 	{
-		const char* token_pos = "Pos";
-		const char* token_id = "ID";
+		constexpr char* token_pos = "Pos";
+		constexpr char* token_id = "ID";
 
-		const size_t& npos = std::string::npos;
+		constexpr size_t npos = std::string::npos;
 
 		Vec2u tile_pos;
 		std::string buff;

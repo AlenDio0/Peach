@@ -4,16 +4,14 @@
 namespace Peach
 {
 	TileMap::TileMap()
-		: TileMap(sf::Texture())
-	{
+		: TileMap(sf::Texture()) {
 	}
 
 	TileMap::TileMap(const sf::Texture& texture)
-		: TileMap(texture, {}, {}, { 1, 1 })
-	{
+		: TileMap(texture, {}, {}, { 1, 1 }) {
 	}
 
-	TileMap::TileMap(const sf::Texture& texture, const Vec2u& mapsize, const Vec2f& tilesize, const Vec2u& spritesize)
+	TileMap::TileMap(const sf::Texture& texture, const Vec2u mapsize, const Vec2f tilesize, const Vec2u spritesize)
 		: m_TileSize(tilesize), m_SpriteSheet(texture, spritesize)
 	{
 		setSize(mapsize);
@@ -27,6 +25,12 @@ namespace Peach
 		m_Map.clear();
 	}
 
+	void TileMap::setCollideIDs(const std::vector<size_t>& collideid)
+	{
+		m_CollideIDs = collideid;
+		adjustTiles();
+	}
+
 	void TileMap::setTexture(const sf::Texture& texture, bool resetrect)
 	{
 		m_SpriteSheet.setTexture(texture);
@@ -36,7 +40,7 @@ namespace Peach
 		}
 	}
 
-	void TileMap::setSize(const Vec2u& newsize)
+	void TileMap::setSize(const Vec2u newsize)
 	{
 		if (m_Size == newsize)
 		{
@@ -66,13 +70,13 @@ namespace Peach
 		adjustTiles();
 	}
 
-	void TileMap::setTileSize(const Vec2f& newsize)
+	void TileMap::setTileSize(const Vec2f newsize)
 	{
 		m_TileSize = newsize;
 		adjustTiles();
 	}
 
-	void TileMap::setSpriteSize(const Vec2u& newsize)
+	void TileMap::setSpriteSize(const Vec2u newsize)
 	{
 		m_SpriteSheet.setSpriteSize(newsize);
 		adjustTiles();
@@ -88,7 +92,7 @@ namespace Peach
 		return m_TileSize;
 	}
 
-	std::weak_ptr<Tile> TileMap::getTile(const MapKey& key)
+	std::weak_ptr<Tile> TileMap::getTile(const MapKey key) const
 	{
 		try
 		{
@@ -101,48 +105,61 @@ namespace Peach
 		}
 	}
 
-	std::map<MapKey, std::weak_ptr<Tile>> TileMap::getTiles(const UIntRect& rect)
+	const std::map<MapKey, std::weak_ptr<Tile>>& TileMap::getTiles(IntRect rect) const
 	{
-		size_t map_area = (size_t)(m_Size.x * m_Size.y);
-		size_t rect_areapos = (size_t)((rect.x + rect.width) * (rect.y + rect.height));
-
-		if (rect_areapos == 0)
+		if (rect == IntRect())
 		{
-			return getTiles({ {}, m_Size });
-		}
-		else if (map_area < rect_areapos)
-		{
-			PEACH_CORE_ERROR("TileMap::getTiles(rect: {}), Il Rect supera la grandezza del TileMap [size: {}]", rect, m_Size);
-			return {};
+			rect = IntRect(Vec2i(), (Vec2i)m_Size);
 		}
 
-		std::map<MapKey, std::weak_ptr<Tile>> tiles;
+		if (rect.x < 0)
+		{
+			rect.width -= rect.x;
+			rect.x = 0;
+		}
+		if (rect.y < 0)
+		{
+			rect.height -= rect.y;
+			rect.y = 0;
+		}
+		while (m_Size.x < rect.x + rect.width && rect.width > 0)
+		{
+			rect.width--;
+		}
+		while (m_Size.y < rect.y + rect.height && rect.height > 0)
+		{
+			rect.height--;
+		}
+
+		auto& [cachedRect, cachedTiles] = m_CachedRectTiles;
+		if (!cachedTiles.empty() && cachedRect == rect)
+		{
+			return cachedTiles;
+		}
+		cachedTiles.clear();
+		cachedRect = rect;
 
 		for (uint32_t x = rect.x; x < rect.width + rect.x; ++x)
 		{
 			for (uint32_t y = rect.y; y < rect.height + rect.y; ++y)
 			{
 				MapKey key(x, y);
-				try
-				{
-					tiles[key] = m_Map.at(key);
-				}
-				catch (const std::exception& e) {}
+				cachedTiles[key] = getTile(key);
 			}
 		}
 
-		return tiles;
+		return cachedTiles;
 	}
 
-	void TileMap::update()
+	void TileMap::update(const float deltaTime)
 	{
 		for (auto& [position, tile] : m_Map)
 		{
-			tile->update();
+			tile->update(deltaTime);
 		}
 	}
 
-	void TileMap::render(sf::RenderTarget* target, const IntRect& view, bool convertrect) const
+	void TileMap::render(sf::RenderTarget& target, const IntRect view, bool convertrect) const
 	{
 		int x = view.x;
 		int y = view.y;
@@ -172,24 +189,14 @@ namespace Peach
 				}
 			}
 
-			target->draw(*tile);
+			target.draw(*tile);
 		}
 	}
-	void TileMap::render(sf::RenderTarget* target) const
+	void TileMap::render(sf::RenderTarget& target) const
 	{
 		for (const auto& [position, tile] : m_Map)
 		{
-			target->draw(*tile);
-		}
-	}
-
-	void TileMap::adjustTiles()
-	{
-		setTexture(m_SpriteSheet.getTexture());
-		for (auto& [position, tile] : m_Map)
-		{
-			tile->setPosition(m_TileSize * position);
-			tile->setScale(m_TileSize / m_SpriteSheet.getSpriteSize());
+			target.draw(*tile);
 		}
 	}
 
@@ -252,8 +259,37 @@ namespace Peach
 		auto changed_id = [&](Tile& tile)
 			{
 				tile.setTextureRect(m_SpriteSheet.getRect(tile.getID()));
+
+				tile.getRigidBody().collide = false;
+				for (const auto& id : m_CollideIDs)
+				{
+					if (tile.getID() == id)
+					{
+						tile.getRigidBody().collide = true;
+						break;
+					}
+				}
 			};
 
 		return MakeRef<Tile>(m_SpriteSheet.getTexture(), changed_id);
+	}
+
+	void TileMap::adjustTiles()
+	{
+		setTexture(m_SpriteSheet.getTexture());
+		for (auto& [pos, tile] : m_Map)
+		{
+			auto& [position, scale] = tile->getTransform();
+			position = m_TileSize * pos;
+			scale = m_TileSize / m_SpriteSheet.getSpriteSize();
+
+			tile->setID(tile->getID());
+
+			if (auto& body = tile->has<RigidBody>().lock())
+			{
+				body->hitbox.position = Vec2f();
+				body->hitbox.size = m_TileSize;
+			}
+		}
 	}
 }

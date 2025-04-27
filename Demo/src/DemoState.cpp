@@ -7,7 +7,7 @@
 #include "GameState.h"
 
 DemoState::DemoState(Peach::Ref<Peach::Data> data)
-	: State(data, "Demo")
+	: AppState(data, "Demo")
 {
 	Peach::Button* button1 = new Peach::Button({ 225.f, 55.f }, "RIMPIAZZA", getFont("consola"));
 	Peach::Button* button2 = new Peach::Button({ 225.f, 55.f }, "GIOCA", getFont("consola"));
@@ -31,7 +31,7 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 
 	button1->setOutlineThickness(3.f);
 	button1->setLabelStyle(sf::Text::Bold);
-	button1->setPosition({ (getRenderer()->getSize().x - button1->getSize().x) / 2.f, 100 });
+	button1->setPosition({ (getRenderer().getSize().x - button1->getSize().x) / 2.f, 100 });
 	button1->addCallback(sf::Event::MouseButtonPressed,
 		[&](Peach::GuiObject& obj, sf::Event event) {
 			auto& buttonEvent = event.mouseButton;
@@ -50,7 +50,7 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 
 	button2->setOutlineThickness(3.f);
 	button2->setLabelStyle(sf::Text::Italic);
-	button2->setPosition({ (getRenderer()->getSize().x - button2->getSize().x) / 2.f, 165 });
+	button2->setPosition({ (getRenderer().getSize().x - button2->getSize().x) / 2.f, 165 });
 	button2->addCallback(sf::Event::MouseButtonPressed,
 		[&](Peach::GuiObject& obj, sf::Event event) {
 			auto& buttonEvent = event.mouseButton;
@@ -72,24 +72,23 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 
 	textbox1->setRestriction(isalnum);
 	textbox1->setAppearance({ 2.f, sf::Color::Black, sf::Color::Black, sf::Color::White });
-	textbox1->setPosition({ (getRenderer()->getSize().x - textbox1->getSize().x) / 2.f, 250 });
+	textbox1->setPosition({ (getRenderer().getSize().x - textbox1->getSize().x) / 2.f, 250 });
 
 	textbox2->setRestriction(isdigit, false);
 	textbox2->setAppearance({ 2.f, sf::Color::Magenta, sf::Color::Green, sf::Color::White });
-	textbox2->setPosition({ (getRenderer()->getSize().x - textbox2->getSize().x) / 2.f, 325 });
+	textbox2->setPosition({ (getRenderer().getSize().x - textbox2->getSize().x) / 2.f, 325 });
 
 	textbox3->setRestriction([](int c) { return c > ' ' && c <= '~'; });
 	textbox3->setAppearance({ 2.f, sf::Color::Red, sf::Color::Cyan, sf::Color::White });
-	textbox3->setPosition({ (getRenderer()->getSize().x - textbox3->getSize().x) / 2.f, 400 });
+	textbox3->setPosition({ (getRenderer().getSize().x - textbox3->getSize().x) / 2.f, 400 });
 
-	m_Input.bind(sf::Keyboard::A,
-		[&]() {
+	m_Input.addBind(sf::Keyboard::A,
+		[&](sf::Event::KeyEvent) {
 			if (auto textbox = m_GuiManager.getGuiObject<Peach::TextBox>(m_InsertPin).lock())
 			{
 				PEACH_INFO("PIN: {}", textbox->getBuff());
 			}
-		}, "Stampa il PIN", true
-	);
+		}, "Stampa il PIN");
 }
 
 DemoState::~DemoState()
@@ -98,36 +97,32 @@ DemoState::~DemoState()
 	while (m_Sound.getStatus() == sf::Sound::Status::Playing);
 }
 
-void DemoState::onEvent()
+void DemoState::onEvent(const sf::Event& event)
 {
-	for (sf::Event event; pollEvent(event);)
-	{
-		getWindow().handleEvent(event);
-		m_GuiManager.handleEvent(event);
-		m_Input.handleEvent(event);
+	getWindow().handleEvent(event);
+	m_GuiManager.handleEvent(event);
+	m_Input.handleEvent(event);
 
-		switch (event.type)
-		{
-		case sf::Event::KeyPressed:
-			PEACH_TRACE("KeyPressedEvent: {}", sf::Keyboard::getDescription(event.key.scancode).toAnsiString());
-			break;
-		}
+	switch (event.type)
+	{
+	case sf::Event::KeyPressed:
+		PEACH_TRACE("KeyPressedEvent: {}", sf::Keyboard::getDescription(event.key.scancode).toAnsiString());
+		break;
 	}
 }
 
-void DemoState::onUpdate()
+void DemoState::onUpdate(const float deltaTime)
 {
-	m_GuiManager.update();
-	m_Input.update();
+	m_GuiManager.update(deltaTime);
 }
 
 void DemoState::onRender()
 {
 	getWindow().setMouseCursor(m_GuiManager.getCursor());
 
-	getRenderer()->setView(getRenderer()->getView());
+	getRenderer().setView(getRenderer().getView());
 
-	getRenderer()->clear(sf::Color::White);
+	getRenderer().clear(sf::Color::White);
 
 	m_GuiManager.render(getRenderer());
 

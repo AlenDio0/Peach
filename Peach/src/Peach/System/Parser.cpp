@@ -3,14 +3,14 @@
 
 namespace Peach
 {
-	bool Parser::open(const std::filesystem::path& filepath)
+	bool Parser::open(const std::filesystem::path& filePath)
 	{
 		if (m_File.is_open())
 		{
 			m_File.close();
 		}
 
-		m_File.open(filepath, std::ios::in);
+		m_File.open(filePath, std::ios::in);
 		return m_File.is_open();
 	}
 
@@ -24,12 +24,12 @@ namespace Peach
 		return m_File.eof();
 	}
 
-	bool Parser::find(const std::string& buff, const std::string& find)
+	bool Parser::find(const std::string_view buff, const std::string_view find)
 	{
-		return buff.find(find + ' ') != std::string::npos;
+		return buff.find(find) != std::string::npos;
 	}
 
-	bool Parser::isEnd(const std::string& buff)
+	bool Parser::isEnd(const std::string_view buff)
 	{
 		return buff == "END";
 	}
@@ -41,7 +41,7 @@ namespace Peach
 		return out;
 	}
 
-	float Parser::nextFloat(const std::string& buff)
+	float Parser::nextFloat(const std::string_view buff)
 	{
 		bool first = true;
 		bool in = false;
@@ -50,14 +50,14 @@ namespace Peach
 
 		for (const char& c : buff)
 		{
-			if (isdigit(c))
+			if (first && (c == '-' || c == '+'))
+			{
+				in = true;
+			}
+			else if (isdigit(c))
 			{
 				in = true;
 				first = false;
-			}
-			else if (first && (c == '-' || c == '+'))
-			{
-				in = true;
 			}
 			else if (c == '.' && !afterpoint && in)
 			{
@@ -73,25 +73,24 @@ namespace Peach
 			}
 
 			num += c;
-			first = false;
 		}
 
 		return stof(num);
 	}
 
-	int Parser::nextInt(const std::string& buff)
+	int Parser::nextInt(const std::string_view buff)
 	{
 		return (int)nextFloat(buff);
 	}
 
-	uint32_t Parser::nextUInt(const std::string& buff)
+	uint32_t Parser::nextUInt(const std::string_view buff)
 	{
 		return (uint32_t)std::abs(nextInt(buff));
 	}
 
-	Vec2f Parser::stringToVec2f(const std::string& str)
+	Vec2f Parser::stringToVec2f(const std::string_view str)
 	{
-		size_t in_x = -1, in_y = -1;
+		long long in_x = -1, in_y = -1;
 
 		size_t i = -1;
 		for (const char& c : str)
@@ -122,16 +121,55 @@ namespace Peach
 		return out;
 	}
 
-	Vec2i Parser::stringToVec2i(const std::string& str)
+	Vec2i Parser::stringToVec2i(const std::string_view str)
 	{
 		return (Vec2i)stringToVec2f(str);
 	}
 
-	Vec2u Parser::stringToVec2u(const std::string& str)
+	Vec2u Parser::stringToVec2u(const std::string_view str)
 	{
 		Vec2i out = stringToVec2i(str);
 		out.x = std::abs(out.x);
 		out.y = std::abs(out.y);
 		return (Vec2u)out;
+	}
+	std::vector<size_t> Parser::stringToVectorU(const std::string_view str)
+	{
+		std::vector<size_t> out;
+		bool in = false;
+		bool next = false;
+
+		size_t i = -1;
+		for (const char& c : str)
+		{
+			i++;
+			if (!in)
+			{
+				if (c == '[')
+				{
+					next = true;
+					in = true;
+				}
+				continue;
+			}
+			if (c == ']')
+			{
+				break;
+			}
+			if (c == ',')
+			{
+				next = true;
+				continue;
+			}
+			if (!next)
+			{
+				continue;
+			}
+
+			next = false;
+			std::string_view sub(str.data() + i, str.size() - i);
+			out.push_back(nextUInt(sub));
+		}
+		return out;
 	}
 }

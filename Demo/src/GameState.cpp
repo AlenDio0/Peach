@@ -1,8 +1,14 @@
 #include "GameState.h"
 
 GameState::GameState(Peach::Ref<Peach::Data> data)
-	: Peach::State(data, "Game"), m_TileMap(Peach::TileMapParser::parse("level.txt", getTexture("tiles")))
+	: Peach::AppState(data, "Game"),
+	m_Level(Peach::TileMapParser::parse("level.txt", getTexture("tiles"))), m_Physics(m_Level),
+	m_Player(getTexture("player"), Peach::Vec2f(m_Level.getTileMap().getTileSize() * 3))
 {
+	m_Level.getEntityManager().add(Peach::MakeRef<Player>(m_Player));
+
+	m_Physics.setGravity(0.f);
+
 	initBinds();
 }
 
@@ -10,99 +16,58 @@ GameState::~GameState()
 {
 }
 
-void GameState::onEvent()
+void GameState::onEvent(const sf::Event& event)
 {
-	for (sf::Event event; pollEvent(event);)
-	{
-		getWindow().handleEvent(event);
-		m_Controller.handleEvent(event);
-	}
+	getWindow().handleEvent(event);
+	m_Input.handleEvent(event);
 }
 
-void GameState::onUpdate()
+void GameState::onUpdate(const float deltaTime)
 {
-	m_Controller.update();
+	m_Level.update(deltaTime);
 
-	m_TileMap.update();
+	m_Physics.update(deltaTime);
 }
 
 void GameState::onRender()
 {
-	getRenderer()->setView(getRenderer()->getView());
+	getRenderer().setView(getRenderer().getDefaultView());
 
-	getRenderer()->clear();
+	getRenderer().clear();
 
-	m_TileMap.render(getRenderer());
+	m_Level.render(getRenderer());
+	m_Physics.renderBoxes(getRenderer());
 
 	getWindow().display();
 }
 
 void GameState::initBinds()
 {
-	/*
-	const auto& tilesize = m_Map.getTileSize();
-	const auto& mapsize = m_Map.getSize();
-	*/
-	m_Controller.bind(sf::Keyboard::Escape,
-		[&]() {
+	m_Input.addBind(sf::Keyboard::Escape,
+		[&](sf::Event::KeyEvent) {
 			removeState();
-		}, "Rimuove lo Stato attuale", true);
-	/*
-	m_Controller.bind(sf::Keyboard::Num1,
-		[&]() {
-			m_Map.setTileSize({ tilesize.x + 1.f, tilesize.y + 1.f });
-		}, "Aumenta la grandezza dei tile", true);
-	m_Controller.bind(sf::Keyboard::Num2,
-		[&]() {
-			m_Map.setTileSize({ tilesize.x - 1.f, tilesize.y - 1.f });
-		}, "Diminuisce la grandezza dei tile", true);
-	m_Controller.bind(sf::Keyboard::Num3,
-		[&]() {
-			m_Map.setSize({ mapsize.x + 1, mapsize.y });
-		}, "Aumenta la mappa verso destra", true);
-	m_Controller.bind(sf::Keyboard::Num4,
-		[&]() {
-			m_Map.setSize({ mapsize.x - 1, mapsize.y });
-		}, "Diminuisce la mappa verso sinistra", true);
-	m_Controller.bind(sf::Keyboard::Num5,
-		[&]() {
-			m_Map.setSize({ mapsize.x, mapsize.y + 1 });
-		}, "Aumenta la mappa verso il basso", true);
-	m_Controller.bind(sf::Keyboard::Num6,
-		[&]() {
-			m_Map.setSize({ mapsize.x, mapsize.y - 1 });
-		}, "Diminuisce la mappa verso l'alto", true);
-	m_Controller.bind(sf::Keyboard::Up,
-		[&]() {
-			m_View.width += 1;
-			m_View.height += 1;
-		}, "Aumenta la grandezza della visuale", true);
-	m_Controller.bind(sf::Keyboard::Down,
-		[&]() {
-			if (m_View.width == 0)
+		}, "Rimuove lo Stato attuale");
+	m_Input.addBind(sf::Keyboard::Num1,
+		[&](sf::Event::KeyEvent) {
+			for (size_t i = 0; i < 1000; i++)
 			{
-				return;
+				auto tile = new Peach::Tile(getAsset<Peach::Texture>("tiles"), nullptr);
+				tile->setID(10);
+				m_Level.getEntityManager().add(tile);
 			}
-			m_View.width -= 1;
-			m_View.height -= 1;
-		}, "Diminuisce la grandezza della visuale", true);
-	m_Controller.bind(sf::Keyboard::Right,
-		[&]() {
-			m_View.x += 1;
-			m_View.y += 1;
-		}, "Sposta la visuale verso in basso a sinistra", true);
-	m_Controller.bind(sf::Keyboard::Left,
-		[&]() {
-			m_View.x -= 1;
-			m_View.y -= 1;
-		}, "Sposta la visuale verso in alto a destro", true);
+		}, "Test Memory leak - EntityManager");
+	m_Input.addBind(sf::Keyboard::Num2,
+		[&](sf::Event::KeyEvent) {
+			auto& tilemap = m_Level.getTileMap();
+			tilemap.setSize(tilemap.getSize() * 2);
+		}, "Test Memory leak - TileMap");
 
-	m_Controller.bind(sf::Mouse::Left,
-		[&]() {
-			m_Map.setTexture(sf::Texture());
-		}, "Rimuove la texture dei tile", true);
-	m_Controller.bind(sf::Mouse::Right,
-		[&]() {
-			m_Map.setTexture(m_Data->assets.getAsset<Peach::Texture>("TEXTURE_TILES"));
-		}, "Imposta la texture dei tile", true);*/
+	m_Input.addBind(sf::Keyboard::E,
+		[&](sf::Event::KeyEvent) {
+			static bool limited = false;
+			limited = !limited;
+
+			auto& data = m_Data.lock();
+			data->window.setMaxFps(limited ? 2 : data->window.getConfig().getValue<int>(Peach::WindowConfig::FPSLIMIT));
+		}, "Test - Limit Framerate");
 }

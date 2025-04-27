@@ -8,30 +8,35 @@ namespace Peach
 	template<typename T>
 	struct Rect
 	{
-		T x, y, width, height;
+		union
+		{
+			struct
+			{
+				T x, y, width, height;
+			};
+			struct
+			{
+				Vec2<T> position, size;
+			};
+		};
 
 		Rect()
-			: Rect(0, 0, 0, 0)
-		{
+			: Rect(0, 0, 0, 0) {
 		}
 		Rect(const T& x, const T& y, const T& width, const T& height)
-			: x(x), y(y), width(width), height(height)
-		{
+			: x(x), y(y), width(width), height(height) {
 		}
 		template<typename U = T>
 		Rect(const Rect<U>& rect)
-			: x((T)rect.x), y((T)rect.y), width((T)rect.width), height((T)rect.height)
-		{
+			: x((T)rect.x), y((T)rect.y), width((T)rect.width), height((T)rect.height) {
 		}
 		template<typename U = T>
 		Rect(const Vec2<U>& position, const Vec2<U>& size)
-			: x((T)position.x), y((T)position.y), width((T)size.x), height((T)size.y)
-		{
+			: position(position), size(size) {
 		}
 		template<typename U = T>
 		Rect(const sf::Rect<U>& rect)
-			: x((T)rect.left), y((T)rect.top), width((T)rect.width), height((T)rect.height)
-		{
+			: x((T)rect.left), y((T)rect.top), width((T)rect.width), height((T)rect.height) {
 		}
 
 		template<typename U = T>
@@ -39,8 +44,44 @@ namespace Peach
 
 		// FUNCTIONS
 
-		Vec2<T> getPosition() const { return Vec2<T>(x, y); }
-		Vec2<T> getSize() const { return Vec2<T>(width, height); }
+		const T& operator[](const size_t index) const
+		{
+			switch (index)
+			{
+			default:
+				throw std::out_of_range("Rect index out of range");
+			case 0:
+				return x;
+			case 1:
+				return y;
+			case 2:
+				return width;
+			case 3:
+				return height;
+			}
+		}
+		T& operator[](const size_t index)
+		{
+			switch (index)
+			{
+			default:
+				throw std::out_of_range("Rect index out of range");
+			case 0:
+				return x;
+			case 1:
+				return y;
+			case 2:
+				return width;
+			case 3:
+				return height;
+			}
+		}
+
+		Vec2<T> max() const { return position + size; }
+		T area() const { return size.area(); }
+		Vec2<T> center() const { return max().center(); }
+
+		bool contains(const Vec2<T> point) const { return (point.x >= x && point.x < max().x) && (point.y >= y && point.y < max().y); }
 
 		// OPERATIONS
 
