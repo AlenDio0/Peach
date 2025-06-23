@@ -18,7 +18,7 @@ namespace Peach
 		void setBuff(const std::string& buff);
 		void setIndex(const size_t index);
 		void setSelected(bool selected);
-		void setRestriction(const std::function<bool(int)>& restriciton, bool space = true);
+		void setPolicy(const std::function<bool(int)>& policy, bool space = true);
 		virtual void setSize(const Vec2f size) override;
 		virtual void setPosition(const Vec2f position) override;
 		void setPlaceholder(const std::string_view placeHolder);
@@ -32,6 +32,7 @@ namespace Peach
 		bool isSelected() const;
 		const std::string& getPlaceholder() const;
 		bool isOverLimit() const;
+		bool isEmpty() const;
 
 		size_t calcMaxLength() const;
 		uint32_t calcMaxCharSize() const;
@@ -52,7 +53,7 @@ namespace Peach
 		std::ostringstream m_Buff;
 		size_t m_Length;
 
-		std::function<bool(int)> m_Restriction;
+		std::function<bool(int)> m_Policy;
 		bool m_Space;
 
 		size_t m_Index;

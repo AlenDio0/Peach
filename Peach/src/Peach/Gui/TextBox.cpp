@@ -82,9 +82,9 @@ namespace Peach
 		setBuff(getBuff());
 	}
 
-	void TextBox::setRestriction(const std::function<bool(int)>& restriciton, bool space)
+	void TextBox::setPolicy(const std::function<bool(int)>& policy, bool space)
 	{
-		m_Restriction = restriciton;
+		m_Policy = policy;
 		m_Space = space;
 	}
 
@@ -147,14 +147,9 @@ namespace Peach
 			m_Length = length > max ? max : length;
 		}
 
-		/*if (m_Index > m_Length)
-		{
-			setIndex(m_Length);
-		}*/
-
 		if (truncate)
 		{
-			setBuff(m_Buff.str().substr(0, m_Length));
+			setBuff(getBuff().substr(0, m_Length));
 		}
 
 		if (adjustCharSize)
@@ -193,7 +188,7 @@ namespace Peach
 			return;
 		}
 
-		if (!getBuff().empty())
+		if (!isEmpty())
 		{
 			for (size_t i = 0; i <= getBuffLength(); ++i)
 			{
@@ -284,24 +279,22 @@ namespace Peach
 		case sf::Keyboard::Key::Up:
 			setIndex(0);
 			break;
-		case sf::Keyboard::Key::BackSpace:
-			if (event.control)
+		}
+
+		if (event.control)
+		{
+			switch (input)
 			{
+			case sf::Keyboard::Key::BackSpace:
 				deleteBeforeIndex();
-			}
-			break;
-		case sf::Keyboard::Key::C:
-			if (event.control)
-			{
+				break;
+			case sf::Keyboard::Key::C:
 				copyClipboard();
-			}
-			break;
-		case sf::Keyboard::Key::V:
-			if (event.control)
-			{
+				break;
+			case sf::Keyboard::Key::V:
 				pasteClipboard();
+				break;
 			}
-			break;
 		}
 	}
 
@@ -345,6 +338,11 @@ namespace Peach
 		return getBuffLength() >= m_Length;
 	}
 
+	bool TextBox::isEmpty() const
+	{
+		return getBuff().empty();
+	}
+
 	void TextBox::update(const float deltaTime)
 	{
 		const auto [_, primary, secondary, background] = getAppearance();
@@ -354,7 +352,7 @@ namespace Peach
 		m_Container.setOutlineColor(secondary);
 		m_Container.setFillColor(background);
 
-		if (!getBuff().empty())
+		if (!isEmpty())
 		{
 			m_TextLabel.setStyle(sf::Text::Style::Regular);
 			m_TextLabel.setFillColor(primary);
@@ -362,7 +360,7 @@ namespace Peach
 
 		if (!m_Selected)
 		{
-			if (getBuff().empty())
+			if (isEmpty())
 			{
 				m_TextLabel.setStyle(sf::Text::Style::Italic);
 				m_TextLabel.setFillColor(placeholderColor);
@@ -394,9 +392,9 @@ namespace Peach
 
 	void TextBox::insertIndexChar(int input)
 	{
-		if (m_Restriction)
+		if (m_Policy)
 		{
-			if (!(m_Restriction(input) || (input == ' ' && m_Space)))
+			if (!(m_Policy(input) || (input == ' ' && m_Space)))
 			{
 				m_Blink = true;
 				return;
@@ -405,7 +403,7 @@ namespace Peach
 
 		if (m_Index == getBuffLength())
 		{
-			m_Buff << (char)input;
+			setBuff(std::string(getBuff() + (char)input));
 			setIndex(m_Index + 1);
 			return;
 		}
@@ -419,7 +417,7 @@ namespace Peach
 
 	void TextBox::deleteIndexChar()
 	{
-		if (getBuff().empty() || m_Index == 0)
+		if (isEmpty() || m_Index == 0)
 		{
 			return;
 		}
@@ -433,7 +431,7 @@ namespace Peach
 
 	void TextBox::deleteBeforeIndex()
 	{
-		if (getBuff().empty() || m_Index == 0)
+		if (isEmpty() || m_Index == 0)
 		{
 			return;
 		}
@@ -444,7 +442,7 @@ namespace Peach
 
 	void TextBox::copyClipboard() const
 	{
-		if (getBuff().empty())
+		if (isEmpty())
 		{
 			return;
 		}
@@ -467,10 +465,17 @@ namespace Peach
 
 		for (const char c : clipboard)
 		{
-			if (!m_Restriction(c))
+			if (!m_Policy(c))
 			{
 				return;
 			}
+		}
+
+		if (m_Index == getBuffLength())
+		{
+			setBuff(std::string(getBuff() + clipboard));
+			setIndex(getBuffLength());
+			return;
 		}
 
 		std::string firstHalf = getBuff().substr(0, m_Index) + clipboard;
