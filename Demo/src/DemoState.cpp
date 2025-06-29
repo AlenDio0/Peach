@@ -105,7 +105,7 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 
 	m_Input.addBind(sf::Keyboard::A,
 		[&](sf::Event::KeyEvent) {
-			if (auto textbox = m_GuiManager.getGuiObject<Peach::TextBox>(m_InsertPin).lock())
+			if (auto textbox = m_GuiManager.getObject<Peach::TextBox>(m_InsertPin).lock())
 			{
 				PEACH_INFO("PIN: {}", textbox->getBuff());
 			}

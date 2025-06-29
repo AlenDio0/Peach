@@ -3,8 +3,6 @@
 
 namespace Peach
 {
-	PEACH_API sf::Vector2i GuiManager::m_MousePosition;
-
 	GuiManager::GuiManager()
 	{
 		PEACH_CORE_TRACE("GuiManager costruito");
@@ -13,53 +11,6 @@ namespace Peach
 	GuiManager::~GuiManager()
 	{
 		PEACH_CORE_TRACE("GuiManager distrutto");
-
-		PEACH_CORE_TRACE("[GuiManager] {} GuiObject distrutti", m_Objects.size());
-		m_Objects.clear();
-	}
-
-	UUID GuiManager::add(const Ref<GuiObject>& object)
-	{
-		UUID uuid;
-
-		PEACH_CORE_TRACE("GuiManager::add(object: {}), [uuid: {}]", object, uuid);
-		if (!object)
-		{
-			PEACH_CORE_ERROR("GuiManager::add(...), Impossibile aggiungere un GuiObject nullo");
-			return 0;
-		}
-
-		m_Objects[uuid] = object;
-		return uuid;
-	}
-
-	UUID GuiManager::add(GuiObject* object)
-	{
-		return add(Ref<GuiObject>(object));
-	}
-
-	void GuiManager::remove(const UUID uuid)
-	{
-		PEACH_CORE_TRACE("GuiManager::remove(uuid: {})", uuid);
-		m_Objects.erase(uuid);
-	}
-
-	void GuiManager::remove(const Ref<GuiObject>& object)
-	{
-		PEACH_CORE_TRACE("GuiManager::remove(object: {})", object);
-		for (auto& [uuid, value] : m_Objects)
-		{
-			if (value == object)
-			{
-				remove(uuid);
-				break;
-			}
-		}
-	}
-
-	void GuiManager::remove(GuiObject* object)
-	{
-		remove(Ref<GuiObject>(object));
 	}
 
 	const sf::Cursor& GuiManager::getCursor() const
@@ -67,11 +18,14 @@ namespace Peach
 		static sf::Cursor cursor;
 		cursor.loadFromSystem(sf::Cursor::Arrow);
 
-		for (const auto& [uuid, object] : m_Objects)
+		for (const auto& [uuid, obj] : getObjects())
 		{
-			if (object->isCursorOn(m_MousePosition))
+			if (auto gui = obj.lock())
 			{
-				cursor.loadFromSystem(sf::Cursor::Hand);
+				if (gui->isCursorOn(m_MousePosition))
+				{
+					cursor.loadFromSystem(sf::Cursor::Hand);
+				}
 			}
 		}
 
@@ -87,25 +41,34 @@ namespace Peach
 			break;
 		}
 
-		for (auto& [uuid, object] : m_Objects)
+		for (auto& [key, obj] : getObjects())
 		{
-			object->handleEvent(event);
+			if (auto gui = obj.lock())
+			{
+				gui->handleEvent(event);
+			}
 		}
 	}
 
 	void GuiManager::update(const float deltaTime)
 	{
-		for (auto& [uuid, object] : m_Objects)
+		for (auto& [key, obj] : getObjects())
 		{
-			object->update(deltaTime);
+			if (auto gui = obj.lock())
+			{
+				gui->update(deltaTime);
+			}
 		}
 	}
 
 	void GuiManager::render(sf::RenderTarget& target) const
 	{
-		for (const auto& [uuid, object] : m_Objects)
+		for (const auto& [key, obj] : getObjects())
 		{
-			object->render(target);
+			if (auto gui = obj.lock())
+			{
+				gui->render(target);
+			}
 		}
 	}
 }
