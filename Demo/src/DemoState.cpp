@@ -72,7 +72,7 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 	box1->setAppearance({ 3.f, {}, sf::Color::Blue, sf::Color(128, 128, 128, 50) });
 	box1->setPosition({ 150.f, 40.f });
 
-	textbox1->setRestriction(isalnum);
+	textbox1->setPolicy(isalnum);
 	textbox1->setAppearance({ 2.f, sf::Color::Black, sf::Color::Black, sf::Color::White });
 	textbox1->setPosition({ (getRenderer().getSize().x - textbox1->getSize().x) / 2.f, 250 });
 	textbox1->addCallback(sf::Event::KeyPressed,
@@ -95,11 +95,11 @@ DemoState::DemoState(Peach::Ref<Peach::Data> data)
 		}
 	);
 
-	textbox2->setRestriction(isdigit, false);
+	textbox2->setPolicy(isdigit, false);
 	textbox2->setAppearance({ 2.f, sf::Color::Magenta, sf::Color::Green, sf::Color::White });
 	textbox2->setPosition({ (getRenderer().getSize().x - textbox2->getSize().x) / 2.f, 325 });
 
-	textbox3->setRestriction([](int c) { return c > ' ' && c <= '~'; });
+	textbox3->setPolicy([](int c) { return c > ' ' && c <= '~'; });
 	textbox3->setAppearance({ 2.f, sf::Color::Red, sf::Color::Cyan, sf::Color::White });
 	textbox3->setPosition({ (getRenderer().getSize().x - textbox3->getSize().x) / 2.f, 400 });
 
