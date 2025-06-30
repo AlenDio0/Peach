@@ -71,22 +71,25 @@ namespace Peach
 		}
 
 		std::vector<PhysicsBox> physics_boxes;
-
-		for (auto& [uuid, entity] : m_EntityManager->getEntities())
+		for (auto& [key, obj] : m_EntityManager->getObjects())
 		{
-			auto entity_transform = entity->has<Transform>().lock();
-			auto entity_body = entity->has<RigidBody>().lock();
-			if (!entity_transform || !entity_body)
+			if (auto entity = obj.lock())
 			{
-				continue;
-			}
+				auto entity_transform = entity->has<Transform>().lock();
+				auto entity_body = entity->has<RigidBody>().lock();
+				auto entity_physics = entity->has<Movement>().lock();
+				if (!entity_body || !entity_transform || !entity_physics)
+				{
+					continue;
+				}
 
-			if (!entity_body->collide)
-			{
-				continue;
-			}
+				if (!entity_body->collide)
+				{
+					continue;
+				}
 
-			physics_boxes.emplace_back(Box(entity_transform->position, entity_body->hitbox), entity->has<Movement>().lock());
+				physics_boxes.emplace_back(Box(entity_transform->position, entity_body->hitbox), entity_physics);
+			}
 		}
 
 		m_PhysicsBoxes.clear();

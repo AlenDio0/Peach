@@ -5,6 +5,8 @@
 
 #include "System/UUID.h"
 
+#include "System/Manager.h"
+
 #include "System/Random.h"
 
 #include "System/SpriteSheet.h"

@@ -48,9 +48,12 @@ namespace Peach
 	{
 		m_TileMap.render(target);
 
-		for (const auto& [uuid, gameobj] : m_EntityManager.getEntities<GameObject>())
+		for (const auto& [key, obj] : m_EntityManager.getObjects<GameObject>())
 		{
-			target.draw(*gameobj);
+			if (auto gameobj = obj.lock())
+			{
+				target.draw(*gameobj);
+			}
 		}
 	}
 }
