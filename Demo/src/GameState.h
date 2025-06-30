@@ -63,7 +63,7 @@ private:
 		{
 			getTransform().position = position;
 
-			addComponent<Peach::RigidBodyComp>(Peach::FloatRect(Peach::Vec2f(0.f, 0.f), Peach::Vec2f(texture.getSize()) * getTransform().scale / 3.f), true);
+			addComponent<Peach::RigidBodyComp>(Peach::FloatRect(Peach::Vec2f(0.f, 0.f), Peach::Vec2f(texture.getSize()) * getTransform().scale), true);
 			addComponent<Peach::UUIDComp>();
 		}
 		~NPC() = default;
