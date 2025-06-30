@@ -71,12 +71,12 @@ namespace Peach
 		}
 
 		std::vector<PhysicsBox> physics_boxes;
+
 		for (auto& [uuid, entity] : m_EntityManager->getEntities())
 		{
 			auto entity_transform = entity->has<Transform>().lock();
 			auto entity_body = entity->has<RigidBody>().lock();
-			auto entity_physics = entity->has<Movement>().lock();
-			if (!entity_body || !entity_transform || !entity_physics)
+			if (!entity_transform || !entity_body)
 			{
 				continue;
 			}
@@ -86,7 +86,7 @@ namespace Peach
 				continue;
 			}
 
-			physics_boxes.emplace_back(Box(entity_transform->position, entity_body->hitbox), entity_physics);
+			physics_boxes.emplace_back(Box(entity_transform->position, entity_body->hitbox), entity->has<Movement>().lock());
 		}
 
 		m_PhysicsBoxes.clear();
@@ -94,6 +94,11 @@ namespace Peach
 
 		for (auto& [box, movement] : physics_boxes)
 		{
+			if (!movement)
+			{
+				continue;
+			}
+
 			if (auto& linearMovement = std::dynamic_pointer_cast<LinearMovement>(movement))
 			{
 				updateLinearMovement(*linearMovement);
@@ -104,10 +109,14 @@ namespace Peach
 			}
 		}
 
-		m_Boxes.clear();
 		std::vector<Box> collisions_boxes;
 		for (auto& physics_box : physics_boxes)
 		{
+			if (!physics_box.movement)
+			{
+				continue;
+			}
+
 			collisions_boxes.clear();
 
 			// Add collisions with near Tiles in TileMap
@@ -118,6 +127,8 @@ namespace Peach
 
 			updateCollisions(physics_box, collisions_boxes);
 		}
+
+		m_Boxes.clear();
 		m_Boxes = collisions_boxes;
 	}
 
@@ -136,7 +147,7 @@ namespace Peach
 		for (const auto& box : m_Boxes)
 		{
 			sf::RectangleShape box_shape(box.hitbox.size);
-			box_shape.setPosition(box.position + box.hitbox.x);
+			box_shape.setPosition(box.position + box.hitbox.position);
 			box_shape.setFillColor(sf::Color::Transparent);
 			box_shape.setOutlineThickness(2.f);
 			box_shape.setOutlineColor(sf::Color::Red);
@@ -185,35 +196,36 @@ namespace Peach
 
 	void PhysicsEngine::addNearTiles(const PhysicsBox& prime, std::vector<Box>& boxes) const
 	{
-		if (m_TileMap)
+		if (!m_TileMap)
 		{
-			const Vec2f& tile_size = m_TileMap->getTileSize();
+			return;
+		}
+		const Vec2f& tile_size = m_TileMap->getTileSize();
 
-			Vec2i relative_position = ((prime.box.position + prime.box.hitbox.position) / tile_size) - 2;
-			Vec2i relative_boxsize = ((prime.box.position + prime.box.hitbox.position + prime.box.hitbox.size) / tile_size) + 2;
+		Vec2i relative_position = ((prime.box.position + prime.box.hitbox.position) / tile_size) - 2;
+		Vec2i relative_boxsize = ((prime.box.position + prime.box.hitbox.position + prime.box.hitbox.size) / tile_size) + 2;
 
-			auto tiles_grid = m_TileMap->getTiles(IntRect(relative_position, relative_boxsize));
-			for (auto& [pos, t] : tiles_grid)
+		auto tiles_grid = m_TileMap->getTiles(IntRect(relative_position, relative_boxsize));
+		for (auto& [pos, t] : tiles_grid)
+		{
+			auto tile = t.lock();
+			if (!tile)
 			{
-				auto tile = t.lock();
-				if (!tile)
-				{
-					continue;
-				}
-				auto tile_transform = tile->has<Transform>().lock();
-				auto tile_body = tile->has<RigidBody>().lock();
-				if (!tile_transform || !tile_body)
-				{
-					continue;
-				}
-
-				if (!tile_body->collide)
-				{
-					continue;
-				}
-
-				boxes.emplace_back(tile_transform->position, tile_body->hitbox);
+				continue;
 			}
+			auto tile_transform = tile->has<Transform>().lock();
+			auto tile_body = tile->has<RigidBody>().lock();
+			if (!tile_transform || !tile_body)
+			{
+				continue;
+			}
+
+			if (!tile_body->collide)
+			{
+				continue;
+			}
+
+			boxes.emplace_back(tile_transform->position, tile_body->hitbox);
 		}
 	}
 
@@ -252,7 +264,7 @@ namespace Peach
 			Vec2f& velocity = prime.movement->velocity;
 			if (velocity.x > 0.f)
 			{
-				prime.box.position.x = box.position.x - prime.box.hitbox.width - prime.box.hitbox.x;
+				prime.box.position.x = box.position.x - prime.box.hitbox.max().x;
 				velocity.x = 0.f;
 			}
 			else if (velocity.x < 0.f)
@@ -273,7 +285,7 @@ namespace Peach
 			Vec2f& velocity = prime.movement->velocity;
 			if (velocity.y > 0.f)
 			{
-				prime.box.position.y = box.position.y - prime.box.hitbox.height - prime.box.hitbox.y;
+				prime.box.position.y = box.position.y + box.hitbox.y - prime.box.hitbox.height - prime.box.hitbox.y;
 				velocity.y = 0.f;
 			}
 			else if (velocity.y < 0.f)
