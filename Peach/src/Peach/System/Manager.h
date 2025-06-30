@@ -21,24 +21,8 @@ namespace Peach
 			PEACH_CORE_TRACE("Manager distrutto");
 		}
 
-		UUID add(const Ref<T>& object)
-		{
-			UUID uuid;
-
-			PEACH_CORE_TRACE("Manager::add(object: {}), [uuid: {}]", object, uuid);
-			if (!object)
-			{
-				PEACH_CORE_ERROR("Manager::add(...), Impossibile aggiungere un Object nullo");
-				return 0;
-			}
-
-			m_Objects[uuid] = object;
-			return uuid;
-		}
-		UUID add(T* object)
-		{
-			return add(Ref<T>(object));
-		}
+		virtual void add(const Ref<T>& object, UUID uuid = UUID()) = 0;
+		virtual void add(T* object, UUID uuid = UUID()) = 0;
 
 		void remove(const Ref<T>& object)
 		{
@@ -124,6 +108,23 @@ namespace Peach
 		virtual void handleEvent(const sf::Event& event) = 0;
 		virtual void update(const float deltaTime) = 0;
 		virtual void render(sf::RenderTarget& target) const {};
+	protected:
+		UUID baseAdd(const Ref<T>& object, UUID uuid)
+		{
+			PEACH_CORE_TRACE("Manager::add(object: {}), [uuid: {}]", object, uuid);
+			if (!object)
+			{
+				PEACH_CORE_ERROR("Manager::add(...), Impossibile aggiungere un Object nullo");
+				return 0;
+			}
+
+			m_Objects[uuid] = object;
+			return uuid;
+		}
+		UUID baseAdd(T* object, UUID uuid)
+		{
+			return baseAdd(Ref<T>(object), uuid);
+		}
 	private:
 		std::unordered_map<UUID, Ref<T>> m_Objects;
 	};
