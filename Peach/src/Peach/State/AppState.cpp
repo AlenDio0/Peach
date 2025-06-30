@@ -3,7 +3,7 @@
 
 namespace Peach
 {
-	AppState::AppState(Ref<Data> state, const std::string& name)
+	AppState::AppState(Ref<AppData> state, const std::string& name)
 		: m_Data(state), m_DebugName(name)
 	{
 		PEACH_CORE_TRACE("AppState \"{}\" costruito", m_DebugName);
@@ -26,7 +26,7 @@ namespace Peach
 			return data->window;
 		}
 
-		throw std::runtime_error("Data inaccessibile");
+		throw std::runtime_error("AppData inaccessibile");
 	}
 
 	sf::RenderTarget& AppState::getRenderer() const
@@ -42,7 +42,7 @@ namespace Peach
 			return;
 		}
 
-		PEACH_CORE_ERROR("AppState::removeState(), Impossibile rimuovere AppState [Data inaccessibile]");
+		PEACH_CORE_ERROR("AppState::removeState(), Impossibile rimuovere AppState [AppData inaccessibile]");
 	}
 
 	const Peach::Texture& AppState::getTexture(const AssetKey& key) const

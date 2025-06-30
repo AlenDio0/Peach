@@ -4,7 +4,7 @@
 namespace Peach
 {
 	Application::Application()
-		: m_Data(MakeRef<Data>())
+		: m_Data(MakeRef<AppData>())
 	{
 		PEACH_CORE_INFO("Applicazione costruita");
 

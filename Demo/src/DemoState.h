@@ -9,7 +9,7 @@
 class DemoState : public Peach::AppState
 {
 public:
-	DemoState(Peach::Ref<Peach::Data> data);
+	DemoState(Peach::Ref<Peach::AppData> data);
 	~DemoState();
 
 	virtual void onEvent(const sf::Event& event) override;

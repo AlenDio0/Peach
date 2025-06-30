@@ -6,7 +6,7 @@
 
 #include "GameState.h"
 
-DemoState::DemoState(Peach::Ref<Peach::Data> data)
+DemoState::DemoState(Peach::Ref<Peach::AppData> data)
 	: AppState(data, "Demo")
 {
 	Peach::ScopeTimer timer = Peach::ScopeTimer("DemoState");

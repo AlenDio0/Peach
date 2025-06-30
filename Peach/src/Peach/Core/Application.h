@@ -2,7 +2,7 @@
 
 #include "Core.h"
 
-#include "Data.h"
+#include "AppData.h"
 #include <memory>
 
 namespace Peach
@@ -28,7 +28,7 @@ namespace Peach
 
 		void run();
 	protected:
-		Ref<Data> m_Data;
+		Ref<AppData> m_Data;
 	};
 
 	// To be defined in CLIENT

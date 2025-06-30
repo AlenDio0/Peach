@@ -7,7 +7,7 @@
 class GameState : public Peach::AppState
 {
 public:
-	GameState(Peach::Ref<Peach::Data> data);
+	GameState(Peach::Ref<Peach::AppData> data);
 	~GameState();
 
 	virtual void onEvent(const sf::Event& event) override;

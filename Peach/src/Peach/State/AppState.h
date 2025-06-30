@@ -2,7 +2,7 @@
 
 #include "State.h"
 
-#include "Peach/Core/Data.h"
+#include "Peach/Core/AppData.h"
 #include <SFML/Graphics.hpp>
 #include <string>
 
@@ -11,7 +11,7 @@ namespace Peach
 	class PEACH_API AppState : public State
 	{
 	public:
-		AppState(Ref<Data> data, const std::string& name = "AppState");
+		AppState(Ref<AppData> data, const std::string& name = "AppState");
 		virtual ~AppState() override;
 
 		virtual void onAdd() override {}
@@ -21,8 +21,6 @@ namespace Peach
 		virtual void onRender() override {}
 
 		virtual const std::string& getName() const override;
-	protected:
-		std::weak_ptr<Data> m_Data;
 	protected:
 		Peach::Window& getWindow() const;
 		sf::RenderTarget& getRenderer() const;
@@ -36,7 +34,7 @@ namespace Peach
 				return;
 			}
 
-			PEACH_CORE_ERROR("AppState::addState(), Impossibile aggiungere AppState [Data inaccessibile]");
+			PEACH_CORE_ERROR("AppState::addState(), Impossibile aggiungere AppState [AppData inaccessibile]");
 		}
 		void removeState() const;
 
@@ -48,11 +46,13 @@ namespace Peach
 				return *data->assets.getAsset<T>(key);
 			}
 
-			throw std::runtime_error("Data inaccessibile");
+			throw std::runtime_error("AppData inaccessibile");
 		}
 		const Peach::Texture& getTexture(const AssetKey& key) const;
 		const Peach::Font& getFont(const AssetKey& key) const;
 		const Peach::Sound& getSound(const AssetKey& key) const;
+	protected:
+		std::weak_ptr<AppData> m_Data;
 	private:
 		std::string m_DebugName;
 	};

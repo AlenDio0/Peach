@@ -9,16 +9,16 @@
 
 namespace Peach
 {
-	struct Data
+	struct AppData
 	{
-		Data()
+		AppData()
 		{
-			PEACH_CORE_TRACE("Data inizializzato");
+			PEACH_CORE_TRACE("AppData inizializzato");
 		}
 
-		~Data()
+		virtual ~AppData()
 		{
-			PEACH_CORE_TRACE("Data distrutto");
+			PEACH_CORE_TRACE("AppData distrutto");
 		}
 
 		Window window;
