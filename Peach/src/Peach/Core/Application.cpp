@@ -21,7 +21,7 @@ namespace Peach
 		m_Data->machine.removeState();
 	}
 
-	Ref<State> Application::getCurrentState() const
+	const Scope<State>& Application::getCurrentState() const
 	{
 		return m_Data->machine.getCurrentState();
 	}

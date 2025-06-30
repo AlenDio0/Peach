@@ -32,7 +32,7 @@ namespace Peach
 		{
 			if (auto data = m_Data.lock())
 			{
-				data->machine.addState(MakeRef<T>(data), replacing);
+				data->machine.addState(MakeScope<T>(data), replacing);
 				return;
 			}
 

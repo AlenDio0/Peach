@@ -16,7 +16,7 @@ namespace Peach
 		clear();
 	}
 
-	Ref<State> StateMachine::getCurrentState() const
+	const Scope<State>& StateMachine::getCurrentState() const
 	{
 		if (m_States.empty())
 		{
@@ -50,7 +50,7 @@ namespace Peach
 		}
 	}
 
-	void StateMachine::addState(Ref<State> newState, bool replacing)
+	void StateMachine::addState(Scope<State> newState, bool replacing)
 	{
 		PEACH_CORE_TRACE("StateMachine::addState(newState: {}, isReplacing: {})", newState, replacing);
 

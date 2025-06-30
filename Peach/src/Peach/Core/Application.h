@@ -14,10 +14,10 @@ namespace Peach
 		virtual ~Application();
 
 		template<typename T>
-		void addState(bool replacing = false) const { m_Data->machine.addState(MakeRef<T>(m_Data), replacing); }
+		void addState(bool replacing = false) const { m_Data->machine.addState(MakeScope<T>(m_Data), replacing); }
 		void removeState();
 
-		Ref<State> getCurrentState() const;
+		const Scope<State>& getCurrentState() const;
 
 		template<typename T>
 		void loadAsset(const AssetKey& key, std::string_view path, bool force = true) const { m_Data->assets.loadAsset<T>(key, path, force); }
