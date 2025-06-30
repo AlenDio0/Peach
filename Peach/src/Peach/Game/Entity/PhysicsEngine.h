@@ -49,7 +49,7 @@ namespace Peach
 		};
 		struct PhysicsBox
 		{
-			PhysicsBox(Box& box, Ref<Movement> movement)
+			PhysicsBox(Box& box, Ref<MovementComp> movement)
 				: box(box), movement(movement) {
 			}
 
@@ -61,11 +61,11 @@ namespace Peach
 			}
 
 			Box box;
-			Ref<Movement> movement;
+			Ref<MovementComp> movement;
 		};
 	private:
-		void updateLinearMovement(LinearMovement& movement) const;
-		void updateAccelerationMovement(AccelerationMovement& movement) const;
+		void updateLinearMovement(LinearMovementComp& movement) const;
+		void updateAccelerationMovement(AccelerationMovementComp& movement) const;
 
 		void addNearTiles(const PhysicsBox& prime, std::vector<Box>& boxes) const;
 		void addNearBoxes(const PhysicsBox& prime, const std::vector<PhysicsBox>& physicsboxes, std::vector<Box>& boxes) const;

@@ -8,13 +8,13 @@ namespace Peach
 	{
 		setTexture(texture);
 
-		addComponent<ID>(0);
-		addComponent<RigidBody>(FloatRect(), false);
+		addComponent<IDComp>(0);
+		addComponent<RigidBodyComp>(FloatRect(), false);
 	}
 
 	void Tile::setID(size_t id)
 	{
-		has<ID>().lock()->id = id;
+		has<IDComp>().lock()->id = id;
 
 		if (m_ChangedID)
 		{
@@ -24,16 +24,16 @@ namespace Peach
 
 	size_t Tile::getID() const
 	{
-		return has<ID>().lock()->id;
+		return has<IDComp>().lock()->id;
 	}
 
-	RigidBody Tile::getRigidBody() const
+	RigidBodyComp Tile::getRigidBody() const
 	{
-		return *has<RigidBody>().lock();
+		return *has<RigidBodyComp>().lock();
 	}
 
-	RigidBody& Tile::getRigidBody()
+	RigidBodyComp& Tile::getRigidBody()
 	{
-		return *has<RigidBody>().lock();
+		return *has<RigidBodyComp>().lock();
 	}
 }

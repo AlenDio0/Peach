@@ -23,4 +23,11 @@ namespace Peach
 			}
 		}
 	}
+	void EntityManager::preAdd(const Ref<Entity>& entity, UUID& uuid)
+	{
+		if (auto comp = entity->has<UUIDComp>().lock())
+		{
+			uuid = comp->uuid;
+		}
+	}
 }

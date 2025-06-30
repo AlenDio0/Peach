@@ -3,6 +3,7 @@
 #include <Peach/State/AppState.h>
 
 #include <Peach/Game.h>
+#include <Peach/System/Random.h>
 
 class GameState : public Peach::AppState
 {
@@ -23,14 +24,15 @@ private:
 			getTransform().position = position;
 			auto& scale = getTransform().scale *= 1.10f;
 
-			addComponent<Peach::RigidBody>(Peach::FloatRect(Peach::Vec2f(4.f, 32.f) * scale, Peach::Vec2f(24.f, 32.f) * scale), true);
-			addComponent<Peach::LinearMovement>(200.f, 200.f);
+			addComponent<Peach::RigidBodyComp>(Peach::FloatRect(Peach::Vec2f(4.f, 32.f) * scale, Peach::Vec2f(24.f, 32.f) * scale), true);
+			addComponent<Peach::LinearMovementComp>(200.f, 200.f);
+			addComponent<Peach::UUIDComp>();
 		}
 		~Player() = default;
 
 		void update(float deltaTime)
 		{
-			auto& movement = *has<Peach::LinearMovement>().lock();
+			auto& movement = *has<Peach::LinearMovementComp>().lock();
 			Peach::Vec2f& velocity = movement.velocity, speed = movement.speed;
 			velocity *= 0.f;
 
@@ -61,15 +63,13 @@ private:
 		{
 			getTransform().position = position;
 
-			addComponent<Peach::RigidBody>(Peach::FloatRect(Peach::Vec2f(0.f, 0.f), Peach::Vec2f(texture.getSize()) * getTransform().scale), true);
-			//addComponent<Peach::LinearMovement>(200.f, 200.f);
+			addComponent<Peach::RigidBodyComp>(Peach::FloatRect(Peach::Vec2f(0.f, 0.f), Peach::Vec2f(texture.getSize()) * getTransform().scale / 3.f), true);
+			addComponent<Peach::UUIDComp>();
 		}
 		~NPC() = default;
 
 		void update(float deltaTime)
 		{
-			//auto& movement = *has<Peach::LinearMovement>().lock();
-			//Peach::Vec2f& velocity = movement.velocity, speed = movement.speed;
 		}
 	};
 

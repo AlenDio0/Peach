@@ -285,7 +285,7 @@ namespace Peach
 
 			tile->setID(tile->getID());
 
-			if (auto& body = tile->has<RigidBody>().lock())
+			if (auto& body = tile->has<RigidBodyComp>().lock())
 			{
 				body->hitbox.position = Vec2f();
 				body->hitbox.size = m_TileSize;

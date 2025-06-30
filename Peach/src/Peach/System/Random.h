@@ -29,5 +29,5 @@ namespace Peach
 	};
 }
 
-#define PEACH_RANDOM_UINT(...)		Peach::Random::getUInt(__VA_ARGS__);
-#define PEACH_RANDOM_FLOAT()		Peach::Random::getFloat();
+#define PEACH_RANDOM_UINT(...)		Peach::Random::getUInt(__VA_ARGS__)
+#define PEACH_RANDOM_FLOAT()		Peach::Random::getFloat()

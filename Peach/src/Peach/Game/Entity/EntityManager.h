@@ -14,5 +14,7 @@ namespace Peach
 
 		virtual void handleEvent(const sf::Event& event) override {}
 		virtual void update(const float deltaTime) override;
+	private:
+		virtual void preAdd(const Ref<Entity>& entity, UUID& uuid) override;
 	};
 }

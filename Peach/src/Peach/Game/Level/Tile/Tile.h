@@ -16,8 +16,8 @@ namespace Peach
 
 		size_t getID() const;
 
-		RigidBody getRigidBody() const;
-		RigidBody& getRigidBody();
+		RigidBodyComp getRigidBody() const;
+		RigidBodyComp& getRigidBody();
 
 		virtual void update(const float deltaTime) override {}
 	private:

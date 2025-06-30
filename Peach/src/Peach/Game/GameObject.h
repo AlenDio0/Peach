@@ -18,8 +18,8 @@ namespace Peach
 		Vec2f getLocalSize() const;
 		Vec2f getGlobalSize() const;
 
-		Transform& getTransform();
-		Transform getTransform() const;
+		TransformComp& getTransform();
+		TransformComp getTransform() const;
 
 		virtual void update(const float deltaTime) override = 0;
 	private:

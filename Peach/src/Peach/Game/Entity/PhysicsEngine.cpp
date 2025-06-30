@@ -75,9 +75,9 @@ namespace Peach
 		{
 			if (auto entity = obj.lock())
 			{
-				auto entity_transform = entity->has<Transform>().lock();
-				auto entity_body = entity->has<RigidBody>().lock();
-				auto entity_physics = entity->has<Movement>().lock();
+				auto entity_transform = entity->has<TransformComp>().lock();
+				auto entity_body = entity->has<RigidBodyComp>().lock();
+				auto entity_physics = entity->has<MovementComp>().lock();
 				if (!entity_body || !entity_transform || !entity_physics)
 				{
 					continue;
@@ -102,11 +102,11 @@ namespace Peach
 				continue;
 			}
 
-			if (auto& linearMovement = std::dynamic_pointer_cast<LinearMovement>(movement))
+			if (auto& linearMovement = std::dynamic_pointer_cast<LinearMovementComp>(movement))
 			{
 				updateLinearMovement(*linearMovement);
 			}
-			else if (auto& accelerationMovement = std::dynamic_pointer_cast<AccelerationMovement>(movement))
+			else if (auto& accelerationMovement = std::dynamic_pointer_cast<AccelerationMovementComp>(movement))
 			{
 				updateAccelerationMovement(*accelerationMovement);
 			}
@@ -159,14 +159,14 @@ namespace Peach
 		}
 	}
 
-	void PhysicsEngine::updateLinearMovement(LinearMovement& movement) const
+	void PhysicsEngine::updateLinearMovement(LinearMovementComp& movement) const
 	{
 		auto& [x, y] = movement.velocity;
 
 		y += m_Gravity;
 	}
 
-	void PhysicsEngine::updateAccelerationMovement(AccelerationMovement& movement) const
+	void PhysicsEngine::updateAccelerationMovement(AccelerationMovementComp& movement) const
 	{
 		Vec2f& velocity = movement.velocity;
 		Vec2f& minvelocity = movement.minVelocity;
@@ -216,8 +216,8 @@ namespace Peach
 			{
 				continue;
 			}
-			auto tile_transform = tile->has<Transform>().lock();
-			auto tile_body = tile->has<RigidBody>().lock();
+			auto tile_transform = tile->has<TransformComp>().lock();
+			auto tile_body = tile->has<RigidBodyComp>().lock();
 			if (!tile_transform || !tile_body)
 			{
 				continue;

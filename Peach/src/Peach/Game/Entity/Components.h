@@ -4,6 +4,7 @@
 
 #include "Peach/System/Vec2.h"
 #include "Peach/System/Rect.h"
+#include "Peach/System/UUID.h"
 
 namespace Peach
 {
@@ -13,10 +14,10 @@ namespace Peach
 		virtual ~Component() = default;
 	};
 
-	struct ID : public Component
+	struct IDComp : public Component
 	{
-		ID() = default;
-		ID(size_t id)
+		IDComp() = default;
+		IDComp(size_t id)
 			: id(id) {
 		}
 
@@ -26,10 +27,23 @@ namespace Peach
 		size_t id = 0;
 	};
 
-	struct Tag : public Component
+	struct UUIDComp : public Component
 	{
-		Tag() = default;
-		Tag(std::string_view tag)
+		UUIDComp() = default;
+		UUIDComp(UUID uuid)
+			: uuid(uuid) {
+		}
+
+		operator UUID() const { return uuid; }
+		operator UUID& () { return uuid; }
+
+		UUID uuid;
+	};
+
+	struct TagComp : public Component
+	{
+		TagComp() = default;
+		TagComp(std::string_view tag)
 			: tag(tag) {
 		}
 
@@ -39,10 +53,10 @@ namespace Peach
 		std::string tag;
 	};
 
-	struct Transform : public Component
+	struct TransformComp : public Component
 	{
-		Transform() = default;
-		Transform(Vec2f position, Vec2f scale)
+		TransformComp() = default;
+		TransformComp(Vec2f position, Vec2f scale)
 			: position(position), scale(scale) {
 		}
 
@@ -50,10 +64,10 @@ namespace Peach
 		Vec2f scale;
 	};
 
-	struct RigidBody : public Component
+	struct RigidBodyComp : public Component
 	{
-		RigidBody() = default;
-		RigidBody(FloatRect hitbox, bool collide)
+		RigidBodyComp() = default;
+		RigidBodyComp(FloatRect hitbox, bool collide)
 			: hitbox(hitbox), collide(collide) {
 		}
 
@@ -61,31 +75,31 @@ namespace Peach
 		bool collide = false;
 	};
 
-	struct Movement : public Component
+	struct MovementComp : public Component
 	{
-		Movement() = default;
-		virtual ~Movement() = default;
+		MovementComp() = default;
+		virtual ~MovementComp() = default;
 
 		Vec2f velocity;
 	};
 
-	struct LinearMovement : public Movement
+	struct LinearMovementComp : public MovementComp
 	{
-		LinearMovement() = default;
-		LinearMovement(Vec2f speed)
+		LinearMovementComp() = default;
+		LinearMovementComp(Vec2f speed)
 			: speed(speed) {
 		}
-		LinearMovement(float x, float y)
+		LinearMovementComp(float x, float y)
 			: speed(x, y) {
 		}
 
 		Vec2f speed;
 	};
 
-	struct AccelerationMovement : public Movement
+	struct AccelerationMovementComp : public MovementComp
 	{
-		AccelerationMovement() = default;
-		AccelerationMovement(Vec2f minVelocity, Vec2f maxVelocity, float acceleration)
+		AccelerationMovementComp() = default;
+		AccelerationMovementComp(Vec2f minVelocity, Vec2f maxVelocity, float acceleration)
 			: minVelocity(minVelocity), maxVelocity(maxVelocity), acceleration(acceleration) {
 		}
 

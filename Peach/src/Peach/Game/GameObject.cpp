@@ -12,7 +12,7 @@ namespace Peach
 	{
 		m_Sprite.setTexture(texture, true);
 
-		addComponent<Transform>(Vec2f(), Vec2f(1.f, 1.f));
+		addComponent<TransformComp>(Vec2f(), Vec2f(1.f, 1.f));
 	}
 
 	void GameObject::setTexture(const sf::Texture& texture, bool resetRect)
@@ -35,14 +35,14 @@ namespace Peach
 		return getLocalSize() * getTransform().scale;
 	}
 
-	Transform GameObject::getTransform() const
+	TransformComp GameObject::getTransform() const
 	{
-		return *has<Transform>().lock();
+		return *has<TransformComp>().lock();
 	}
 
-	Transform& GameObject::getTransform()
+	TransformComp& GameObject::getTransform()
 	{
-		return *has<Transform>().lock();
+		return *has<TransformComp>().lock();
 	}
 
 	void GameObject::draw(sf::RenderTarget& target, sf::RenderStates states) const

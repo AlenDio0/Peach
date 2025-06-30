@@ -7,7 +7,7 @@
 
 namespace Peach
 {
-	class PEACH_API Entity
+	class Entity
 	{
 	public:
 		Entity();
