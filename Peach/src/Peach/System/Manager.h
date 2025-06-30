@@ -21,10 +21,8 @@ namespace Peach
 			PEACH_CORE_TRACE("Manager distrutto");
 		}
 
-		UUID add(const Ref<T>& object)
+		UUID add(const Ref<T>& object, UUID uuid = UUID())
 		{
-			UUID uuid;
-
 			PEACH_CORE_TRACE("Manager::add(object: {}), [uuid: {}]", object, uuid);
 			if (!object)
 			{
@@ -35,9 +33,9 @@ namespace Peach
 			m_Objects[uuid] = object;
 			return uuid;
 		}
-		UUID add(T* object)
+		UUID add(T* object, UUID uuid = UUID())
 		{
-			return add(Ref<T>(object));
+			return add(Ref<T>(object), uuid);
 		}
 
 		void remove(const Ref<T>& object)
