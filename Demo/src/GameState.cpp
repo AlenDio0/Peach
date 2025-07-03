@@ -33,12 +33,12 @@ void GameState::onUpdate(const float deltaTime)
 
 void GameState::onRender()
 {
-	getRenderer().setView(getRenderer().getDefaultView());
+	getWindow().setView(getWindow().getDefaultView());
 
-	getRenderer().clear();
+	getWindow().clear();
 
-	m_Level.render(getRenderer());
-	m_Physics.renderBoxes(getRenderer());
+	m_Level.render(getWindow());
+	m_Physics.renderBoxes(getWindow());
 
 	getWindow().display();
 }
@@ -70,6 +70,6 @@ void GameState::initBinds()
 			limited = !limited;
 
 			auto& data = m_Data.lock();
-			data->window.setMaxFps(limited ? 2 : data->window.getConfig().getValue<int>(Peach::WindowConfig::FPSLIMIT));
+			getWindow().setFramerateLimit(limited ? 2 : getWindow().getConfig().getValue<int>(Peach::WindowConfig::FPSLIMIT));
 		}, "Test - Limit Framerate");
 }

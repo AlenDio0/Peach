@@ -8,7 +8,8 @@ namespace Peach
 	{
 		PEACH_CORE_INFO("Applicazione costruita");
 
-		m_Data->window.create();
+		m_Data->window = MakeScope<Window>();
+		m_Data->window->init();
 	}
 
 	Application::~Application()
@@ -48,12 +49,12 @@ namespace Peach
 
 	void Application::run()
 	{
-		sf::Clock clock;
-		float previousTime = clock.restart().asSeconds();
+		Timer clock;
 
 		do
 		{
-			float deltaTime = clock.restart().asSeconds() - previousTime;
+			float deltaTime = clock.elapsedTimeSec();
+			clock.reset();
 
 			m_Data->machine.update();
 			if (!getCurrentState())
@@ -62,14 +63,22 @@ namespace Peach
 				return;
 			}
 
-			for (sf::Event event; m_Data->window.pollEvent(event);)
+			sf::Event event;
+			if (getCurrentState()->isWaitEvent() && m_Data->window->waitEvent(event))
 			{
 				getCurrentState()->onEvent(event);
+			}
+			else
+			{
+				while (m_Data->window->pollEvent(event))
+				{
+					getCurrentState()->onEvent(event);
+				}
 			}
 
 			getCurrentState()->onUpdate(deltaTime);
 			getCurrentState()->onRender();
-		} while (m_Data->window.isRunning());
+		} while (m_Data->window->isOpen());
 
 		PEACH_CORE_INFO("Application::run(), Applicazione chiusa nello AppState \"{}\"", getCurrentState() ? getCurrentState()->getName() : "Unknown");
 	}

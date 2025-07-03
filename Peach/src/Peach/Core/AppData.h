@@ -21,7 +21,7 @@ namespace Peach
 			PEACH_CORE_TRACE("AppData distrutto");
 		}
 
-		Window window;
+		Scope<Window> window;
 		StateMachine machine;
 		AssetManager assets;
 	};

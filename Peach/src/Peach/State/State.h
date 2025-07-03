@@ -18,6 +18,7 @@ namespace Peach
 		virtual void onUpdate(const float deltaTime) = 0;
 		virtual void onRender() = 0;
 
+		virtual bool isWaitEvent() const = 0;
 		virtual const std::string& getName() const = 0;
 	};
 }
