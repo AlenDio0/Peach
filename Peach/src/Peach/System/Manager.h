@@ -21,8 +21,10 @@ namespace Peach
 			PEACH_CORE_TRACE("Manager distrutto");
 		}
 
-		UUID add(const Ref<T>& object, UUID uuid = UUID())
+		virtual UUID add(const Ref<T>& object, UUID uuid = UUID())
 		{
+			preAdd(object, uuid);
+
 			PEACH_CORE_TRACE("Manager::add(object: {}), [uuid: {}]", object, uuid);
 			if (!object)
 			{
@@ -122,6 +124,8 @@ namespace Peach
 		virtual void handleEvent(const sf::Event& event) = 0;
 		virtual void update(const float deltaTime) = 0;
 		virtual void render(sf::RenderTarget& target) const {};
+	protected:
+		virtual void preAdd(const Ref<T>& object, UUID& uuid) {}
 	private:
 		std::unordered_map<UUID, Ref<T>> m_Objects;
 	};
