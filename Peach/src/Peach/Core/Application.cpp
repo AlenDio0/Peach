@@ -63,9 +63,17 @@ namespace Peach
 				return;
 			}
 
-			for (sf::Event event; m_Data->window->pollEvent(event);)
+			sf::Event event;
+			if (getCurrentState()->isWaitEvent() && m_Data->window->waitEvent(event))
 			{
 				getCurrentState()->onEvent(event);
+			}
+			else
+			{
+				while (m_Data->window->pollEvent(event))
+				{
+					getCurrentState()->onEvent(event);
+				}
 			}
 
 			getCurrentState()->onUpdate(deltaTime);
