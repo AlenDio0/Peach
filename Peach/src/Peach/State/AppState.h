@@ -23,7 +23,6 @@ namespace Peach
 		virtual const std::string& getName() const override;
 	protected:
 		Peach::Window& getWindow() const;
-		sf::RenderTarget& getRenderer() const;
 
 		template<typename T>
 		void addState(bool replacing = false) const

@@ -7,30 +7,18 @@
 
 namespace Peach
 {
-	class PEACH_API Window
+	class PEACH_API Window : public sf::RenderWindow
 	{
 	public:
 		Window();
-		~Window();
+		virtual ~Window();
 
-		bool create();
-		void close();
-
-		void setMouseCursor(const sf::Cursor& cursor);
-		void setMaxFps(const unsigned int fps);
+		virtual void init();
 
 		WindowConfig& getConfig();
-		bool isRunning() const;
 
-		bool pollEvent(sf::Event& event) const;
-		void handleEvent(const sf::Event& event);
-		void onClosed();
-
-		sf::RenderTarget& getRenderer();
-		void display();
+		virtual void handleEvent(const sf::Event& event);
 	private:
-		Scope<sf::RenderWindow> m_Window;
-
 		WindowConfig m_Config;
 	};
 }

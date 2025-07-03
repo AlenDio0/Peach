@@ -23,15 +23,10 @@ namespace Peach
 	{
 		if (auto data = m_Data.lock())
 		{
-			return data->window;
+			return *data->window;
 		}
 
 		throw std::runtime_error("AppData inaccessibile");
-	}
-
-	sf::RenderTarget& AppState::getRenderer() const
-	{
-		return getWindow().getRenderer();
 	}
 
 	void AppState::removeState() const

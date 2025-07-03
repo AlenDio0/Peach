@@ -4,7 +4,6 @@
 namespace Peach
 {
 	Window::Window()
-		: m_Window(MakeScope<sf::RenderWindow>())
 	{
 		PEACH_CORE_INFO("Window costruito");
 	}
@@ -14,7 +13,7 @@ namespace Peach
 		PEACH_CORE_INFO("Window distrutto");
 	}
 
-	bool Window::create()
+	void Window::init()
 	{
 		using WKey = WindowConfig::Key;
 
@@ -24,30 +23,11 @@ namespace Peach
 		bool vsync = m_Config.getValue<bool>(WKey::VSYNC);
 		uint32_t fpslimit = m_Config.getValue<uint32_t>(WKey::FPSLIMIT);
 
-		PEACH_CORE_INFO("Window::create(), [title: {}, size: {}, vsync: {}, fpslimit: {}]", title, size, vsync, fpslimit);
+		PEACH_CORE_INFO("Window::init(), [title: {}, size: {}, vsync: {}, fpslimit: {}]", title, size, vsync, fpslimit);
 
-		m_Window->create(sf::VideoMode(size.x, size.y), title, style);
-		m_Window->setVerticalSyncEnabled(vsync);
-		m_Window->setFramerateLimit(fpslimit);
-
-		PEACH_RETURN_ASSERT(m_Window, "Window::create(), Window e' nullo");
-	}
-
-	void Window::close()
-	{
-		PEACH_CORE_INFO("Window::close(), Window e' in fase di chiusura");
-
-		m_Window->close();
-	}
-
-	void Window::setMouseCursor(const sf::Cursor& cursor)
-	{
-		m_Window->setMouseCursor(cursor);
-	}
-
-	void Window::setMaxFps(unsigned int fps)
-	{
-		m_Window->setFramerateLimit(fps);
+		create(sf::VideoMode(size.x, size.y), title, style);
+		setVerticalSyncEnabled(vsync);
+		setFramerateLimit(fpslimit);
 	}
 
 	WindowConfig& Window::getConfig()
@@ -55,38 +35,13 @@ namespace Peach
 		return m_Config;
 	}
 
-	bool Window::isRunning() const
-	{
-		return m_Window->isOpen();
-	}
-
-	bool Window::pollEvent(sf::Event& event) const
-	{
-		return m_Window->pollEvent(event);
-	}
-
 	void Window::handleEvent(const sf::Event& event)
 	{
 		switch (event.type)
 		{
 		case sf::Event::Closed:
-			onClosed();
+			close();
 			break;
 		}
-	}
-
-	void Window::onClosed()
-	{
-		close();
-	}
-
-	sf::RenderTarget& Window::getRenderer()
-	{
-		return *m_Window.get();
-	}
-
-	void Window::display()
-	{
-		m_Window->display();
 	}
 }

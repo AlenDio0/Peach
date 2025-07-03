@@ -33,7 +33,7 @@ DemoState::DemoState(Peach::Ref<Peach::AppData> data)
 
 	button1->setOutlineThickness(3.f);
 	button1->setLabelStyle(sf::Text::Bold);
-	button1->setPosition({ (getRenderer().getSize().x - button1->getSize().x) / 2.f, 100 });
+	button1->setPosition({ (getWindow().getSize().x - button1->getSize().x) / 2.f, 100 });
 	button1->addCallback(sf::Event::MouseButtonPressed,
 		[&](Peach::GuiObject* obj, sf::Event event) {
 			auto& buttonEvent = event.mouseButton;
@@ -52,7 +52,7 @@ DemoState::DemoState(Peach::Ref<Peach::AppData> data)
 
 	button2->setOutlineThickness(3.f);
 	button2->setLabelStyle(sf::Text::Italic);
-	button2->setPosition({ (getRenderer().getSize().x - button2->getSize().x) / 2.f, 165 });
+	button2->setPosition({ (getWindow().getSize().x - button2->getSize().x) / 2.f, 165 });
 	button2->addCallback(sf::Event::MouseButtonPressed,
 		[&](Peach::GuiObject* obj, sf::Event event) {
 			auto& buttonEvent = event.mouseButton;
@@ -74,7 +74,7 @@ DemoState::DemoState(Peach::Ref<Peach::AppData> data)
 
 	textbox1->setPolicy(isalnum);
 	textbox1->setAppearance({ 2.f, sf::Color::Black, sf::Color::Black, sf::Color::White });
-	textbox1->setPosition({ (getRenderer().getSize().x - textbox1->getSize().x) / 2.f, 250 });
+	textbox1->setPosition({ (getWindow().getSize().x - textbox1->getSize().x) / 2.f, 250 });
 	textbox1->addCallback(sf::Event::KeyPressed,
 		[&](Peach::GuiObject* obj, sf::Event event) {
 			auto& keyEvent = event.key;
@@ -97,11 +97,11 @@ DemoState::DemoState(Peach::Ref<Peach::AppData> data)
 
 	textbox2->setPolicy(isdigit, false);
 	textbox2->setAppearance({ 2.f, sf::Color::Magenta, sf::Color::Green, sf::Color::White });
-	textbox2->setPosition({ (getRenderer().getSize().x - textbox2->getSize().x) / 2.f, 325 });
+	textbox2->setPosition({ (getWindow().getSize().x - textbox2->getSize().x) / 2.f, 325 });
 
 	textbox3->setPolicy([](int c) { return c > ' ' && c <= '~'; });
 	textbox3->setAppearance({ 2.f, sf::Color::Red, sf::Color::Cyan, sf::Color::White });
-	textbox3->setPosition({ (getRenderer().getSize().x - textbox3->getSize().x) / 2.f, 400 });
+	textbox3->setPosition({ (getWindow().getSize().x - textbox3->getSize().x) / 2.f, 400 });
 
 	m_Input.addBind(sf::Keyboard::A,
 		[&](sf::Event::KeyEvent) {
@@ -141,11 +141,9 @@ void DemoState::onRender()
 {
 	getWindow().setMouseCursor(m_GuiManager.getCursor());
 
-	getRenderer().setView(getRenderer().getView());
+	getWindow().clear(sf::Color::White);
 
-	getRenderer().clear(sf::Color::White);
-
-	m_GuiManager.render(getRenderer());
+	m_GuiManager.render(getWindow());
 
 	getWindow().display();
 }
