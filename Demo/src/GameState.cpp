@@ -2,11 +2,10 @@
 
 GameState::GameState(Peach::Ref<Peach::AppData> data)
 	: Peach::AppState(data, "Game"),
-	m_Level(Peach::TileMapParser::parse("level.txt", getTexture("tiles"))), m_Physics(m_Level),
-	m_Player(getTexture("player"), Peach::Vec2f(70.f, 100.f))
+	m_Level(Peach::TileMapParser::parse("level.txt", getTexture("tiles"))), m_Physics(m_Level)
 {
-	m_Level.getEntityManager().add(Peach::MakeRef<Player>(m_Player));
-	//m_Level.getEntityManager().add(Peach::MakeRef<Player>(getTexture("player"), Peach::Vec2f(250.f, 100.f)));
+	m_Level.getEntityManager().add(Peach::MakeRef<Player>(getTexture("player"), Peach::Vec2f(250.f, 100.f)));
+	m_Level.getEntityManager().add(Peach::MakeRef<Player2>(getTexture("player"), Peach::Vec2f(250.f, 150.f)));
 	m_Level.getEntityManager().add(Peach::MakeRef<NPC>(getTexture("player"), Peach::Vec2f(220.f, 100.f)));
 
 	m_Physics.setGravity(0.f);

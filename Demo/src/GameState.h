@@ -28,7 +28,7 @@ private:
 			addComponent<Peach::LinearMovementComp>(200.f, 200.f);
 			addComponent<Peach::UUIDComp>();
 		}
-		~Player() = default;
+		virtual ~Player() = default;
 
 		void update(float deltaTime)
 		{
@@ -55,6 +55,41 @@ private:
 			}
 		}
 	};
+	class Player2 : public Player
+	{
+	public:
+		Player2(const Peach::Texture& texture, Peach::Vec2f position)
+			: Player(texture, position)
+		{
+		}
+		virtual ~Player2() = default;
+
+		void update(float deltaTime)
+		{
+			auto& movement = *has<Peach::LinearMovementComp>().lock();
+			Peach::Vec2f& velocity = movement.velocity, speed = movement.speed;
+			velocity *= 0.f;
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+			{
+				velocity.y = -speed.y * deltaTime;
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+			{
+				velocity.y = speed.y * deltaTime;
+			}
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+			{
+				velocity.x = -speed.x * deltaTime;
+			}
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+			{
+				velocity.x = speed.x * deltaTime;
+			}
+		}
+
+	};
 	class NPC : public Peach::GameObject
 	{
 	public:
@@ -77,7 +112,6 @@ private:
 	Peach::Level m_Level;
 	Peach::PhysicsEngine m_Physics;
 
-	Player m_Player;
 	Peach::InputController m_Input;
 
 private:

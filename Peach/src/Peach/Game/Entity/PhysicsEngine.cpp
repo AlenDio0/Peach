@@ -130,10 +130,16 @@ namespace Peach
 			collisions_boxes.clear();
 
 			// Add collisions with near Tiles in TileMap
-			addNearTiles(physics_box, collisions_boxes);
+			if (m_MapCollision)
+			{
+				addNearTiles(physics_box, collisions_boxes);
+			}
 
 			// Add collisions with near entities
-			addNearBoxes(physics_box, physics_boxes, boxes, collisions_boxes);
+			if (m_EntitiesCollision)
+			{
+				addNearBoxes(physics_box, physics_boxes, boxes, collisions_boxes);
+			}
 
 			updateCollisions(physics_box, collisions_boxes);
 		}
@@ -215,7 +221,7 @@ namespace Peach
 		Vec2i relative_position = ((prime.box.position + prime.box.hitbox.position) / tile_size) - 2;
 		Vec2i relative_boxsize = ((prime.box.position + prime.box.hitbox.position + prime.box.hitbox.size) / tile_size) + 2;
 
-		auto tiles_grid = m_TileMap->getTiles(IntRect(relative_position, relative_boxsize));
+		const auto& tiles_grid = m_TileMap->getTiles(IntRect(relative_position, relative_boxsize));
 		for (auto& [pos, t] : tiles_grid)
 		{
 			auto tile = t.lock();
@@ -296,14 +302,14 @@ namespace Peach
 			}
 
 			Vec2f& velocity = prime.movement->velocity;
-			if (velocity.x > 0.f)
+			if (velocity.x > 0.f) // LEFT
 			{
-				prime.box.position.x = box.position.x - prime.box.hitbox.max().x;
+				prime.box.position.x = box.position.x + box.hitbox.x - prime.box.hitbox.max().x;
 				velocity.x = 0.f;
 			}
-			else if (velocity.x < 0.f)
+			else if (velocity.x < 0.f) // RIGHT
 			{
-				prime.box.position.x = box.position.x + box.hitbox.width - prime.box.hitbox.x;
+				prime.box.position.x = box.position.x + box.hitbox.max().x - prime.box.hitbox.x;
 				velocity.x = 0.f;
 			}
 		}
@@ -317,14 +323,14 @@ namespace Peach
 			}
 
 			Vec2f& velocity = prime.movement->velocity;
-			if (velocity.y > 0.f)
+			if (velocity.y > 0.f) // TOP
 			{
-				prime.box.position.y = box.position.y + box.hitbox.y - prime.box.hitbox.height - prime.box.hitbox.y;
+				prime.box.position.y = box.position.y + box.hitbox.y - prime.box.hitbox.max().y;
 				velocity.y = 0.f;
 			}
-			else if (velocity.y < 0.f)
+			else if (velocity.y < 0.f) // BOTTOM
 			{
-				prime.box.position.y = box.position.y + box.hitbox.height - prime.box.hitbox.y;
+				prime.box.position.y = box.position.y + box.hitbox.max().y - prime.box.hitbox.y;
 				velocity.y = 0.f;
 			}
 		}
