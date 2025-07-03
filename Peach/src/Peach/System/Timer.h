@@ -12,7 +12,7 @@ namespace Peach
 		Timer();
 
 		void reset();
-		float elapsedTime() const;
+		float elapsedTimeSec() const;
 		float elapsedTimeMs() const;
 	private:
 		std::chrono::time_point<std::chrono::high_resolution_clock> m_Start;

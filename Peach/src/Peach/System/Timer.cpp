@@ -13,7 +13,7 @@ namespace Peach
 		m_Start = std::chrono::high_resolution_clock::now();
 	}
 
-	float Timer::elapsedTime() const
+	float Timer::elapsedTimeSec() const
 	{
 		return std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - m_Start).count() * 0.001f * 0.001f;
 	}

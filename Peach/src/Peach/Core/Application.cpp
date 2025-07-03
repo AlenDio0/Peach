@@ -48,12 +48,12 @@ namespace Peach
 
 	void Application::run()
 	{
-		sf::Clock clock;
-		float previousTime = clock.restart().asSeconds();
+		Timer clock;
 
 		do
 		{
-			float deltaTime = clock.restart().asSeconds() - previousTime;
+			float deltaTime = clock.elapsedTimeSec();
+			clock.reset();
 
 			m_Data->machine.update();
 			if (!getCurrentState())
