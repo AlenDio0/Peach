@@ -12,7 +12,7 @@ namespace Peach
 	class PEACH_API Scene
 	{
 	public:
-		Entity createEntity(std::string_view tag = {});
+		Entity createEntity(std::string_view tag = "");
 
 		Entity getEntity(std::string_view tag);
 

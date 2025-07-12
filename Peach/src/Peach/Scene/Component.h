@@ -5,6 +5,8 @@
 #include "Peach/System/Vec2.h"
 #include "Peach/System/Rect.h"
 #include "Peach/System/UUID.h"
+#include "Peach/Assets/Asset.h"
+#include <SFML/Graphics.hpp>
 #include <functional>
 
 namespace Peach
@@ -51,14 +53,25 @@ namespace Peach
 	struct SpriteComponent
 	{
 		SpriteComponent() = default;
-		SpriteComponent(const sf::Texture& texture)
+		SpriteComponent(const Peach::Texture& texture)
 			: sprite(texture) {
 		}
-		SpriteComponent(const sf::Texture& texture, IntRect rect)
+		SpriteComponent(const Peach::Texture& texture, IntRect rect)
 			: sprite(texture, rect) {
 		}
 
 		sf::Sprite sprite;
+	};
+
+	struct TextComponent
+	{
+		TextComponent() = default;
+		TextComponent(const std::string& string, const Peach::Font& font, uint32_t size = 30u, Vec2f offset = {})
+			: text(string, font, size), offset(offset) {
+		}
+
+		sf::Text text;
+		Vec2f offset;
 	};
 
 	struct HitboxComponent
@@ -79,5 +92,12 @@ namespace Peach
 		}
 
 		std::function<void(Entity, const float)> update;
+	};
+
+	struct VelocityComponent
+	{
+		VelocityComponent() = default;
+
+		Vec2f velocity;
 	};
 }

@@ -8,7 +8,11 @@ namespace Peach
 	Entity Scene::createEntity(std::string_view tag)
 	{
 		Entity entity(m_Registry.create(), this);
-		entity.addComponent<TagComponent>(tag);
+
+		if (!tag.empty())
+		{
+			entity.addComponent<TagComponent>(tag);
+		}
 
 		return entity;
 	}
@@ -44,15 +48,27 @@ namespace Peach
 
 	void Scene::render(sf::RenderTarget& target)
 	{
-		auto view = m_Registry.view<TransformComponent, SpriteComponent>();
-		for (auto [entity, transform, spriteComp] : view.each())
 		{
-			auto& sprite = spriteComp.sprite;
+			auto view = m_Registry.view<TransformComponent, SpriteComponent>();
+			for (auto [entity, transform, spriteComp] : view.each())
+			{
+				auto& sprite = spriteComp.sprite;
 
-			sprite.setPosition(transform.position);
-			sprite.setScale(transform.scale);
+				sprite.setPosition(transform.position);
+				sprite.setScale(transform.scale);
 
-			target.draw(sprite);
+				target.draw(sprite);
+			}
+		}
+
+		{
+			auto view = m_Registry.view<TransformComponent, TextComponent>();
+			for (auto [entity, transform, textComp] : view.each())
+			{
+				textComp.text.setPosition(transform.position + textComp.offset);
+
+				target.draw(textComp.text);
+			}
 		}
 	}
 
