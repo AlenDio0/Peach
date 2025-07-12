@@ -29,6 +29,7 @@ project "Peach"
         "../%{IncludeDir.SFML}",
         "../%{IncludeDir.spdlog}",
         "../%{IncludeDir.mINI}",
+        "../%{IncludeDir.entt}",
 	}
 
 	libdirs

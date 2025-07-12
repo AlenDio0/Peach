@@ -2,6 +2,7 @@ IncludeDir = {}
 IncludeDir["SFML"] = "Peach/vendor/SFML/include"
 IncludeDir["spdlog"] = "Peach/vendor/spdlog/include"
 IncludeDir["mINI"] = "Peach/vendor/mINI/src"
+IncludeDir["entt"] = "Peach/vendor/entt/include"
 
 LibraryDir = {}
 LibraryDir["SFML"] = "Peach/vendor/SFML/lib"
