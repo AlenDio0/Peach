@@ -3,6 +3,7 @@
 #include <Peach/State/AppState.h>
 
 #include <Peach/System/InputController.h>
+#include <Peach/Scene/Entity.h>
 
 class GameState : public Peach::AppState
 {
@@ -15,6 +16,7 @@ public:
 	virtual void onRender() override;
 private:
 	Peach::InputController m_Input;
+	Peach::Scene m_Scene;
 
 private:
 	void initBinds();

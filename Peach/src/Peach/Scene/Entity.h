@@ -2,41 +2,45 @@
 
 #include "Scene.h"
 
+#include <entt.hpp>
+
 namespace Peach
 {
 	class Entity
 	{
 	public:
-		Entity(EntityHandle handle, Scene* scene);
+		Entity() = default;
+		Entity(const Entity&) = default;
+		Entity(entt::entity handle, Scene* scene);
 
-		template<typename T, typename... Args>
-		T& addComponent(Args&&... args)
+		template<typename Component, typename... Args>
+		Component& addComponent(Args&&... args)
 		{
-			PEACH_ASSERT(!hasComponent<T>(), "Entity already has component");
-			T& component = m_Scene->m_Registry.add(m_Handle, std::forward<Args>(args)...);
-			return component;
+			PEACH_ASSERT(!hasComponent<Component>(), "Entity ha già il Component");
+			return m_Scene->m_Registry.emplace<Component>(m_Handle, std::forward<Args>(args)...);
 		}
 
-		template<typename T>
+		template<typename Component>
 		void removeComponent()
 		{
-			m_Scene->m_Registry.remove<T>(m_Handle);
+			PEACH_ASSERT(hasComponent<Component>(), "Entity non ha il Component");
+			m_Scene->m_Registry.remove<Component>(m_Handle);
 		}
 
-		template<typename T>
-		T& getComponent()
+		template<typename Component>
+		Component& getComponent()
 		{
-			PEACH_ASSERT(hasComponent<T>(), "Entity does not have component");
-			return m_Scene->m_Registry.get<T>(m_Handle)
+			PEACH_ASSERT(hasComponent<Component>(), "Entity non ha il Component");
+			return m_Scene->m_Registry.get<Component>(m_Handle);
 		}
 
-		template<typename T>
+		template<typename... Components>
 		bool hasComponent()
 		{
-			return m_Scene->m_Registry.has<T>(m_Handle);
+			return m_Scene->m_Registry.any_of<Components...>(m_Handle);
 		}
 	private:
-		EntityHandle m_Handle;
+		entt::entity m_Handle;
 		Scene* m_Scene;
 	};
 }
