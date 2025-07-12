@@ -3,6 +3,7 @@
 #include <Peach/Gui/Button.h>
 #include <Peach/Gui/Checkbox.h>
 #include <Peach/Gui/TextBox.h>
+#include <Peach/System/Timer.h>
 
 #include "GameState.h"
 
