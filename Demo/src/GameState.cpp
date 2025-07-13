@@ -1,18 +1,18 @@
 #include "GameState.h"
 
 GameState::GameState(Peach::Ref<Peach::AppData> data)
-	: Peach::AppState(data, "Game")
+	: Peach::AppState(data, "Game"), m_Scene("level.txt", getTexture("tiles"))
 {
 	auto entity = m_Scene.createEntity("Player");
-	Peach::Vec2f scale = entity.addComponent<Peach::TransformComponent>(Peach::Vec2f(100.f, 100.f), Peach::Vec2f(1.5f, 1.5f)).scale;
-	entity.addComponent<Peach::SpriteComponent>(getTexture("player"));
+	Peach::Vec2f scale = entity.addComponent<Peach::TransformComponent>(Peach::Vec2f(100.f, 100.f), Peach::Vec2f(1.f, 1.f)).scale;
+	entity.addComponent<Peach::SpriteComponent>(getTexture("player"), 1.f);
 	entity.addComponent<Peach::TextComponent>(entity.getComponent<Peach::TagComponent>(), getFont("consola"), 16u, Peach::Vec2f(0.f, -24.f));
 	entity.addComponent<Peach::HitboxComponent>(Peach::FloatRect(Peach::Vec2f(), (Peach::Vec2f)getTexture("player").getSize() * scale));
 	entity.addComponent<Peach::VelocityComponent>();
 	entity.addComponent<Peach::UpdateComponent>([](Peach::Entity entity, float deltaTime)
 		{
 			Peach::Vec2f& position = entity.getComponent<Peach::TransformComponent>().position;
-			Peach::Vec2f& velocity = entity.getComponent<Peach::VelocityComponent>().velocity;
+			Peach::Vec2f& velocity = entity.getComponent<Peach::VelocityComponent>().velocity *= 0.f;
 			Peach::Vec2f speed = { 300.f, 300.f };
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))

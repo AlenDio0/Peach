@@ -3,13 +3,13 @@
 
 namespace Peach
 {
-	SpriteSheet::SpriteSheet(const sf::Texture& texture, const Vec2u& spritesize)
+	SpriteSheet::SpriteSheet(const Peach::Texture& texture, const Vec2u& spritesize)
 		: m_SpriteSize(spritesize)
 	{
 		setTexture(texture);
 	}
 
-	void SpriteSheet::setTexture(const sf::Texture& texture)
+	void SpriteSheet::setTexture(const Peach::Texture& texture)
 	{
 		m_Texture = &texture;
 		adjustSize();
@@ -21,7 +21,7 @@ namespace Peach
 		adjustSize();
 	}
 
-	const sf::Texture& SpriteSheet::getTexture() const
+	const Peach::Texture& SpriteSheet::getTexture() const
 	{
 		return *m_Texture;
 	}
@@ -51,8 +51,12 @@ namespace Peach
 			return getRect(max - 1);
 		}
 
-		Vec2u position = Vec2u((uint32_t)id % m_Size.x, (uint32_t)id / m_Size.x);
+		if (m_Size.x == 0)
+		{
+			return {};
+		}
 
+		Vec2u position = Vec2u((uint32_t)id % m_Size.x, (uint32_t)id / m_Size.x);
 		return IntRect(position * m_SpriteSize, m_SpriteSize);
 	}
 

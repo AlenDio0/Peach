@@ -30,7 +30,7 @@ DemoState::DemoState(Peach::Ref<Peach::AppData> data)
 
 	m_Sound.setBuffer(getSound("removed"));
 
-	getTexture("invalid key example");
+	getTexture("invalid key");
 
 	button1->setOutlineThickness(3.f);
 	button1->setLabelStyle(sf::Text::Bold);

@@ -3,6 +3,8 @@
 #include <SFML/Graphics/Rect.hpp>
 #include <spdlog/fmt/ostr.h>
 
+#include "Vec2.h"
+
 namespace Peach
 {
 	template<typename T>

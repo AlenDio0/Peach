@@ -133,13 +133,13 @@ namespace Peach
 		out.y = std::abs(out.y);
 		return (Vec2u)out;
 	}
-	std::vector<size_t> Parser::stringToVectorU(const std::string_view str)
+	std::vector<uint32_t> Parser::stringToVectorU(const std::string_view str)
 	{
-		std::vector<size_t> out;
+		std::vector<uint32_t> out;
 		bool in = false;
 		bool next = false;
 
-		size_t i = -1;
+		uint32_t i = -1;
 		for (const char& c : str)
 		{
 			i++;

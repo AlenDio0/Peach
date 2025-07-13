@@ -2,9 +2,26 @@
 #include "Scene.h"
 
 #include "Entity.h"
+#include "World.h"
 
 namespace Peach
 {
+	Scene::Scene()
+	{
+		PEACH_CORE_TRACE("Scene costruito");
+	}
+
+	Scene::Scene(std::filesystem::path mapFile, const Peach::Texture& mapTexture)
+		: m_World(MakeScope<World>(this, mapFile, mapTexture))
+	{
+		PEACH_CORE_TRACE("Scene costruito");
+	}
+
+	Scene::~Scene()
+	{
+		PEACH_CORE_TRACE("Scene distrutto");
+	}
+
 	Entity Scene::createEntity(std::string_view tag)
 	{
 		Entity entity(m_Registry.create(), this);
@@ -49,6 +66,7 @@ namespace Peach
 	void Scene::render(sf::RenderTarget& target)
 	{
 		{
+			std::vector<SpriteComponent> sprites;
 			auto view = m_Registry.view<TransformComponent, SpriteComponent>();
 			for (auto [entity, transform, spriteComp] : view.each())
 			{
@@ -57,6 +75,15 @@ namespace Peach
 				sprite.setPosition(transform.position);
 				sprite.setScale(transform.scale);
 
+				sprites.push_back(spriteComp);
+			}
+
+			std::sort(sprites.begin(), sprites.end(),
+				[](SpriteComponent& a, SpriteComponent& b) {
+					return a.priority < b.priority;
+				});
+			for (auto& [sprite, priority] : sprites)
+			{
 				target.draw(sprite);
 			}
 		}

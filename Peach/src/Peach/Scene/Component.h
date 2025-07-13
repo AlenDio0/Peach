@@ -42,7 +42,7 @@ namespace Peach
 	struct TransformComponent
 	{
 		TransformComponent() = default;
-		TransformComponent(Vec2f position, Vec2f scale)
+		TransformComponent(Vec2f position, Vec2f scale = { 1.f, 1.f })
 			: position(position), scale(scale) {
 		}
 
@@ -53,14 +53,15 @@ namespace Peach
 	struct SpriteComponent
 	{
 		SpriteComponent() = default;
-		SpriteComponent(const Peach::Texture& texture)
-			: sprite(texture) {
+		SpriteComponent(const Peach::Texture& texture, float priority = 0.f)
+			: sprite(texture), priority(priority) {
 		}
-		SpriteComponent(const Peach::Texture& texture, IntRect rect)
-			: sprite(texture, rect) {
+		SpriteComponent(const Peach::Texture& texture, IntRect rect, float priority = 0.f)
+			: sprite(texture, rect), priority(priority) {
 		}
 
 		sf::Sprite sprite;
+		float priority = 0.f;
 	};
 
 	struct TextComponent

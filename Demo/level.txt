@@ -1,11 +1,11 @@
-START TileMap
+START Map
 MapSize [6, 6]
 TileSize [60.0, 60.0]
 SpriteSize [16, 16]
 CollideIDs [0, 1, 2, 3, 8, 10, 16, 17, 18]
 END
 
-START Map
+START TileMap
 Pos [0, 0] ID 0 Pos [1, 0] ID 1 Pos [2, 0] ID 1 Pos [3, 0] ID 1 Pos [4, 0] ID 1 Pos [5, 0] ID 2
 Pos [0, 1] ID 8 Pos [1, 1] ID 9 Pos [2, 1] ID 9 Pos [3, 1] ID 9 Pos [4, 1] ID 9 Pos [5, 1] ID 10
 Pos [0, 2] ID 8 Pos [1, 2] ID 9 Pos [2, 2] ID 3 Pos [3, 2] ID 9 Pos [4, 2] ID 9 Pos [5, 2] ID 10

@@ -12,6 +12,7 @@ namespace Peach
 		Entity() = default;
 		Entity(const Entity&) = default;
 		Entity(entt::entity handle, Scene* scene);
+		virtual ~Entity() = default;
 
 		template<typename Component, typename... Args>
 		Component& addComponent(Args&&... args)
