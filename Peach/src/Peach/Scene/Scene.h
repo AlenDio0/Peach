@@ -18,8 +18,12 @@ namespace Peach
 		virtual ~Scene();
 
 		Entity createEntity(std::string_view tag = "");
+		Entity createEntity(UUID uuid, std::string_view tag = "");
+
+		void destroyEntity(Entity entity);
 
 		Entity getEntity(std::string_view tag);
+		Entity getEntity(UUID uuid);
 
 		template<typename... Components>
 		auto getEntitiesWith()
@@ -33,6 +37,7 @@ namespace Peach
 		void renderHitbox(sf::RenderTarget& target, sf::Color color = sf::Color::Red, float thickness = -1.f);
 	private:
 		entt::registry m_Registry;
+		std::unordered_map<UUID, entt::entity> m_Entities;
 
 		Scope<World> m_World;
 

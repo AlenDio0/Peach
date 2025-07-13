@@ -9,25 +9,17 @@ namespace Peach
 	class TileMap
 	{
 	public:
-		TileMap(const TileMap&) = default;
-		TileMap(Scene* scene, const Peach::Texture& texture = {}, Vec2u spriteSize = { 1u ,1u }, Vec2u mapSize = {}, Vec2f tileSize = {});
+		TileMap(TileMap&&) = default;
+		TileMap(Scene* scene, const Peach::Texture& texture, Vec2u spriteSize, Vec2u mapSize, Vec2f tileSize);
 		virtual ~TileMap() = default;
 
 		Entity createTile(Vec2u position, uint32_t id = 0);
 
+		void destroyTile(Vec2u position);
+
 		Entity getTile(Vec2u position);
-
-		void setTileID(Entity tile, uint32_t id);
 	private:
-		struct TileComponent
-		{
-			TileComponent() = default;
-			TileComponent(Vec2u position)
-				: position(position) {
-			}
-
-			Vec2u position;
-		};
+		void setTileID(Entity tile, uint32_t id);
 	private:
 		Vec2u m_MapSize;
 		Vec2f m_TileSize;
@@ -35,6 +27,25 @@ namespace Peach
 
 		Scene* m_Scene;
 		uint32_t m_TileCount;
+
+		friend class TileComponent;
+	};
+
+	class TileComponent
+	{
+	public:
+		TileComponent(Vec2u position, TileMap* tileMap)
+			: position(position), m_TileMap(tileMap) {
+		}
+
+		uint32_t getID() const;
+		void setID(Entity tile, uint32_t id);
+
+		Vec2u position;
+	private:
+		uint32_t m_ID = 0u;
+
+		TileMap* m_TileMap;
 	};
 
 	/*using MapKey = Vec2i;

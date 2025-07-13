@@ -13,17 +13,14 @@ namespace Peach
 {
 	class Entity;
 
-	struct UUIDComponent
+	struct IDComponent
 	{
-		UUIDComponent() = default;
-		UUIDComponent(UUID uuid)
-			: uuid(uuid) {
+		IDComponent() = default;
+		IDComponent(UUID id)
+			: id(id) {
 		}
 
-		operator const UUID& () const { return uuid; }
-		operator UUID& () { return uuid; }
-
-		UUID uuid;
+		UUID id;
 	};
 
 	struct TagComponent
@@ -32,9 +29,6 @@ namespace Peach
 		TagComponent(std::string_view tag)
 			: tag(tag) {
 		}
-
-		operator std::string_view() const { return tag; }
-		operator std::string& () { return tag; }
 
 		std::string tag;
 	};

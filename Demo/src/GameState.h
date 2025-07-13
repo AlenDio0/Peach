@@ -15,10 +15,16 @@ public:
 	virtual void onUpdate(const float deltaTime) override;
 	virtual void onRender() override;
 private:
+	struct KeyComponent
+	{
+		std::array<sf::Keyboard::Key, 4> keys;
+	};
+private:
 	Peach::InputController m_Input;
 	Peach::Scene m_Scene;
-
 private:
 	void initBinds();
+
+	Peach::Entity createPlayer(std::array<sf::Keyboard::Key, 4> keys);
 };
 

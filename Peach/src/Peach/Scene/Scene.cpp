@@ -24,41 +24,68 @@ namespace Peach
 
 	Entity Scene::createEntity(std::string_view tag)
 	{
-		Entity entity(m_Registry.create(), this);
+		return createEntity(UUID(), tag);
+	}
 
+	Entity Scene::createEntity(UUID uuid, std::string_view tag)
+	{
+		Entity entity(m_Registry.create(), this);
+		m_Entities[uuid] = entity;
+
+		entity.addComponent<IDComponent>(uuid);
 		if (!tag.empty())
 		{
 			entity.addComponent<TagComponent>(tag);
 		}
 
+		PEACH_CORE_TRACE("Scene::createEntity(uuid: {}, tag: {}), [entity: {}]", uuid, tag, (uint32_t)entity);
 		return entity;
+	}
+
+	void Scene::destroyEntity(Entity entity)
+	{
+		PEACH_CORE_TRACE("Scene::destroyEntity(entity: {}), [uuid: {}, tag: {}]", (uint32_t)entity, entity.getUUID(), entity.getTag());
+
+		m_Entities.erase(entity.getUUID());
+		m_Registry.destroy(entity);
 	}
 
 	Entity Scene::getEntity(std::string_view tag)
 	{
 		auto view = m_Registry.view<TagComponent>();
-		for (auto entity : view)
+		for (auto [entity, tagComp] : view.each())
 		{
-			auto& tagComp = view.get<TagComponent>(entity);
-			if (tagComp == tag)
+			if (tagComp.tag == tag)
 			{
 				return Entity(entity, this);
 			}
 		}
 
+		PEACH_CORE_WARN("Scene::getEntity(tag: {}), Nessun Entity trovato con quel tag", tag);
 		return Entity();
+	}
+
+	Entity Scene::getEntity(UUID uuid)
+	{
+		try
+		{
+			return Entity(m_Entities.at(uuid), this);
+		}
+		catch (const std::exception& e)
+		{
+			PEACH_CORE_ERROR("Scene::getEntity(uuid: {}), Catturata eccezione: {}", uuid, e.what());
+			return Entity();
+		}
 	}
 
 	void Scene::update(const float deltaTime)
 	{
 		auto view = m_Registry.view<UpdateComponent>();
-		for (auto entity : view)
+		for (auto [entity, updateComp] : view.each())
 		{
-			auto& update = view.get<UpdateComponent>(entity).update;
-
-			if (update)
+			if (updateComp.update)
 			{
-				update(Entity(entity, this), deltaTime);
+				updateComp.update(Entity(entity, this), deltaTime);
 			}
 		}
 	}

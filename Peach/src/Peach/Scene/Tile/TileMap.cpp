@@ -22,14 +22,19 @@ namespace Peach
 	Entity TileMap::createTile(Vec2u position, uint32_t id)
 	{
 		PEACH_ASSERT(position.x <= m_MapSize.x && position.y <= m_MapSize.y, "Posizione di Tile oltre la massima grandezza di TileMap");
-		Entity tile = m_Scene->createEntity("Tile " + m_TileCount);
+		Entity tile = m_Scene->createEntity("Tile " + std::to_string(m_TileCount));
 
+		tile.addComponent<TileComponent>(position, this);
 		tile.addComponent<TransformComponent>(position * m_TileSize, m_TileSize / m_Sprites.getSpriteSize());
 		tile.addComponent<SpriteComponent>(m_Sprites.getTexture(), m_Sprites.getRect(id));
-		tile.addComponent<TileComponent>(position);
 
 		m_TileCount++;
 		return tile;
+	}
+
+	void TileMap::destroyTile(Vec2u position)
+	{
+		m_Scene->destroyEntity(getTile(position));
 	}
 
 	Entity TileMap::getTile(Vec2u position)
@@ -51,6 +56,16 @@ namespace Peach
 		sf::Sprite& sprite = tile.getComponent<SpriteComponent>().sprite;
 		sprite.setTexture(m_Sprites.getTexture());
 		sprite.setTextureRect(m_Sprites.getRect(id));
+	}
+
+	uint32_t TileComponent::getID() const
+	{
+		return m_ID;
+	}
+
+	void TileComponent::setID(Entity tile, uint32_t id)
+	{
+		m_TileMap->setTileID(tile, id);
 	}
 
 	/*TileMap::TileMap()

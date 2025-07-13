@@ -44,8 +44,14 @@ namespace Peach
 		template<typename... Components>
 		bool hasComponent()
 		{
-			return m_Scene->m_Registry.any_of<Components...>(m_Handle);
+			return m_Scene->m_Registry.all_of<Components...>(m_Handle);
 		}
+
+		const UUID& getUUID();
+		const std::string& getTag();
+
+		operator uint32_t() const;
+		operator entt::entity() const;
 	private:
 		entt::entity m_Handle;
 		Scene* m_Scene;

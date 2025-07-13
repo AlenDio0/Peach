@@ -5,7 +5,7 @@
 
 namespace Peach
 {
-	TileMap TileMapParser::parse(const std::filesystem::path& filePath, Scene* scene, const Peach::Texture& texture)
+	TileMap&& TileMapParser::parse(const std::filesystem::path& filePath, Scene* scene, const Peach::Texture& texture)
 	{
 		open(filePath);
 
@@ -34,31 +34,40 @@ namespace Peach
 		}
 
 		TileMap tileMap(scene, texture, mapInfo.spriteSize, mapInfo.mapSize, mapInfo.tileSize);
-		SpriteSheet sprites(texture, mapInfo.spriteSize);
 
 		for (uint32_t y = 0; y < mapInfo.mapSize.y; y++)
 		{
 			for (uint32_t x = 0; x < mapInfo.mapSize.x; x++)
 			{
-				Entity tile = tileMap.getTile(Vec2u(x, y));
-				sf::Sprite& sprite = tile.getComponent<SpriteComponent>().sprite;
-
-				sprite.setTextureRect(sprites.getRect(map[Vec2u(x, y)]));
-				for (uint32_t id : mapInfo.collideIDs)
+				Vec2u position = { x, y };
+				try
 				{
-					if (id == map[Vec2u(x, y)])
+					uint32_t tileID = map.at(position);
+					Entity tile = tileMap.getTile(position);
+					tile.getComponent<TileComponent>().setID(tile, tileID);
+
+					for (uint32_t id : mapInfo.collideIDs)
 					{
-						tile.addComponent<HitboxComponent>(FloatRect({}, mapInfo.tileSize));
-						break;
+						if (id == tileID)
+						{
+							tile.addComponent<HitboxComponent>(FloatRect({}, mapInfo.tileSize));
+							tile.getComponent<SpriteComponent>().priority = 10.f;
+							break;
+						}
 					}
+				}
+				catch (std::exception& e)
+				{
+					PEACH_CORE_WARN("TileMapParser::parse(filePath: {}, ...), Tile non trovato nel file nella posizione {}", filePath.string(), position);
+					continue;
 				}
 			}
 		}
 
-		return tileMap;
+		return std::move(tileMap);
 	}
 
-	MapInfo TileMapParser::convertMap()
+	TileMapParser::MapInfo TileMapParser::convertMap()
 	{
 		constexpr char* token_mapsize = "MapSize";
 		constexpr char* token_tilesize = "TileSize";
