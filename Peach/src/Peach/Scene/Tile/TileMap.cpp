@@ -58,11 +58,6 @@ namespace Peach
 		sprite.setTextureRect(m_Sprites.getRect(id));
 	}
 
-	uint32_t TileComponent::getID() const
-	{
-		return m_ID;
-	}
-
 	void TileComponent::setID(Entity tile, uint32_t id)
 	{
 		m_TileMap->setTileID(tile, id);

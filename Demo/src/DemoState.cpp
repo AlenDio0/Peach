@@ -135,7 +135,15 @@ void DemoState::onEvent(const sf::Event& event)
 
 void DemoState::onUpdate(const float deltaTime)
 {
+	static Peach::Timer timer;
+	if (timer.elapsedTimeSec() > 0.5f)
+	{
+		timer.reset();
+		getWindow().setTitle("FPS: " + std::to_string((int)(1 / deltaTime)));
+	}
+
 	m_GuiManager.update(deltaTime);
+
 }
 
 void DemoState::onRender()

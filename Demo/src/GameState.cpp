@@ -1,6 +1,7 @@
 #include "GameState.h"
 
 #include <Peach/System/Random.h>
+#include <Peach/System/Timer.h>
 
 GameState::GameState(Peach::Ref<Peach::AppData> data)
 	: Peach::AppState(data, "Game"), m_Scene("level.txt", getTexture("tiles"))
@@ -26,6 +27,13 @@ void GameState::onEvent(const sf::Event& event)
 
 void GameState::onUpdate(const float deltaTime)
 {
+	static Peach::Timer timer;
+	if (timer.elapsedTimeSec() > 0.5f)
+	{
+		timer.reset();
+		getWindow().setTitle("FPS: " + std::to_string((int)(1 / deltaTime)));
+	}
+
 	m_Scene.update(deltaTime);
 }
 
@@ -64,10 +72,11 @@ Peach::Entity GameState::createPlayer(std::array<sf::Keyboard::Key, 4> keys)
 	playerCount++;
 
 	Peach::Entity player = m_Scene.createEntity("Player " + std::to_string(playerCount));
-	Peach::Vec2f scale = player.addComponent<Peach::TransformComponent>(Peach::Vec2f(75.f + (PEACH_RANDOM_UINT(0, 9) * 32.f), 75.f + (PEACH_RANDOM_UINT(0, 5) * 48.f)), Peach::Vec2f(1.f, 1.f)).scale;
-	player.addComponent<Peach::SpriteComponent>(getTexture("player"), 1.f);
-	player.addComponent<Peach::HitboxComponent>(Peach::FloatRect(Peach::Vec2f(), (Peach::Vec2f)getTexture("player").getSize() * scale));
-	player.addComponent<Peach::TextComponent>(player.getComponent<Peach::TagComponent>().tag, getFont("consola"), 12u, Peach::Vec2f(-5.f, -16.f));
+	Peach::Vec2f& scale = player.addComponent<Peach::TransformComponent>(Peach::Vec2f(75.f + (PEACH_RANDOM_UINT(0, 9) * 32.f), 75.f + (PEACH_RANDOM_UINT(0, 5) * 48.f)), Peach::Vec2f(2.f, 2.f)).scale;
+	sf::Sprite& sprite = player.addComponent<Peach::SpriteComponent>(getTexture("player"), 1.f).sprite;
+	player.addComponent<Peach::HitboxComponent>(Peach::FloatRect(Peach::Vec2f(), (Peach::Vec2f)sprite.getLocalBounds().getSize() * scale));
+	auto& textComp = player.addComponent<Peach::TextComponent>(player.getComponent<Peach::TagComponent>().tag, getFont("consola"), 25u);
+	textComp.offset = Peach::Vec2f(((sprite.getLocalBounds().getSize().x * scale.x) / 2.f) - (textComp.text.getGlobalBounds().getSize().x / 2.f), -32.f);
 
 	player.addComponent<Peach::VelocityComponent>();
 	player.addComponent<KeyComponent>(keys);

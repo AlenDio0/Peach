@@ -38,7 +38,7 @@ namespace Peach
 			: position(position), m_TileMap(tileMap) {
 		}
 
-		uint32_t getID() const;
+		uint32_t getID() const { return m_ID; }
 		void setID(Entity tile, uint32_t id);
 
 		Vec2u position;

@@ -38,7 +38,7 @@ namespace Peach
 			entity.addComponent<TagComponent>(tag);
 		}
 
-		PEACH_CORE_TRACE("Scene::createEntity(uuid: {}, tag: {}), [entity: {}]", uuid, tag, (uint32_t)entity);
+		//PEACH_CORE_TRACE("Scene::createEntity(uuid: {}, tag: {}), [entity: {}]", uuid, tag, (uint32_t)entity);
 		return entity;
 	}
 
@@ -93,8 +93,10 @@ namespace Peach
 	void Scene::render(sf::RenderTarget& target)
 	{
 		{
-			std::vector<SpriteComponent> sprites;
 			auto view = m_Registry.view<TransformComponent, SpriteComponent>();
+			std::vector<SpriteComponent> sprites;
+			sprites.reserve(view.size_hint());
+
 			for (auto [entity, transform, spriteComp] : view.each())
 			{
 				auto& sprite = spriteComp.sprite;
