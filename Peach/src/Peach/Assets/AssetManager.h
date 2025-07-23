@@ -5,9 +5,6 @@
 
 namespace Peach
 {
-	using AssetKey = std::string;
-	using AssetMap = std::unordered_map<AssetKey, Ref<Asset>>;
-
 	class AssetManager
 	{
 	public:
@@ -54,69 +51,65 @@ namespace Peach
 		}
 
 		template<typename T>
-		void loadAsset(AssetKey key, const std::filesystem::path& path, bool force = true)
+		void loadAsset(std::string key, const std::string& path, bool force = true)
 		{
 			for (auto& c : key)
 			{
-				if (c >= 'A' && c <= 'Z')
-				{
-					c += 32;
-				}
+				c = tolower(c);
 			}
 
-			PEACH_CORE_TRACE("AssetManager::loadAsset(key: {}, path: {}, force: {})", key, path.string(), force);
-			if (m_Assets[key])
+			PEACH_CORE_TRACE("AssetManager::loadAsset(key: {}, path: {}, force: {})", key, path, force);
+			if (m_Assets.find(key) != m_Assets.end())
 			{
-				if (force)
+				if (!force)
 				{
-					PEACH_CORE_WARN("AssetManager::loadAsset(key: {}, path: {}), Verra' rimpiazzato l'Asset precedente", key, path.string());
-				}
-				else
-				{
-					PEACH_CORE_WARN("AssetManager::loadAsset(key: {}, path: {}), Impossibile caricare Asset, rimpiazzo non forzato", key, path.string());
+					PEACH_CORE_WARN("AssetManager::loadAsset(key: {}, path: {}), Impossibile caricare Asset, rimpiazzo non forzato", key, path);
 					return;
 				}
+
+				PEACH_CORE_WARN("AssetManager::loadAsset(key: {}, path: {}), Verra' rimpiazzato l'Asset precedente", key, path);
 			}
 
-			if (T::getType() == Asset::Type::None)
+			if (!std::is_base_of<Asset, T>())
 			{
-				throw std::exception("Asset non ha un AssetType definito");
+				PEACH_CORE_ERROR("AssetManager::loadAsset(key: {}, path: {}), Impossibile creare un non derivato Asset", key, path);
+				return;
 			}
 
-			m_Assets[key] = Ref<Asset>(new T());
+			m_Assets[key] = MakeRef<T>();
+			if (!m_Assets[key]->load(path))
+			{
+				PEACH_CORE_ERROR("AssetManager::loadAsset(key: {}, path: {}), Caricamento Asset fallito", key, path);
+				return;
+			}
 
-			if (m_Assets[key]->load(path))
-			{
-				PEACH_CORE_INFO("AssetManager::loadAsset(key: {}, path: {}), Caricato Asset con successo", key, path.string());
-			}
-			else
-			{
-				PEACH_CORE_ERROR("AssetManager::loadAsset(key: {}, path: {}), Caricamento Asset fallito", key, path.string());
-			}
+			PEACH_CORE_INFO("AssetManager::loadAsset(key: {}, path: {}), Caricato Asset con successo", key, path);
 		}
 
 		template<typename T>
-		const T* getAsset(AssetKey key)
+		Ref<T> getAsset(std::string key)
 		{
 			for (auto& c : key)
 			{
-				if (c >= 'A' && c <= 'Z')
-				{
-					c += 32;
-				}
+				c = tolower(c);
 			}
 
-			try
+			if (m_Assets.find(key) == m_Assets.end())
 			{
-				return static_cast<T*>(m_Assets.at(key).get());
-			}
-			catch (const std::exception& e)
-			{
-				PEACH_CORE_ERROR("AssetManager::(key: {}), Catturata eccezione: {}", key, e.what());
+				PEACH_CORE_ERROR("AssetManager::getAsset(key: {}), Ritornato valore nullo. Asset con key non trovata", key);
 				return nullptr;
 			}
+
+			if (auto asset = std::dynamic_pointer_cast<T>(m_Assets.at(key)))
+			{
+				return asset;
+			}
+
+			PEACH_CORE_ERROR("AssetManager::getAsset(key: {}), Ritornato valore nullo. Asset non coincide con il tipo", key);
+			return nullptr;
+
 		}
 	private:
-		AssetMap m_Assets;
+		std::unordered_map<std::string, Ref<Asset>> m_Assets;
 	};
 }

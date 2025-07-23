@@ -10,8 +10,6 @@
 DemoState::DemoState(Peach::Ref<Peach::AppData> data)
 	: AppState(data, "Demo")
 {
-	Peach::ScopeTimer timer = Peach::ScopeTimer("DemoState");
-
 	Peach::Button* button1 = new Peach::Button({ 225.f, 55.f }, "RIMPIAZZA", getFont("consola"));
 	Peach::Button* button2 = new Peach::Button({ 225.f, 55.f }, "GIOCA", getFont("consola"));
 
@@ -26,11 +24,11 @@ DemoState::DemoState(Peach::Ref<Peach::AppData> data)
 	m_GuiManager.add(box1);
 	m_GuiManager.add(textbox1);
 	m_InsertPin = m_GuiManager.add(textbox2);
-	m_GuiManager.add(textbox3);
+	m_TextBox = m_GuiManager.add(textbox3);
 
-	m_Sound.setBuffer(getSound("removed"));
+	m_RemovedSound = getAssetRef<Peach::Sound>("removed");
 
-	getTexture("invalid key");
+	getTexture("example");
 
 	button1->setOutlineThickness(3.f);
 	button1->setLabelStyle(sf::Text::Bold);
@@ -111,12 +109,30 @@ DemoState::DemoState(Peach::Ref<Peach::AppData> data)
 				PEACH_INFO("PIN: {}", textbox->getBuff());
 			}
 		}, "Stampa il PIN");
+
+	m_Input.addBind(sf::Keyboard::B,
+		[&](sf::Event::KeyEvent) {
+			if (auto textbox = m_GuiManager.getObject<Peach::TextBox>(m_TextBox).lock())
+			{
+				PEACH_INFO("isPalindrome: {}", ([&]() {
+					Peach::ScopeTimer timer("palindrome");
+
+					const std::string& str = textbox->getBuff();
+					for (size_t i = 0; i < str.size() / 2; i++)
+						if (str[i] != str[(str.size() - 1) - i])
+							return false;
+
+					return true;
+					})());
+			}
+		}, "Stampa il PIN");
 }
 
 DemoState::~DemoState()
 {
-	m_Sound.play();
-	while (m_Sound.getStatus() == sf::Sound::Status::Playing);
+	sf::Sound sound(*m_RemovedSound.get());
+	sound.play();
+	while (sound.getStatus() == sf::Sound::Status::Playing);
 }
 
 void DemoState::onEvent(const sf::Event& event)

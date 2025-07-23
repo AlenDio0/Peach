@@ -23,37 +23,25 @@ namespace Peach
 		virtual bool isWaitEvent() const override { return false; }
 		virtual const std::string& getName() const override;
 	protected:
-		Peach::Window& getWindow() const;
+		Ref<AppData> getAppData() const;
+
+		Window& getWindow() const;
 
 		template<typename T>
-		void addState(bool replacing = false) const
-		{
-			if (auto data = m_Data.lock())
-			{
-				data->machine.addState(MakeScope<T>(data), replacing);
-				return;
-			}
-
-			PEACH_CORE_ERROR("AppState::addState(), Impossibile aggiungere AppState [AppData inaccessibile]");
-		}
+		void addState(bool replacing = false) const { getAppData()->machine.addState(MakeScope<T>(getAppData()), replacing); }
 		void removeState() const;
 
 		template<typename T>
-		const T& getAsset(const AssetKey& key) const
-		{
-			if (auto data = m_Data.lock())
-			{
-				return *data->assets.getAsset<T>(key);
-			}
+		Ref<T> getAssetRef(const std::string& key) const { return getAppData()->assets.getAsset<T>(key); }
+		template<typename T>
+		const T& getAsset(const std::string& key) const { return *getAssetRef<T>(key).get(); }
 
-			throw std::runtime_error("AppData inaccessibile");
-		}
-		const Peach::Texture& getTexture(const AssetKey& key) const;
-		const Peach::Font& getFont(const AssetKey& key) const;
-		const Peach::Sound& getSound(const AssetKey& key) const;
-	protected:
-		std::weak_ptr<AppData> m_Data;
+		const Peach::Texture& getTexture(const std::string& key) const;
+		const Peach::Font& getFont(const std::string& key) const;
+		const Peach::Sound& getSound(const std::string& key) const;
 	private:
+		std::weak_ptr<AppData> m_Data;
+
 		std::string m_DebugName;
 	};
 }
