@@ -68,12 +68,9 @@ namespace Peach
 			{
 				getCurrentState()->onEvent(event);
 			}
-			else
+			else while (m_Data->window->pollEvent(event))
 			{
-				while (m_Data->window->pollEvent(event))
-				{
-					getCurrentState()->onEvent(event);
-				}
+				getCurrentState()->onEvent(event);
 			}
 
 			getCurrentState()->onUpdate(deltaTime);

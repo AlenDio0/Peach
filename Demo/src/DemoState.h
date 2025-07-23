@@ -22,4 +22,5 @@ private:
 	Peach::Ref<Peach::Sound> m_RemovedSound;
 
 	Peach::UUID m_InsertPin;
+	Peach::UUID m_TextBox;
 };

@@ -68,7 +68,6 @@ void GameState::initBinds()
 			static bool limited = false;
 			limited = !limited;
 
-			auto& data = m_Data.lock();
 			getWindow().setFramerateLimit(limited ? 2 : getWindow().getConfig().getValue<int>(Peach::WindowConfig::FPSLIMIT));
 		}, "Test - Limit Framerate");
 }
