@@ -88,7 +88,7 @@ namespace Peach
 				if (auto obj = getObject(uuid).lock())
 				{
 					auto object = std::dynamic_pointer_cast<U>(obj);
-					PEACH_ASSERT(object, "Manager::getObject(uuid: {}), Ritornato valore nullo, std::dynamic_pointer_cast fallito", uuid);
+					PEACH_CORE_ASSERT(object);
 
 					return object;
 				}
