@@ -19,7 +19,7 @@ private:
 	Peach::GuiManager m_GuiManager;
 	Peach::InputController m_Input;
 
-	sf::Sound m_Sound;
+	Peach::Ref<Peach::Sound> m_RemovedSound;
 
 	Peach::UUID m_InsertPin;
 };

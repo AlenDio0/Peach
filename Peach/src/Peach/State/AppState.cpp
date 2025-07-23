@@ -40,17 +40,17 @@ namespace Peach
 		PEACH_CORE_ERROR("AppState::removeState(), Impossibile rimuovere AppState [AppData inaccessibile]");
 	}
 
-	const Peach::Texture& AppState::getTexture(const AssetKey& key) const
+	const Peach::Texture& AppState::getTexture(const std::string& key) const
 	{
 		return getAsset<Peach::Texture>(key);
 	}
 
-	const Peach::Font& AppState::getFont(const AssetKey& key) const
+	const Peach::Font& AppState::getFont(const std::string& key) const
 	{
 		return getAsset<Peach::Font>(key);
 	}
 
-	const Peach::Sound& AppState::getSound(const AssetKey& key) const
+	const Peach::Sound& AppState::getSound(const std::string& key) const
 	{
 		return getAsset<Peach::Sound>(key);
 	}

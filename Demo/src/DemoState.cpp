@@ -27,9 +27,9 @@ DemoState::DemoState(Peach::Ref<Peach::AppData> data)
 	m_InsertPin = m_GuiManager.add(textbox2);
 	m_GuiManager.add(textbox3);
 
-	m_Sound.setBuffer(getSound("removed"));
+	m_RemovedSound = getAssetRef<Peach::Sound>("removed");
 
-	getTexture("invalid key example");
+	getTexture("example");
 
 	button1->setOutlineThickness(3.f);
 	button1->setLabelStyle(sf::Text::Bold);
@@ -114,8 +114,9 @@ DemoState::DemoState(Peach::Ref<Peach::AppData> data)
 
 DemoState::~DemoState()
 {
-	m_Sound.play();
-	while (m_Sound.getStatus() == sf::Sound::Status::Playing);
+	sf::Sound sound(*m_RemovedSound.get());
+	sound.play();
+	while (sound.getStatus() == sf::Sound::Status::Playing);
 }
 
 void DemoState::onEvent(const sf::Event& event)

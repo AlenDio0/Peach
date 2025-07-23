@@ -39,18 +39,24 @@ namespace Peach
 		void removeState() const;
 
 		template<typename T>
-		const T& getAsset(const AssetKey& key) const
+		Ref<T> getAssetRef(const std::string& key) const
 		{
 			if (auto data = m_Data.lock())
 			{
-				return *data->assets.getAsset<T>(key);
+				return data->assets.getAsset<T>(key);
 			}
 
 			throw std::runtime_error("AppData inaccessibile");
 		}
-		const Peach::Texture& getTexture(const AssetKey& key) const;
-		const Peach::Font& getFont(const AssetKey& key) const;
-		const Peach::Sound& getSound(const AssetKey& key) const;
+		template<typename T>
+		const T& getAsset(const std::string& key) const
+		{
+			return *getAssetRef<T>(key).get();
+		}
+
+		const Peach::Texture& getTexture(const std::string& key) const;
+		const Peach::Font& getFont(const std::string& key) const;
+		const Peach::Sound& getSound(const std::string& key) const;
 	protected:
 		std::weak_ptr<AppData> m_Data;
 	private:

@@ -4,68 +4,26 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-#include <filesystem>
 
 namespace Peach
 {
-	class Asset
+	struct Asset
 	{
-	public:
-		enum class Type
-		{
-			None = 0,
-			Texture,
-			Font,
-			Sound
-		};
-	public:
-		virtual bool load(const std::filesystem::path& path) = 0;
-
-		static Type getType()
-		{
-			return Type::None;
-		}
+		virtual bool load(const std::string& path) = 0;
 	};
 
-	class Texture : public sf::Texture, public Asset
+	struct Texture : public sf::Texture, public Asset
 	{
-	public:
-		virtual bool load(const std::filesystem::path& path) override
-		{
-			return loadFromFile(path.string());
-		}
-
-		static Type getType()
-		{
-			return Type::Texture;
-		}
+		virtual bool load(const std::string& path) override { return loadFromFile(path); }
 	};
 
-	class Font : public sf::Font, public Asset
+	struct Font : public sf::Font, public Asset
 	{
-	public:
-		virtual bool load(const std::filesystem::path& path) override
-		{
-			return loadFromFile(path.string());
-		}
-
-		static Type getType()
-		{
-			return Type::Font;
-		}
+		virtual bool load(const std::string& path) override { return loadFromFile(path); }
 	};
 
-	class Sound : public sf::SoundBuffer, public Asset
+	struct Sound : public sf::SoundBuffer, public Asset
 	{
-	public:
-		virtual bool load(const std::filesystem::path& path) override
-		{
-			return loadFromFile(path.string());
-		}
-
-		static Type getType()
-		{
-			return Type::Sound;
-		}
+		virtual bool load(const std::string& path) override { return loadFromFile(path); }
 	};
 }
