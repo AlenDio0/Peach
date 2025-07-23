@@ -30,6 +30,7 @@ namespace Peach
 
 	ScopeTimer::~ScopeTimer()
 	{
-		PEACH_TRACE("{} - {}ms", m_Name, m_Timer.elapsedTimeMs());
+		float end = m_Timer.elapsedTimeMs();
+		PEACH_TRACE("{} - {}ms", m_Name, end);
 	}
 }
