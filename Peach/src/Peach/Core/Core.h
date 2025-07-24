@@ -18,8 +18,20 @@
 #error Peach only supports Windows
 #endif // PEACH_PLATFORM_WINDOWS
 
-#define PEACH_ASSERT(x, ...) { if (!(x)) { PEACH_CORE_ERROR("Asserzione fallita: {}", __VA_ARGS__); } }
-#define PEACH_RETURN_ASSERT(x, ...) { if (!(x)) { PEACH_CORE_ERROR("Asserzione fallita: {}", __VA_ARGS__); return false; } return true; }
+#include <string>
+
+#define PEACH_EXPAND_MACRO(x) x
+#define PEACH_STRINGIFY_MACRO(x) #x
+
+#define PEACH_ASSERT_IMPL(type, x, msg, ...) { if(!(x)) { PEACH##type##ERROR(msg, __VA_ARGS__); __debugbreak(); } }
+#define PEACH_ASSERT_MSG(type, x, ...) PEACH_ASSERT_IMPL(type, x, "Asserzione fallita: {}", __VA_ARGS__)
+#define PEACH_ASSERT_NOMSG(type, x) PEACH_ASSERT_IMPL(type, x, "Asserzione '{}' fallita a '{}:{}'", PEACH_STRINGIFY_MACRO(x), std::filesystem::path(__FILE__).filename().string(), __LINE__)
+
+#define PEACH_ASSERT_GET_MACRO_NAME(arg1, arg2, macro, ...) macro
+#define PEACH_ASSERT_GET_MACRO(...) PEACH_EXPAND_MACRO(PEACH_ASSERT_GET_MACRO_NAME(__VA_ARGS__, PEACH_ASSERT_MSG, PEACH_ASSERT_NOMSG))
+
+#define PEACH_CORE_ASSERT(...) PEACH_EXPAND_MACRO(PEACH_ASSERT_GET_MACRO(__VA_ARGS__)(_ ,__VA_ARGS__))
+#define PEACH_ASSERT(...) PEACH_EXPAND_MACRO(PEACH_ASSERT_GET_MACRO(__VA_ARGS__)(_CORE_, __VA_ARGS__))
 
 #include <memory>
 
