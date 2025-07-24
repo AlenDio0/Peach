@@ -5,7 +5,7 @@
 
 namespace Peach
 {
-	TileMap&& TileMapParser::parse(const std::filesystem::path& filePath, Scene* scene, const Peach::Texture& texture)
+	TileMap TileMapParser::parse(const std::filesystem::path& filePath, Scene* scene, const Peach::Texture& texture)
 	{
 		open(filePath);
 
@@ -64,7 +64,7 @@ namespace Peach
 			}
 		}
 
-		return std::move(tileMap);
+		return tileMap;
 	}
 
 	TileMapParser::MapInfo TileMapParser::convertMap()

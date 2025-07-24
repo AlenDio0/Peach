@@ -12,7 +12,7 @@ namespace Peach
 		TileMapParser() = delete;
 		~TileMapParser() = delete;
 
-		static TileMap&& parse(const std::filesystem::path& filePath, Scene* scene, const Peach::Texture& texture);
+		static TileMap parse(const std::filesystem::path& filePath, Scene* scene, const Peach::Texture& texture);
 	private:
 		struct MapInfo
 		{

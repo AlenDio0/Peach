@@ -6,7 +6,7 @@
 
 namespace Peach
 {
-	class Entity
+	class PEACH_API Entity
 	{
 	public:
 		Entity() = default;
@@ -17,7 +17,7 @@ namespace Peach
 		template<typename Component, typename... Args>
 		Component& addComponent(Args&&... args)
 		{
-			PEACH_ASSERT(!hasComponent<Component>(), "Entity ha già il Component");
+			PEACH_CORE_ASSERT(!hasComponent<Component>());
 			return m_Scene->m_Registry.emplace<Component>(m_Handle, std::forward<Args>(args)...);
 		}
 
@@ -30,14 +30,14 @@ namespace Peach
 		template<typename Component>
 		void removeComponent()
 		{
-			PEACH_ASSERT(hasComponent<Component>(), "Entity non ha il Component");
+			PEACH_CORE_ASSERT(hasComponent<Component>());
 			m_Scene->m_Registry.remove<Component>(m_Handle);
 		}
 
 		template<typename Component>
 		Component& getComponent()
 		{
-			PEACH_ASSERT(hasComponent<Component>(), "Entity non ha il Component");
+			PEACH_CORE_ASSERT(hasComponent<Component>());
 			return m_Scene->m_Registry.get<Component>(m_Handle);
 		}
 

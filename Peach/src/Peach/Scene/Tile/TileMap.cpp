@@ -3,13 +3,13 @@
 
 #include "Peach/Scene/Entity.h"
 #include <string>
-#include <format>
 
 namespace Peach
 {
 	TileMap::TileMap(Scene* scene, const Peach::Texture& texture, Vec2u spriteSize, Vec2u mapSize, Vec2f tileSize)
-		: m_Scene(scene), m_Sprites(texture, spriteSize), m_MapSize(mapSize), m_TileSize(tileSize), m_TileCount(0u)
+		: m_Scene(scene), m_Sprites(texture, spriteSize), m_MapSize(mapSize), m_TileSize(tileSize)
 	{
+		m_Tiles.reserve(m_MapSize.area());
 		for (uint32_t y = 0; y < m_MapSize.y; y++)
 		{
 			for (uint32_t x = 0; x < m_MapSize.x; x++)
@@ -21,33 +21,69 @@ namespace Peach
 
 	Entity TileMap::createTile(Vec2u position, uint32_t id)
 	{
-		PEACH_ASSERT(position.x <= m_MapSize.x && position.y <= m_MapSize.y, "Posizione di Tile oltre la massima grandezza di TileMap");
-		Entity tile = m_Scene->createEntity("Tile " + std::to_string(m_TileCount));
+		PEACH_CORE_ASSERT(position.x < m_MapSize.x && position.y < m_MapSize.y);
+
+		Entity tile = m_Scene->createEntity();
 
 		tile.addComponent<TileComponent>(position, this);
 		tile.addComponent<TransformComponent>(position * m_TileSize, m_TileSize / m_Sprites.getSpriteSize());
 		tile.addComponent<SpriteComponent>(m_Sprites.getTexture(), m_Sprites.getRect(id));
 
-		m_TileCount++;
+		m_Tiles.push_back(tile);
 		return tile;
 	}
 
 	void TileMap::destroyTile(Vec2u position)
 	{
-		m_Scene->destroyEntity(getTile(position));
+		if (!hasTile(position))
+		{
+			return;
+		}
+
+		Entity tile = getTile(position);
+
+		m_Tiles.erase(std::remove(m_Tiles.begin(), m_Tiles.end(), tile), m_Tiles.end());
+		m_Scene->destroyEntity(tile);
 	}
 
-	Entity TileMap::getTile(Vec2u position)
+	bool TileMap::hasTile(Vec2u position)
 	{
 		auto view = m_Scene->getEntitiesWith<TileComponent>();
 		for (auto& [entity, tile] : view.each())
 		{
-			if (tile.position == position)
+			if (tile.position != position)
+			{
+				continue;
+			}
+
+			if (std::find(m_Tiles.begin(), m_Tiles.end(), entity) != m_Tiles.end())
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	Entity TileMap::getTile(Vec2u position)
+	{
+		PEACH_CORE_ASSERT(hasTile(position));
+
+		auto view = m_Scene->getEntitiesWith<TileComponent>();
+		for (auto& [entity, tile] : view.each())
+		{
+			if (tile.position != position)
+			{
+				continue;
+			}
+
+			if (std::find(m_Tiles.begin(), m_Tiles.end(), entity) != m_Tiles.end())
 			{
 				return Entity(entity, m_Scene);
 			}
 		}
 
+		PEACH_CORE_ERROR("TileMap::getTile(position: {}), Ritornato valore nullo", position);
 		return {};
 	}
 

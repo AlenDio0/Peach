@@ -3,13 +3,15 @@
 #include "Peach/Core/Core.h"
 
 #include "Peach/Scene/Scene.h"
+#include "Peach/System/SpriteSheet.h"
+#include <vector>
 
 namespace Peach
 {
-	class TileMap
+	class PEACH_API TileMap
 	{
 	public:
-		TileMap(TileMap&&) = default;
+		TileMap(TileMap&) = default;
 		TileMap(Scene* scene, const Peach::Texture& texture, Vec2u spriteSize, Vec2u mapSize, Vec2f tileSize);
 		virtual ~TileMap() = default;
 
@@ -17,16 +19,18 @@ namespace Peach
 
 		void destroyTile(Vec2u position);
 
+		bool hasTile(Vec2u position);
 		Entity getTile(Vec2u position);
 	private:
 		void setTileID(Entity tile, uint32_t id);
 	private:
+		std::vector<entt::entity> m_Tiles;
+
 		Vec2u m_MapSize;
 		Vec2f m_TileSize;
 		SpriteSheet m_Sprites;
 
 		Scene* m_Scene;
-		uint32_t m_TileCount;
 
 		friend class TileComponent;
 	};

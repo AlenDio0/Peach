@@ -2,6 +2,7 @@
 
 #include <Peach/System/Random.h>
 #include <Peach/System/Timer.h>
+#include <Peach/Scene/World.h>
 
 GameState::GameState(Peach::Ref<Peach::AppData> data)
 	: Peach::AppState(data, "Game"), m_Scene("level.txt", getTexture("tiles"))
@@ -63,6 +64,13 @@ void GameState::initBinds()
 
 			getWindow().setFramerateLimit(limited ? 2 : getWindow().getConfig().getValue<int>(Peach::WindowConfig::FPSLIMIT));
 		}, "Test - Limit Framerate");
+
+	m_Input.addBind(sf::Mouse::Button::Left,
+		[&](sf::Event::MouseButtonEvent event) {
+			auto& tilemap = m_Scene.getWorld().getTileMap();
+
+			tilemap.destroyTile(Peach::Vec2u(event.x / 80, event.y / 80));
+		}, "Rimuovi tile");
 }
 
 Peach::Entity GameState::createPlayer(std::array<sf::Keyboard::Key, 4> keys)

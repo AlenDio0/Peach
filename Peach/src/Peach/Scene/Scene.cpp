@@ -33,10 +33,7 @@ namespace Peach
 		m_Entities[uuid] = entity;
 
 		entity.addComponent<IDComponent>(uuid);
-		if (!tag.empty())
-		{
-			entity.addComponent<TagComponent>(tag);
-		}
+		entity.addComponent<TagComponent>(tag);
 
 		//PEACH_CORE_TRACE("Scene::createEntity(uuid: {}, tag: {}), [entity: {}]", uuid, tag, (uint32_t)entity);
 		return entity;

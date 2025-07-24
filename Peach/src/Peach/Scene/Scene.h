@@ -31,6 +31,8 @@ namespace Peach
 			return m_Registry.view<Components...>();
 		}
 
+		inline World& getWorld() { return *m_World; }
+
 		void update(const float deltaTime);
 		void render(sf::RenderTarget& target);
 
